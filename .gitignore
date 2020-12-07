@@ -1,14 +1,24 @@
-.DS_Store
+# Default
+.gulp
 .idea
 .vscode
-package-lock.json
-*.ai
+
+# Node
+node_modules
+
+# Dist & tests
+test
+dist
+
+# Logs:
 *.log
-*.pdf
-*.psd
-*.sublime*
-node_modules/
-npm-debug.*
-source/css/*.css
-source/css/*.map
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Special
 Thumbs.db
+Desktop.ini
+.DS_Store*
+ehthumbs.db
+Icon?
