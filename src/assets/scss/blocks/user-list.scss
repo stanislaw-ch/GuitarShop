@@ -1,0 +1,32 @@
+.user-list {
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: space-between;
+  width: 144px; //
+  height: 68px; //
+  margin: 0;
+  padding: 0 14px;
+
+  list-style-type: none;
+  // background-color: rgba(30, 9, 6, 0.5);
+}
+
+.user-list__item {
+  display: flex;
+
+  &--basket span {
+    margin-top: -5px;
+    margin-left: 2px;
+  }
+  &--basket span::after {
+    content: attr(data-title);
+    display: inline-block;
+    top: 10px;
+
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 12px;
+    color: #F20505;
+  }
+}
