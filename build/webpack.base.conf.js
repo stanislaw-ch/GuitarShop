@@ -164,7 +164,8 @@
         page =>
           new HtmlWebpackPlugin({
             template: `${PAGES_DIR}/${page}`,
-            filename: `./${page}`
+            filename: `./${page}`,
+            minify: false
           })
       )
     ]
