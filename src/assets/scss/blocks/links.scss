@@ -1,0 +1,109 @@
+.links {
+
+}
+
+.links__wrapper {
+  box-sizing: border-box;
+  // width: 140px;
+  margin-right: 15px;
+}
+
+.links__wrapper:last-child {
+  margin-left: auto;
+}
+
+.links dt {
+  margin-bottom: 17px;
+  font-size: 14px;
+  color: #ffffff;
+  letter-spacing: 2px;
+}
+
+.links dd {
+  margin: 0;
+}
+
+.links__list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+
+  &--about-us,
+  &--kontakt {
+    width: 145px;
+    line-height: 12px;
+    letter-spacing: 0.3px;
+  }
+
+  &--kontakt {
+    width: 145px;
+  }
+
+  &--about-us .links__item:first-child,
+  &--kontakt .links__item:first-child {
+    margin-bottom: 12px;
+  }
+
+  &--catalog {
+    width: 150px;
+  }
+
+  &--catalog .links__item,
+  &--info .links__item {
+    line-height: 20px;
+  }
+
+  &--catalog .links__item,
+  &--info .links__item,
+  &--kontakt .links__item {
+    letter-spacing: 2px;
+  }
+
+  &--kontakt .links__item a {
+    padding-left: 10px;
+  }
+
+  &--kontakt .links__item a::before {
+    content: "";
+
+    position: absolute;
+    display: block;
+    top: 38px;
+    left: 0;
+    width: 10px;
+    height: 10px;
+
+    // background-color: aqua;
+    background-image: url("/src/assets/img/icon_phone.svg");
+  }
+
+  &--kontakt .links__item span::before {
+    content: "";
+
+    position: absolute;
+    display: block;
+    top: 14px;
+    left: 0;
+    width: 10px;
+    height: 10px;
+
+    // background-color: aqua;
+    background-image: url("/src/assets/img/icon_clock.svg");
+  }
+}
+
+.links__item {
+  position: relative;
+}
+
+.links__item a,
+.links__item p,
+.links__item span {
+  margin: 0;
+  color: #ffffff;
+  font-size: 10px;
+}
+
+.links__item span {
+  padding-left: 10px;
+}

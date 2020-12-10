@@ -11,14 +11,15 @@
 
 .page-header__image-wrapper img {
   margin-top: -40px;
+  margin-right: -40px;
 }
 
 
-.page-header__image-wrapper::before {
+.page-header::before {
   content: "";
 
   position: absolute;
-  top: 24px;
+  top: 134px;
   right: 0;
   z-index: -1;
 
@@ -26,5 +27,5 @@
   height: 4px;
 
   background-color: #3F3F3F;
-  box-shadow: 0 11px 0 0 #3F3F3F, 0 22px 0 0 #3F3F3F, 0 33px 0 0 #3F3F3F, 0 44px 0 0 #3F3F3F, 0 55px 0 0 #3F3F3F;
+  box-shadow: 0 14px 0 0 #3F3F3F, 0 28px 0 0 #3F3F3F, 0 42px 0 0 #3F3F3F, 0 56px 0 0 #3F3F3F, 0 70px 0 0 #3F3F3F;
 }

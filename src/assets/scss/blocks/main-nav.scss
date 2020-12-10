@@ -5,7 +5,7 @@
 .main-nav__wrapper {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   height: 110px;
 }
 
@@ -14,5 +14,5 @@
 }
 
 .main-nav__list {
-
+  margin-left: 115px;
 }
