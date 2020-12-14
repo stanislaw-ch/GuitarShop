@@ -5,18 +5,31 @@
 .links__wrapper {
   box-sizing: border-box;
   // width: 140px;
-  margin-right: 15px;
+  margin-right: 14px;
 }
 
 .links__wrapper:last-child {
+  margin-right: 0;
+}
+
+.links__wrapper:last-child {
+  width: 140px;
   margin-left: auto;
 }
 
-.links dt {
-  margin-bottom: 17px;
+.links__wrapper dt {
+  margin-bottom: 11px;
   font-size: 14px;
   color: #ffffff;
   letter-spacing: 2px;
+}
+
+.links__wrapper:first-child dt {
+  margin-bottom: 17px;
+}
+
+.links__wrapper:last-child dt {
+  margin-bottom: 15px;
 }
 
 .links dd {
@@ -36,7 +49,7 @@
   }
 
   &--kontakt {
-    width: 145px;
+    width: 130px;
   }
 
   &--about-us .links__item:first-child,
@@ -50,17 +63,18 @@
 
   &--catalog .links__item,
   &--info .links__item {
-    line-height: 20px;
+    line-height: 18px;
   }
 
   &--catalog .links__item,
   &--info .links__item,
   &--kontakt .links__item {
-    letter-spacing: 2px;
+    letter-spacing: 1.3px;
   }
 
   &--kontakt .links__item a {
-    padding-left: 10px;
+    padding-left: 14px;
+    letter-spacing: 1px;
   }
 
   &--kontakt .links__item a::before {
@@ -81,8 +95,7 @@
     content: "";
 
     position: absolute;
-    display: block;
-    top: 14px;
+    top: 11px;
     left: 0;
     width: 10px;
     height: 10px;
@@ -105,5 +118,7 @@
 }
 
 .links__item span {
-  padding-left: 10px;
+  display: block;
+  padding-left: 14px;
+  margin-top: -1px;
 }

@@ -152,7 +152,6 @@
           }
         ]
       }),
-
       /*
         Automatic creation any html pages (Don't forget to RERUN dev server!)
         See more:
