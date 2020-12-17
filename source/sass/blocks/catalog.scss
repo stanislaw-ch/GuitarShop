@@ -1,0 +1,130 @@
+.catalog__content-wrapper {
+  display: flex;
+  margin-top: 50px;
+}
+
+.catalog__filters-column {
+  width: 208px;
+}
+
+.catalog__filters-column h2 {
+  margin: 0;
+  padding-bottom: 30px;
+
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: .9px;
+
+  border-bottom: 0.7px solid #DDDADA;
+}
+
+.catalog__catalog-column {
+  // width: 100%;
+}
+
+.catalog__filters-form fieldset {
+  margin: 0;
+  padding: 0 0 30px 0;
+  border: none;
+  border-bottom: 0.7px solid #DDDADA;
+}
+
+.catalog__filters-form h3 {
+  margin: 30px 0 25px 0;
+
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: .9px;
+}
+
+.catalog__filters-price-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+}
+
+.catalog__filters-price-wrapper input {
+  box-sizing: border-box;
+  width: 84px;
+  height: 28px;
+  margin: 0;
+  padding: 0;
+
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  text-align: center;
+
+  border: 0.7px solid #9F9E9E;
+  border-radius: 2px;
+}
+
+.catalog__filters-price-wrapper::after {
+  content: "";
+  position: absolute;
+  display: block;
+  top: 44%;
+  right: 50%;
+  margin-right: -6px;
+  width: 14px;
+  height: 1px;
+  background-color: #585757;
+}
+
+.catalog__filters-type-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.catalog__filters-type-content-wrapper {
+  position: relative;
+  margin-bottom: 18px;
+}
+
+.catalog__filters-type-content-wrapper label {
+  padding-left: 41px;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: .4px;
+
+  cursor: pointer;
+  user-select: none;
+}
+
+.catalog__filters-type-content-wrapper input + label::before {
+  content: "";
+  position: absolute;
+  left: 0px;
+  top: -2px;
+
+  width: 22px;
+  height: 22px;
+
+  border: 0.7px solid #9F9E9E;
+}
+
+.catalog__filters-type-content-wrapper input:checked + label::after {
+  content: "";
+
+  position: absolute;
+  top: 4px;
+  left: 0;
+
+  width: 12px;
+  height: 12px;
+
+  background-image: url("/src/assets/img/icon_check-mark-button.svg");
+  background-repeat: no-repeat;
+  background-position: 0 0;
+}
+
+.catalog__sort {
+  margin: 0;
+  padding: 3px 0 0 33px;
+  letter-spacing: 1.1px;
+}
+
+.catalog__pagination {
+  display: flex;
+  list-style-type: none;
+}
