@@ -1,5 +1,5 @@
 .main-nav {
-    background-color: rgba(30, 9, 6, 0.15);
+  background-color: rgba(30, 9, 6, 0.15);
 }
 
 .main-nav__wrapper {
@@ -9,8 +9,10 @@
   height: 110px;
 }
 
-.main-nav__logo {
-
+.main-nav__logo svg {
+  fill: #000000;
+  stroke: #000000;
+  stroke-width: 0.4px;
 }
 
 .main-nav__list {
