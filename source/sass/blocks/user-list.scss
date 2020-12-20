@@ -29,4 +29,33 @@
     line-height: 12px;
     color: #f20505;
   }
+
+  & svg {
+    // fill: #000000;
+
+    &:hover {
+      fill: #474747;
+    }
+
+    &:active {
+      fill: #474747;
+      opacity: 0.5;
+    }
+  }
+
+  &--location svg {
+    fill: none;
+    stroke: #000000;
+  }
+
+  &--location svg:hover {
+    fill: none;
+    stroke: #474747;
+  }
+
+  &--location svg:active {
+    fill: none;
+    stroke: #474747;
+    opacity: 0.5;
+  }
 }

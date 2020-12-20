@@ -45,7 +45,17 @@
   display: none;
 }
 
+.breadcrumbs__item--current {
+  pointer-events: none;
+}
+
 .breadcrumbs__item a {
   color: #474747;
   letter-spacing: 0.9px;
+
+  &:hover,
+  &:active {
+    color: #474747;
+    opacity: 0.5;
+  }
 }

@@ -1,6 +1,7 @@
 .catalog__content-wrapper {
   display: flex;
   margin-top: 50px;
+  margin-bottom: 60px;
 }
 
 .catalog__filters-column {
@@ -56,6 +57,14 @@
 
   border: none;
   background-color: #c1c1c1;
+
+  &:hover {
+    background-color: #585757;
+  }
+
+  &:active {
+    background-color: #9f9e9e;
+  }
 }
 
 .catalog__filters-price-wrapper {
@@ -130,6 +139,17 @@
   height: 22px;
 
   border: 0.7px solid #9f9e9e;
+  border-radius: 2px;
+}
+
+.catalog__filters-type-content-wrapper input + label:hover::before,
+.catalog__filters-amount-wrapper span:hover::before {
+  border-color: #585757;
+}
+
+.catalog__filters-type-content-wrapper input + label:active::before,
+.catalog__filters-amount-wrapper span:active::before {
+  border-color: #c1c1c1;
 }
 
 .catalog__filters-type-content-wrapper input:checked + label::after,
@@ -153,12 +173,24 @@
   flex-direction: column;
 }
 
+.catalog__filters-amount-wrapper input:disabled + span::before {
+  border: 0.7px solid #dddddd;
+  background-color: #f6f3f3;
+}
+
+.catalog__filters-amount-wrapper input:disabled + span {
+  color: #dddddd;
+
+  pointer-events: none;
+}
+
 .catalog__filters-amount-wrapper span {
   position: relative;
   display: block;
 }
 
 .catalog__catalog-column {
+  min-width: 699px;
   max-width: 699px;
   margin-left: 32px;
 }
@@ -167,6 +199,22 @@
   margin: 0;
   padding: 3px 0 0 0;
   letter-spacing: 1.1px;
+}
+
+.catalog__sort-wrapper {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.catalog__sort-wrapper span {
+  padding-top: 3px;
+  letter-spacing: 1.3px;
+}
+
+.catalog__sort-buttons {
+  position: relative;
+  display: flex;
+  margin-left: auto;
 }
 
 .catalog__list {
@@ -178,7 +226,64 @@
   list-style-type: none;
 }
 
+.catalog__button {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 89px;
+  height: 23px;
+
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.1px;
+  border-radius: 2px;
+
+  &--buy {
+    padding-left: 20px;
+    background-color: #e27f00;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 10px;
+      display: inline-block;
+      width: 12px;
+      height: 13px;
+      background-image: url("../img/icon_cart.svg");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-color: transparent;
+    }
+
+    &:hover {
+      background-color: #ffa839;
+    }
+
+    &:active {
+      background-color: #da8b26;
+    }
+  }
+
+  &--info {
+    background-color: #c1c1c1;
+
+    &:hover {
+      background-color: #585757;
+    }
+
+    &:active {
+      background-color: #9f9e9e;
+    }
+  }
+}
+
 .catalog__pagination {
   display: flex;
+  justify-content: flex-end;
+  margin: 0;
+  padding: 0;
   list-style-type: none;
 }

@@ -36,19 +36,28 @@
             <li class="user-list__item user-list__item--location">
               <a href="#">
                 <span class="visually-hidden">Локация</span>
-                  <img src="img/icon_location.svg" width="14" height="17" alt="Локация">
+                <svg width="14" height="17">
+                  <use xlink:href="img/sprite.svg#icon_location"></use>
+                </svg>
+                  <!-- <img src="img/icon_location.svg" width="14" height="17" alt="Локация"> -->
               </a>
             </li>
             <li class="user-list__item user-list__item--search">
               <a href="#">
                 <span class="visually-hidden">Поиск по сайту</span>
-                <img src="img/icon_search.svg" width="14" height="14" alt="Поиск по сайту">
+                <svg width="14" height="14">
+                  <use xlink:href="img/sprite.svg#icon_search"></use>
+                </svg>
+                <!-- <img src="img/icon_search.svg" width="14" height="14" alt="Поиск по сайту"> -->
               </a>
             </li>
             <li class="user-list__item user-list__item--basket">
               <a href="/basket.html">
                 <span class="visually-hidden">Корзина</span>
-                <img src="img/icon_basket.svg" width="16" height="18" alt="Корзина">
+                <svg width="16" height="18">
+                  <use xlink:href="img/sprite.svg#icon_basket"></use>
+                </svg>
+                <!-- <img src="img/icon_basket.svg" width="16" height="18" alt="Корзина"> -->
               </a>
               <span class="" data-title="2"></span>
             </li>
@@ -128,196 +137,200 @@
             </form>
           </div>
           <div class="catalog__catalog-column">
-            <ul class="catalog__sort sort">Сортировать:
-              <li class="sort__item">
-                <a href="#">по цене</a>
-              </li>
-              <li class="sort__item">
-                <a href="#">по популярности</a>
-              </li>
-            </ul>
+            <div class="catalog__sort-wrapper">
+              <span>Сортировать:</span>
+              <ul class="catalog__sort sort">
+                <li class="sort__item sort__item--active">
+                  <a href="#">по цене</a>
+                </li>
+                <li class="sort__item">
+                  <a href="#">по популярности</a>
+                </li>
+              </ul>
+              <div class="catalog__sort-buttons">
+                <button class="sort-button sort-button--up sort-button--active" type="button"></button>
+                <button class="sort-button sort-button--down" type="button"></button>
+              </div>
+            </div>
             <ul class="catalog__list list">
               <li class="list__item">
-                <img src="" alt="Изображение товара">
-                <ul class="list__rating rating">
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">15</li>
-                </ul>
+                <img src="img/gitar-electric_1.png" width="80" height="202" alt="Изображение товара">
+                <div class="list__rating rating">
+                  <div class="list__stars rating__stars">
+                    <span style="width: 85%;"></span>
+                    <span class="visually-hidden">Rating</span>
+                  </div>
+                  <span class="rating__amount">15</span>
+                </div>
                 <div class="list__descriotion-wrapper">
                   <h3>Честер Bass</h3>
                   <p>17 500 ₽</p>
                 </div>
                 <div class="list__navigation-wrapper">
-                  <a href="" class="list__button list__button--info button">Подробнее</a>
-                  <a href="" class="list__button list__button--buy button">Купить</a>
+                  <a href="" class="catalog__button--info catalog__button">Подробнее</a>
+                  <a href="" class="catalog__button--buy catalog__button">Купить</a>
                 </div>
               </li>
               <li class="list__item">
-                <img src="" alt="Изображение товара">
-                <ul class="list__rating rating">
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">15</li>
-                </ul>
+                <img src="img/gitar-electric_1.png" width="80" height="202" alt="Изображение товара">
+                <div class="list__rating rating">
+                  <div class="list__stars rating__stars">
+                    <span style="width: 100%;"></span>
+                    <span class="visually-hidden">Rating</span>
+                  </div>
+                  <span class="rating__amount">15</span>
+                </div>
                 <div class="list__descriotion-wrapper">
                   <h3>Честер Bass</h3>
                   <p>17 500 ₽</p>
                 </div>
                 <div class="list__navigation-wrapper">
-                  <a href="" class="list__button list__button--info button">Подробнее</a>
-                  <a href="" class="list__button list__button--buy button">Купить</a>
+                  <a href="" class="catalog__button--info catalog__button">Подробнее</a>
+                  <a href="" class="catalog__button--buy catalog__button">Купить</a>
                 </div>
               </li>
               <li class="list__item">
-                <img src="" alt="Изображение товара">
-                <ul class="list__rating rating">
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">15</li>
-                </ul>
+                <img src="img/gitar-electric_1.png" width="80" height="202" alt="Изображение товара">
+                <div class="list__rating rating">
+                  <div class="list__stars rating__stars">
+                    <span style="width: 100%;"></span>
+                    <span class="visually-hidden">Rating</span>
+                  </div>
+                  <span class="rating__amount">15</span>
+                </div>
                 <div class="list__descriotion-wrapper">
                   <h3>Честер Bass</h3>
                   <p>17 500 ₽</p>
                 </div>
                 <div class="list__navigation-wrapper">
-                  <a href="" class="list__button list__button--info button">Подробнее</a>
-                  <a href="" class="list__button list__button--buy button">Купить</a>
+                  <a href="" class="catalog__button--info catalog__button">Подробнее</a>
+                  <a href="" class="catalog__button--buy catalog__button">Купить</a>
                 </div>
               </li>
               <li class="list__item">
-                <img src="" alt="Изображение товара">
-                <ul class="list__rating rating">
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">15</li>
-                </ul>
+                <img src="img/gitar-electric_1.png" width="80" height="202" alt="Изображение товара">
+                <div class="list__rating rating">
+                  <div class="list__stars rating__stars">
+                    <span style="width: 100%;"></span>
+                    <span class="visually-hidden">Rating</span>
+                  </div>
+                  <span class="rating__amount">15</span>
+                </div>
                 <div class="list__descriotion-wrapper">
                   <h3>Честер Bass</h3>
                   <p>17 500 ₽</p>
                 </div>
                 <div class="list__navigation-wrapper">
-                  <a href="" class="list__button list__button--info button">Подробнее</a>
-                  <a href="" class="list__button list__button--buy button">Купить</a>
+                  <a href="" class="catalog__button--info catalog__button">Подробнее</a>
+                  <a href="" class="catalog__button--buy catalog__button">Купить</a>
                 </div>
               </li>
               <li class="list__item">
-                <img src="" alt="Изображение товара">
-                <ul class="list__rating rating">
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">15</li>
-                </ul>
+                <img src="img/gitar-electric_1.png" width="80" height="202" alt="Изображение товара">
+                <div class="list__rating rating">
+                  <div class="list__stars rating__stars">
+                    <span style="width: 100%;"></span>
+                    <span class="visually-hidden">Rating</span>
+                  </div>
+                  <span class="rating__amount">15</span>
+                </div>
                 <div class="list__descriotion-wrapper">
                   <h3>Честер Bass</h3>
                   <p>17 500 ₽</p>
                 </div>
                 <div class="list__navigation-wrapper">
-                  <a href="" class="list__button list__button--info button">Подробнее</a>
-                  <a href="" class="list__button list__button--buy button">Купить</a>
+                  <a href="" class="catalog__button--info catalog__button">Подробнее</a>
+                  <a href="" class="catalog__button--buy catalog__button">Купить</a>
                 </div>
               </li>
               <li class="list__item">
-                <img src="" alt="Изображение товара">
-                <ul class="list__rating rating">
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">15</li>
-                </ul>
+                <img src="img/gitar-electric_1.png" width="80" height="202" alt="Изображение товара">
+                <div class="list__rating rating">
+                  <div class="list__stars rating__stars">
+                    <span style="width: 100%;"></span>
+                    <span class="visually-hidden">Rating</span>
+                  </div>
+                  <span class="rating__amount">15</span>
+                </div>
                 <div class="list__descriotion-wrapper">
                   <h3>Честер Bass</h3>
                   <p>17 500 ₽</p>
                 </div>
                 <div class="list__navigation-wrapper">
-                  <a href="" class="list__button list__button--info button">Подробнее</a>
-                  <a href="" class="list__button list__button--buy button">Купить</a>
+                  <a href="" class="catalog__button--info catalog__button">Подробнее</a>
+                  <a href="" class="catalog__button--buy catalog__button">Купить</a>
                 </div>
               </li>
               <li class="list__item">
-                <img src="" alt="Изображение товара">
-                <ul class="list__rating rating">
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">15</li>
-                </ul>
+                <img src="img/gitar-electric_1.png" width="80" height="202" alt="Изображение товара">
+                <div class="list__rating rating">
+                  <div class="list__stars rating__stars">
+                    <span style="width: 100%;"></span>
+                    <span class="visually-hidden">Rating</span>
+                  </div>
+                  <span class="rating__amount">15</span>
+                </div>
                 <div class="list__descriotion-wrapper">
                   <h3>Честер Bass</h3>
                   <p>17 500 ₽</p>
                 </div>
                 <div class="list__navigation-wrapper">
-                  <a href="" class="list__button list__button--info button">Подробнее</a>
-                  <a href="" class="list__button list__button--buy button">Купить</a>
+                  <a href="" class="catalog__button--info catalog__button">Подробнее</a>
+                  <a href="" class="catalog__button--buy catalog__button">Купить</a>
                 </div>
               </li>
               <li class="list__item">
-                <img src="" alt="Изображение товара">
-                <ul class="list__rating rating">
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">15</li>
-                </ul>
+                <img src="img/gitar-electric_1.png" width="80" height="202" alt="Изображение товара">
+                <div class="list__rating rating">
+                  <div class="list__stars rating__stars">
+                    <span style="width: 100%;"></span>
+                    <span class="visually-hidden">Rating</span>
+                  </div>
+                  <span class="rating__amount">15</span>
+                </div>
                 <div class="list__descriotion-wrapper">
                   <h3>Честер Bass</h3>
                   <p>17 500 ₽</p>
                 </div>
                 <div class="list__navigation-wrapper">
-                  <a href="" class="list__button list__button--info button">Подробнее</a>
-                  <a href="" class="list__button list__button--buy button">Купить</a>
+                  <a href="" class="catalog__button--info catalog__button">Подробнее</a>
+                  <a href="" class="catalog__button--buy catalog__button">Купить</a>
                 </div>
               </li>
               <li class="list__item">
-                <img src="" alt="Изображение товара">
-                <ul class="list__rating rating">
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">*</li>
-                  <li class="rating__item">15</li>
-                </ul>
+                <img src="img/gitar-electric_1.png" width="80" height="202" alt="Изображение товара">
+                <div class="list__rating rating">
+                  <div class="list__stars rating__stars">
+                    <span style="width: 100%;"></span>
+                    <span class="visually-hidden">Rating</span>
+                  </div>
+                  <span class="rating__amount">15</span>
+                </div>
                 <div class="list__descriotion-wrapper">
                   <h3>Честер Bass</h3>
                   <p>17 500 ₽</p>
                 </div>
                 <div class="list__navigation-wrapper">
-                  <a href="" class="list__button list__button--info button">Подробнее</a>
-                  <a href="" class="list__button list__button--buy button">Купить</a>
+                  <a href="" class="catalog__button--info catalog__button">Подробнее</a>
+                  <a href="" class="catalog__button--buy catalog__button">Купить</a>
                 </div>
               </li>
             </ul>
-            <ul class="catalog__pagination">
-              <li class="pagination__item">
-                <a class="pagination__link pagination__link--current" href="#">1</a>
+            <ul class="catalog__pagination pagination">
+              <li class="pagination__item pagination__item--current">
+                <a href="#">1</a>
               </li>
               <li class="pagination__item">
-                <a class="pagination__link" href="#">2</a>
+                <a href="#">2</a>
               </li>
               <li class="pagination__item">
-                <a class="pagination__link" href="#">3</a>
+                <a href="#">...</a>
+              </li>
+              <li class="pagination__item">
+                <a href="#">7</a>
+              </li>
+              <li class="pagination__item pagination__item--button">
+                <a href="#">Далее</a>
               </li>
             </ul>
           </div>
@@ -368,10 +381,10 @@
               <dd>
                 <ul class="links__list links__list--about-us">
                   <li class="links__item">
-                    <p href="#">Магазин гитар, музыкальных инструментов и гитарная мастерская в Санкт-Петербурге.</p>
+                    <p>Магазин гитар, музыкальных инструментов и гитарная мастерская в Санкт-Петербурге.</p>
                   </li>
                   <li class="links__item">
-                    <p href="#">Все инструменты проверены, отстроены и доведены до идеала!</>
+                    <p>Все инструменты проверены, отстроены и доведены до идеала!</p>
                   </li>
                 </ul>
               </dd>

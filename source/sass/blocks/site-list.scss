@@ -20,4 +20,13 @@
   line-height: 20px;
   letter-spacing: 1px;
   color: #000000;
+
+  &:hover {
+    color: #474747;
+  }
+
+  &:active {
+    color: #474747;
+    opacity: 0.5;
+  }
 }
