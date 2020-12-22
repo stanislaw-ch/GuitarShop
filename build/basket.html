@@ -12,14 +12,14 @@
     <nav class="main-nav">
       <div class="container">
         <div class="main-nav__wrapper">
-          <a class="main-nav__logo">
+          <a class="main-nav__logo" href="index.html">
             <svg width="67" height="70">
               <use xlink:href="img/sprite.svg#logo"></use>
             </svg>
           </a>
           <ul class="main-nav__list site-list">
             <li class="site-list__item">
-              <a href="#">Каталог</a>
+              <a href="index.html">Каталог</a>
             </li>
             <li class="site-list__item">
               <a href="#">Где купить?</a>
@@ -87,7 +87,7 @@
       </ul>
       <section class="shoppingbag">
         <div class="shoppingbag__content">
-          <div class="product">
+          <div class="shoppingbag__product product">
             <ul class="product__list">
               <li class="product__item">
                 <div class="product__image-container">
@@ -125,9 +125,25 @@
               </li>
             </ul>
           </div>
+          <div class="shoppingbag__order order">
+            <div class="order__discount">
+              <div class="order__discount-wrapper">
+                <span class="order__discount-title">Промокод на скидку</span>
+                <span class="order__discount-subtitle">Введите свой промокод, если он у вас есть.</span>
+              </div>
+              <div class="order__discount-promo">
+                <input type="text" name="order-discount-promo" id="order-discount-promo" placeholder="GITARAHIT" value="GITARAHIT">
+                <button type="button">Применить купон</button>
+              </div>
+            </div>
+            <div class="order__to-order">
+              <span>Всего: 47 000 ₽</span>
+              <button type="button">Оформить заказ</button>
+            </div>
+          </div>
         </div>
       </section>
-      </div>
+    </div>
   </main>
   <footer class="page-footer">
     <div class="container">
