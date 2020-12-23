@@ -1,5 +1,5 @@
 @import "mixins";
 
 // Base DroidSans:
-@include font-face("DroidSans", "../fonts/droidsansregular", 400);
+@include font-face("DroidSans", "../fonts/droidsans", 400);
 @include font-face("DroidSans", "../fonts/droidsansbold", 700);
