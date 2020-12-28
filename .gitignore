@@ -13,5 +13,5 @@ source/css/*.css
 source/css/*.map
 Thumbs.db
 
-build/bundle.js
-build/bundle.js.map
+# build/bundle.js
+# build/bundle.js.map
