@@ -1,12 +1,33 @@
-export const createFiltersElement = () => {
-  return (
-    `<h2>Фильтр</h2>
-    <form class="catalog__filters-form" action="#" method="GET">
+import AbstractView from "./abstract.js";
+
+const createFiltersElement = () => {
+  // const {price, stringAmount, type} = product;
+
+  // console.log(price, stringAmount, type);
+
+
+  return `<form class="catalog__filters-form" action="#" method="GET">
       <fieldset>
         <h3>Цена, ₽</h3>
         <div class="catalog__filters-price-wrapper">
-          <input type="text" name="filters-form-price-from" id="filters-form-price-from" placeholder="1 000" value="1 000">
-          <input type="text" name="filters-form-price-to" id="filters-form-price-to" placeholder="30 000" value="30 000">
+          <input
+              type="number"
+              name="filters-form-price-from"
+              id="filters-form-price-from"
+              placeholder="1 000"
+              value="1000"
+              min="0"
+              max="1000000"
+              >
+          <input
+              type="number"
+              name="filters-form-price-to"
+              id="filters-form-price-to"
+              placeholder="30 000"
+              value="30000"
+              min="0"
+              max="1000000"
+              >
         </div>
       </fieldset>
       <fieldset>
@@ -17,11 +38,11 @@ export const createFiltersElement = () => {
             <label for="filters-form-type-value-1">Акустические гитары</label>
           </div>
           <div class="catalog__filters-type-content-wrapper">
-            <input class="visually-hidden" type="checkbox" name="filters-form-type" id="filters-form-type-value-2" checked="">
+            <input class="visually-hidden" type="checkbox" name="filters-form-type" id="filters-form-type-value-2" checked>
             <label for="filters-form-type-value-2">Электрогитары</label>
           </div>
           <div class="catalog__filters-type-content-wrapper">
-            <input class="visually-hidden" type="checkbox" name="filters-form-type" id="filters-form-type-value-3" checked="">
+            <input class="visually-hidden" type="checkbox" name="filters-form-type" id="filters-form-type-value-3" checked>
             <label for="filters-form-type-value-3">Укулеле</label>
           </div>
         </div>
@@ -48,6 +69,11 @@ export const createFiltersElement = () => {
         </div>
       </fieldset>
       <button type="submit" disabled="">показать</button>
-    </form>`
-  );
+    </form>`;
 };
+
+export default class Filters extends AbstractView {
+  getTemplate() {
+    return createFiltersElement();
+  }
+}

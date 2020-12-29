@@ -1,4 +1,6 @@
-export const createCatalogSortElement = () => {
+import AbstractView from "./abstract.js";
+
+const createCatalogSortElement = () => {
   return (
     `<div class="catalog__sort-wrapper">
       <span>Сортировать:</span>
@@ -17,3 +19,8 @@ export const createCatalogSortElement = () => {
     </div>`
   );
 };
+export default class CatalogSort extends AbstractView {
+  getTemplate() {
+    return createCatalogSortElement();
+  }
+}

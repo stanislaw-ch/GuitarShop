@@ -1,4 +1,6 @@
-export const createSiteMenuTemplate = () => {
+import AbstractView from "./abstract.js";
+
+const createSiteMenuTemplate = () => {
   return `<nav class="main-nav">
     <div class="container">
       <div class="main-nav__wrapper">
@@ -55,3 +57,9 @@ export const createSiteMenuTemplate = () => {
     </div>
   </nav>`;
 };
+
+export default class SiteMenu extends AbstractView {
+  getTemplate() {
+    return createSiteMenuTemplate();
+  }
+}
