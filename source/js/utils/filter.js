@@ -1,11 +1,8 @@
 import {FilterType} from "../const";
-// import {isTaskExpired, isTaskExpiringToday, isTaskRepeating} from "./task";
 
 export const filter = {
   [FilterType.ALL]: (cards) => cards.filter((card) => card),
-  // [FilterType.OVERDUE]: (tasks) => tasks.filter((task) => isTaskExpired(task.dueDate)),
-  // [FilterType.TODAY]: (tasks) => tasks.filter((task) => isTaskExpiringToday(task.dueDate)),
-  // [FilterType.FAVORITES]: (tasks) => tasks.filter((task) => task.isFavorite),
-  // [FilterType.REPEATING]: (tasks) => tasks.filter((task) => isTaskRepeating(task.repeating)),
-  // [FilterType.ARCHIVE]: (tasks) => tasks.filter((task) => task.isArchive)
+  [FilterType.ACOUSTIC]: (cards) => cards.filter((card) => card.type === FilterType.ACOUSTIC),
+  [FilterType.ELECTRO]: (cards) => cards.filter((card) => card.type === FilterType.ELECTRO),
+  [FilterType.UKULELE]: (cards) => cards.filter((card) => card.type === FilterType.UKULELE),
 };

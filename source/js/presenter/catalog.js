@@ -8,12 +8,14 @@ import CardPresenter from "../presenter/card.js";
 import {render, RenderPosition, remove} from "../utils/render.js";
 import {sortPriceUp, sortPriceDown} from "../utils/card.js";
 import {SortType} from "../const.js";
+import {filter} from "../utils/filter.js";
 
 const CARD_COUNT_PER_STEP = 9;
 
 export default class Board {
-  constructor(catalogContainer, cardsModel) {
+  constructor(catalogContainer, cardsModel, filterModel) {
     this._cardsModel = cardsModel;
+    this._filterModel = filterModel;
     this._catalogContainer = catalogContainer;
     this._renderedCardsCount = CARD_COUNT_PER_STEP;
     this._currentSortType = SortType.DEFAULT;
@@ -25,6 +27,10 @@ export default class Board {
     this._catalogPaginationComponent = new CatalogPaginationView();
 
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
+    this._handleModelEvent = this._handleModelEvent.bind(this);
+
+    this._cardsModel.addObserver(this._handleModelEvent);
+    this._filterModel.addObserver(this._handleModelEvent);
   }
 
   init() {
@@ -36,15 +42,15 @@ export default class Board {
   }
 
   _getCards() {
+    const filterType = this._filterModel.getFilter();
+    const cards = this._cardsModel.getCards();
+    const filtredTasks = filter[filterType](cards);
+
     switch (this._currentSortType) {
       case SortType.PRICE:
-        console.log(SortType.UP);
-        if (this._currentSortType !== SortType.UP && this._currentSortType !== SortType.DOWN) {
-          return this._cardsModel.getCards().slice().sort(sortPriceUp);
-        }
-        break;
+        return filtredTasks.sort(sortPriceUp);
       case SortType.POPULARITY:
-        return this._cardsModel.getCards().slice().sort(sortPriceDown);
+        return filtredTasks.sort(sortPriceDown);
     }
 
     // switch (this._currentSortType) {
@@ -53,8 +59,9 @@ export default class Board {
     //   case SortType.POPULARITY:
     //     return this._cardsModel.getCards().slice().sort(sortPriceDown);
     // }
-
-    return this._cardsModel.getCards();
+    console.log(filtredTasks);
+    return filtredTasks;
+    // return this._cardsModel.getCards();
   }
 
   _handleSortTypeChange(sortType) {
@@ -63,6 +70,12 @@ export default class Board {
     }
 
     this._currentSortType = sortType;
+
+    this._clearBoard({resetRenderedCardsCount: true});
+    this._renderBoard();
+  }
+
+  _handleModelEvent() {
     this._clearBoard({resetRenderedCardsCount: true});
     this._renderBoard();
   }

@@ -33,6 +33,18 @@ const generatePopularity = () => {
   return popularity[randomIndex];
 };
 
+const generateType = () => {
+  const type = [
+    `электрогитара`,
+    `акустическая гитара`,
+    `укулеле`
+  ];
+
+  const randomIndex = getRandomInteger(0, type.length - 1);
+
+  return type[randomIndex];
+};
+
 // const generateDate = () => {
 //   const isDate = Boolean(getRandomInteger(0, 1));
 
@@ -74,7 +86,7 @@ export const generateProduct = () => {
     id: generateId(),
     identiferNumber: `SO757575`,
     name: `Честер Bass`,
-    type: `электрогитара`,
+    type: generateType(),
     reviewAmount: generatePopularity(),
     stringAmount: `7`,
     price: generatePrice(),

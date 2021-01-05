@@ -1,7 +1,7 @@
 import FilterView from "../view/filters.js";
 import {render, RenderPosition} from "../utils/render.js";
 // import {filter} from "../utils/filter.js";
-// import {FilterType} from "../const.js";
+import {FilterType} from "../const.js";
 
 export default class Filter {
   constructor(filterContainer, filterModel, cardsModel) {
@@ -46,35 +46,25 @@ export default class Filter {
       return;
     }
 
-    console.log(filterType);
-
     this._filterModel.setFilter(filterType);
   }
 
   _getFilters() {
-    const cards = this._cardsModel.getCards();
+    // const cards = this._cardsModel.getCards();
 
-    return cards;
-    //   {
-    //     type: FilterType.ALL,
-    //     name: `All`,
-    //     count: filter[FilterType.ALL](cards).length
-    //   },
-    // {
-    //   type: FilterType.OVERDUE,
-    //   name: `Overdue`,
-    //   count: filter[FilterType.OVERDUE](cards).length
-    // },
-    // {
-    //   type: FilterType.TODAY,
-    //   name: `Today`,
-    //   count: filter[FilterType.TODAY](cards).length
-    // },
-    // {
-    //   type: FilterType.FAVORITES,
-    //   name: `Favorites`,
-    //   count: filter[FilterType.FAVORITES](cards).length
-    // },
+    return [
+      {
+        type: FilterType.ALL
+      },
+      {
+        type: FilterType.ELECTRO,
+      },
+      {
+        type: FilterType.ACOUSTIC,
+      },
+      {
+        type: FilterType.UKULELE
+      },
     // {
     //   type: FilterType.REPEATING,
     //   name: `Repeating`,
@@ -85,6 +75,6 @@ export default class Filter {
     //   name: `Archive`,
     //   count: filter[FilterType.ARCHIVE](cards).length
     // }
-    // ];
+    ];
   }
 }

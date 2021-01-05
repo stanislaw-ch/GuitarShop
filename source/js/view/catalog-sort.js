@@ -22,13 +22,12 @@ const createCatalogSortElement = (currentSortType) => {
       </ul>
       <div class="catalog__sort-buttons">
         <button
-          class="sort-button sort-button--up"
+          class="sort-button sort-button--up ${currentSortType === SortType.UP ? `sort-button--active` : ``}"
           type="button"
           data-sort-type="${SortType.UP}">
         </button>
         <button
-          class="sort-button
-          sort-button--down"
+          class="sort-button sort-button--down ${currentSortType === SortType.DOWN ? `sort-button--active` : ``}"
           type="button"
           data-sort-type="${SortType.DOWN}">
         </button>
@@ -52,19 +51,12 @@ export default class CatalogSort extends AbstractView {
     if (evt.target.tagName === `A`) {
       evt.preventDefault();
       this._callback.sortTypeChange(evt.target.dataset.sortType);
-      // this.getElement().querySelectorAll(`.sort__item`).forEach((item) => item.classList.remove(`sort__item--active`));
-      // this.getElement().querySelectorAll(`.sort-button`).forEach((item) => item.classList.remove(`sort-button--active`));
-      // this.getElement().querySelector(`.sort-button--up`).classList.add(`sort-button--active`);
-      // evt.target.parentElement.classList.add(`sort__item--active`);
     }
     if (evt.target.tagName === `BUTTON`) {
       evt.preventDefault();
       this._callback.sortTypeChange(evt.target.dataset.sortType);
-      this.getElement().querySelectorAll(`.sort-button`).forEach((item) => item.classList.remove(`sort-button--active`));
-      evt.target.classList.add(`sort-button--active`);
     }
 
-    // console.log(evt.target.dataset.sortType);
   }
 
   setSortTypeChangeHandler(callback) {

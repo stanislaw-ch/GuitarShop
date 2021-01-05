@@ -24,7 +24,7 @@ const siteCatalogWrapperElement = document.querySelector(`.catalog__content-wrap
 const siteFiltersColumnElement = document.querySelector(`.catalog__filters-column`);
 
 // const filtersComponent = new FiltersView(cards);
-const catalogPresenter = new CatalogPresenter(siteCatalogWrapperElement, cardsModel);
+const catalogPresenter = new CatalogPresenter(siteCatalogWrapperElement, cardsModel, filterModel);
 const filterPresenter = new FilterPresenter(siteFiltersColumnElement, filterModel, cardsModel);
 
 render(siteHeaderElement, new SiteMenuView(), RenderPosition.AFTERBEGIN);
