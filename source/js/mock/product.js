@@ -1,17 +1,37 @@
 // import {COLORS} from "../const.js";
-// import {getRandomInteger} from "../utils.js";
+import {getRandomInteger} from "../utils/common.js";
 
-// const generateDescription = () => {
-//   const descriptions = [
-//     `Изучить теорию`,
-//     `Сделать домашку`,
-//     `Пройти интенсив на соточку`
-//   ];
+const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
 
-//   const randomIndex = getRandomInteger(0, descriptions.length - 1);
+const generatePrice = () => {
+  const prices = [
+    `17500`,
+    `13000`,
+    `1000`,
+    `11500`,
+    `22000`,
+    `91000`
+  ];
 
-//   return descriptions[randomIndex];
-// };
+  const randomIndex = getRandomInteger(0, prices.length - 1);
+
+  return prices[randomIndex];
+};
+
+const generatePopularity = () => {
+  const popularity = [
+    `17`,
+    `13`,
+    `9`,
+    `11`,
+    `22`,
+    `91`
+  ];
+
+  const randomIndex = getRandomInteger(0, popularity.length - 1);
+
+  return popularity[randomIndex];
+};
 
 // const generateDate = () => {
 //   const isDate = Boolean(getRandomInteger(0, 1));
@@ -51,12 +71,13 @@
 
 export const generateProduct = () => {
   return {
+    id: generateId(),
     identiferNumber: `SO757575`,
     name: `Честер Bass`,
     type: `электрогитара`,
-    reviewAmount: `15`,
+    reviewAmount: generatePopularity(),
     stringAmount: `7`,
-    price: `17500`,
+    price: generatePrice(),
     image: `img/gitar-electric_1.png`
     // image: `http://picsum.photos/248/152?r=${Math.random()}`
   };

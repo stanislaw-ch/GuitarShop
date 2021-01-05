@@ -2,6 +2,9 @@ import AbstractView from "./abstract.js";
 
 const createCatalogPaginationElement = () => {
   return `<ul class="catalog__pagination pagination">
+    <li class="pagination__item pagination__item--button pagination__item--hide">
+      <a href="#">Назад</a>
+    </li>
     <li class="pagination__item pagination__item--current">
       <a href="#">1</a>
     </li>

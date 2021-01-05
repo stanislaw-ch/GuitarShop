@@ -1,7 +1,7 @@
 import AbstractView from "./abstract.js";
 
-const createCatalogItemElement = (product) => {
-  const {image, reviewAmount, name, price} = product;
+const createCatalogItemElement = (card) => {
+  const {image, reviewAmount, name, price} = card;
   return (
     `<li class="list__item">
       <img src="${image}" width="80" height="202" alt="Изображение товара">
@@ -25,12 +25,12 @@ const createCatalogItemElement = (product) => {
 };
 
 export default class CatalogItem extends AbstractView {
-  constructor(product) {
+  constructor(card) {
     super();
-    this.product = product;
+    this.card = card;
   }
 
   getTemplate() {
-    return createCatalogItemElement(this.product);
+    return createCatalogItemElement(this.card);
   }
 }

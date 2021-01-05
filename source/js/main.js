@@ -1,46 +1,35 @@
 import SiteMenuView from "./view/site-menu.js";
 import BreadcrumbsView from "./view/breadcrumbs.js";
-import FiltersView from "./view/filters.js";
-import CatalogSortView from "./view/catalog-sort.js";
-import CatalogListView from "./view/catalog-list.js";
-import CatalogItemView from "./view/catalog-item.js";
-import CatalogPaginationView from "./view/catalog-pagination.js";
-import CatalogBoardView from "./view/catalog-board.js";
+// import FiltersView from "./view/filters.js";
+import CatalogPresenter from "./presenter/catalog.js";
+import FilterPresenter from "./presenter/filter.js";
+import CardsModel from "./model/cards.js";
+import FilterModel from "./model/filter.js";
 
 import {generateProduct} from "./mock/product.js";
-import {render, RenderPosition} from "./utils.js";
+import {render, RenderPosition} from "./utils/render.js";
 
-const PRODUCT_COUNT = 9;
-const PRODUCT_COUNT_PER_STEP = 9;
+const PRODUCT_COUNT = 10;
 
-const product = generateProduct();
+const cards = new Array(PRODUCT_COUNT).fill().map(generateProduct);
+
+const cardsModel = new CardsModel();
+cardsModel.setCards(cards);
+
+const filterModel = new FilterModel();
 
 const siteHeaderElement = document.querySelector(`.page-header`);
 const siteCatalogElement = document.querySelector(`.catalog`);
 const siteCatalogWrapperElement = document.querySelector(`.catalog__content-wrapper`);
 const siteFiltersColumnElement = document.querySelector(`.catalog__filters-column`);
 
-const cataloglistComponent = new CatalogListView();
+// const filtersComponent = new FiltersView(cards);
+const catalogPresenter = new CatalogPresenter(siteCatalogWrapperElement, cardsModel);
+const filterPresenter = new FilterPresenter(siteFiltersColumnElement, filterModel, cardsModel);
 
-render(siteHeaderElement, new SiteMenuView().getElement(), RenderPosition.AFTERBEGIN);
-render(siteCatalogElement, new BreadcrumbsView().getElement(), RenderPosition.BEFOREBEGIN);
-render(siteFiltersColumnElement, new FiltersView().getElement(), RenderPosition.BEFOREEND);
+render(siteHeaderElement, new SiteMenuView(), RenderPosition.AFTERBEGIN);
+render(siteCatalogElement, new BreadcrumbsView(), RenderPosition.BEFOREBEGIN);
+// render(siteFiltersColumnElement, filtersComponent, RenderPosition.BEFOREEND);
 
-const renderCatalog = (catalogContainer, catalogProducts) => {
-  const boardComponent = new CatalogBoardView();
-
-  render(catalogContainer, boardComponent.getElement(), RenderPosition.BEFOREEND);
-
-  render(boardComponent.getElement(), new CatalogSortView().getElement(), RenderPosition.BEFOREEND);
-  render(boardComponent.getElement(), cataloglistComponent.getElement(), RenderPosition.BEFOREEND);
-
-  for (let i = 0; i < PRODUCT_COUNT; i++) {
-    render(cataloglistComponent.getElement(), new CatalogItemView(catalogProducts).getElement(), RenderPosition.AFTERBEGIN);
-  }
-
-  if (PRODUCT_COUNT > PRODUCT_COUNT_PER_STEP) {
-    render(boardComponent.getElement(), new CatalogPaginationView().getElement(), RenderPosition.BEFOREEND);
-  }
-};
-
-renderCatalog(siteCatalogWrapperElement, product);
+filterPresenter.init();
+catalogPresenter.init();

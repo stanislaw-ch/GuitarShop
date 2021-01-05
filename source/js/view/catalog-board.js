@@ -1,11 +1,11 @@
 import AbstractView from "./abstract.js";
 
-const createcatalogBoardTemplate = () => {
+const createCatalogBoardTemplate = () => {
   return `<div class="catalog__catalog-column"></div>`;
 };
 
 export default class catalogBoard extends AbstractView {
   getTemplate() {
-    return createcatalogBoardTemplate();
+    return createCatalogBoardTemplate();
   }
 }
