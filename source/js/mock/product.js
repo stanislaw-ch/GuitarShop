@@ -33,6 +33,19 @@ const generatePopularity = () => {
   return popularity[randomIndex];
 };
 
+const generateStringAmount = () => {
+  const stringAmount = [
+    `4`,
+    `6`,
+    `7`,
+    `12`
+  ];
+
+  const randomIndex = getRandomInteger(0, stringAmount.length - 1);
+
+  return stringAmount[randomIndex];
+};
+
 const generateType = () => {
   const type = [
     `электрогитара`,
@@ -88,7 +101,7 @@ export const generateProduct = () => {
     name: `Честер Bass`,
     type: generateType(),
     reviewAmount: generatePopularity(),
-    stringAmount: `7`,
+    stringAmount: generateStringAmount(),
     price: generatePrice(),
     image: `img/gitar-electric_1.png`
     // image: `http://picsum.photos/248/152?r=${Math.random()}`

@@ -8,7 +8,7 @@ import CardPresenter from "../presenter/card.js";
 import {render, RenderPosition, remove} from "../utils/render.js";
 import {sortPriceUp, sortPriceDown} from "../utils/card.js";
 import {SortType} from "../const.js";
-import {filter} from "../utils/filter.js";
+// import {filter} from "../utils/filter.js";
 
 const CARD_COUNT_PER_STEP = 9;
 
@@ -37,14 +37,25 @@ export default class Board {
     render(this._catalogContainer, this._catalogComponent, RenderPosition.BEFOREEND);
     render(this._catalogComponent, this._cataloglistComponent, RenderPosition.BEFOREEND);
 
-    // this._renderCatalog();
     this._renderBoard();
   }
 
   _getCards() {
     const filterType = this._filterModel.getFilter();
     const cards = this._cardsModel.getCards();
-    const filtredTasks = filter[filterType](cards);
+
+    const fiteredCards = (type, card) => {
+      const cardType = card.type;
+      return type.includes(cardType);
+    };
+
+    let filtredTasks = null;
+
+    if (filterType.length !== 0) {
+      filtredTasks = cards.filter((card) => fiteredCards(filterType, card));
+    } else {
+      filtredTasks = cards;
+    }
 
     switch (this._currentSortType) {
       case SortType.PRICE:
@@ -61,7 +72,6 @@ export default class Board {
     // }
     console.log(filtredTasks);
     return filtredTasks;
-    // return this._cardsModel.getCards();
   }
 
   _handleSortTypeChange(sortType) {

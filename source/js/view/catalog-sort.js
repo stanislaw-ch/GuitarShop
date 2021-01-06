@@ -2,7 +2,6 @@ import AbstractView from "./abstract.js";
 import {SortType} from "../const.js";
 
 const createCatalogSortElement = (currentSortType) => {
-  console.log(currentSortType);
   return (
     `<div class="catalog__sort-wrapper">
       <span>Сортировать:</span>

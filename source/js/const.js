@@ -6,9 +6,23 @@ export const SortType = {
   DOWN: `down`
 };
 
+// export const FilterType = {
+//   type: [``]
+// };
+
 export const FilterType = {
-  ALL: `all`,
-  ELECTRO: `электрогитара`,
+  ELECTRO: [`электрогитара`],
   ACOUSTIC: `акустическая гитара`,
-  UKULELE: `укулеле`
+  UKULELE: `укулеле`,
+  FOUR: `4`,
+  SIX: `6`,
+  SEVEN: `7`,
+  TWELVE: `12`,
 };
+
+// export const FilterType = {
+//   ALL: `all`,
+//   ELECTRO: `электрогитара`,
+//   ACOUSTIC: `акустическая гитара`,
+//   UKULELE: `укулеле`
+// };

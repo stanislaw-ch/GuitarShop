@@ -1,7 +1,10 @@
 import AbstractView from "./abstract.js";
 import {FilterType} from "../const.js";
 
-const createFiltersElement = () => {
+const createFiltersElement = (currentFilterType) => {
+  console.log(JSON.stringify(currentFilterType));
+  console.log(JSON.stringify(FilterType.ELECTRO));
+  console.log(JSON.stringify(currentFilterType) === JSON.stringify(FilterType.ELECTRO));
 
   return `<form class="catalog__filters-form" action="#" method="GET">
       <fieldset>
@@ -71,6 +74,7 @@ const createFiltersElement = () => {
                 type="checkbox"
                 name="filters-form-amount"
                 id="4"
+                data-filter-type="${FilterType.FOUR}"
                 >
             <span>4</span>
           </label>
@@ -80,6 +84,7 @@ const createFiltersElement = () => {
                 type="checkbox"
                 name="filters-form-amount"
                 id="6"
+                data-filter-type="${FilterType.SIX}"
                 >
             <span>6</span>
           </label>
@@ -89,6 +94,7 @@ const createFiltersElement = () => {
                 type="checkbox"
                 name="filters-form-amount"
                 id="7"
+                data-filter-type="${FilterType.SEVEN}"
                 >
             <span>7</span>
           </label>
@@ -98,7 +104,8 @@ const createFiltersElement = () => {
                 type="checkbox"
                 name="filters-form-amount"
                 id="12"
-                disabled
+                data-filter-type="${FilterType.TWELVE}"
+                ${JSON.stringify(currentFilterType) === JSON.stringify(FilterType.ELECTRO) ? `disabled` : ``}
                 >
             <span>12</span>
           </label>
@@ -109,9 +116,9 @@ const createFiltersElement = () => {
 };
 
 export default class Filters extends AbstractView {
-  constructor(filters, currentFilterType) {
+  constructor(currentFilterType) {
     super();
-    this.filters = filters;
+    // this.filters = filters;
     this.currentFilterType = currentFilterType;
     console.log(currentFilterType);
 
@@ -119,12 +126,19 @@ export default class Filters extends AbstractView {
   }
 
   getTemplate() {
-    return createFiltersElement();
+    return createFiltersElement(this.currentFilterType);
   }
 
   _filterTypeChangeHandler(evt) {
     evt.preventDefault();
-    this._callback.filterTypeChange(evt.target.dataset.filterType);
+    let options = {};
+    let optionsTypeArray = [];
+    document.querySelectorAll(`input[type='checkbox']`).forEach((chbx) => chbx.checked === true ? optionsTypeArray.push(chbx.dataset.filterType) : null);
+    options.type = optionsTypeArray;
+    console.log(optionsTypeArray);
+
+    this._callback.filterTypeChange(optionsTypeArray);
+    // this._callback.filterTypeChange(evt.target.dataset.filterType);
   }
 
   setFilterTypeChangeHandler(callback) {
