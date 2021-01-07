@@ -22,7 +22,7 @@ export default class Filter {
   init() {
     this._currentFilter = this._filterModel.getFilter();
 
-    const filters = this._getFilters();
+    // const filters = this._getFilters();
     const prevFilterComponent = this._filterComponent;
 
     this._filterComponent = new FilterView(this._currentFilter);
@@ -43,7 +43,7 @@ export default class Filter {
   }
 
   _handleFilterTypeChange(filterType) {
-    console.log(filterType);
+    // console.log(filterType);
     if (this._currentFilter === filterType) {
       return;
     }

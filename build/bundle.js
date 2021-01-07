@@ -144,11 +144,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _presenter_filter_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./presenter/filter.js */ "./source/js/presenter/filter.js");
 /* harmony import */ var _model_cards_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./model/cards.js */ "./source/js/model/cards.js");
 /* harmony import */ var _model_filter_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./model/filter.js */ "./source/js/model/filter.js");
-/* harmony import */ var _mock_product_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./mock/product.js */ "./source/js/mock/product.js");
+/* harmony import */ var _mock_json_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./mock/json.js */ "./source/js/mock/json.js");
 /* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./utils/render.js */ "./source/js/utils/render.js");
 
 
-// import FiltersView from "./view/filters.js";
 
 
 
@@ -157,12 +156,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const PRODUCT_COUNT = 10;
-
-const cards = new Array(PRODUCT_COUNT).fill().map(_mock_product_js__WEBPACK_IMPORTED_MODULE_6__["generateProduct"]);
+// const PRODUCT_COUNT = 10;
+// const cards = new Array(PRODUCT_COUNT).fill().map(generateProduct);
 
 const cardsModel = new _model_cards_js__WEBPACK_IMPORTED_MODULE_4__["default"]();
-cardsModel.setCards(cards);
+cardsModel.setCards(_mock_json_js__WEBPACK_IMPORTED_MODULE_6__["default"]);
 
 const filterModel = new _model_filter_js__WEBPACK_IMPORTED_MODULE_5__["default"]();
 
@@ -171,13 +169,11 @@ const siteCatalogElement = document.querySelector(`.catalog`);
 const siteCatalogWrapperElement = document.querySelector(`.catalog__content-wrapper`);
 const siteFiltersColumnElement = document.querySelector(`.catalog__filters-column`);
 
-// const filtersComponent = new FiltersView(cards);
 const catalogPresenter = new _presenter_catalog_js__WEBPACK_IMPORTED_MODULE_2__["default"](siteCatalogWrapperElement, cardsModel, filterModel);
 const filterPresenter = new _presenter_filter_js__WEBPACK_IMPORTED_MODULE_3__["default"](siteFiltersColumnElement, filterModel, cardsModel);
 
 Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["render"])(siteHeaderElement, new _view_site_menu_js__WEBPACK_IMPORTED_MODULE_0__["default"](), _utils_render_js__WEBPACK_IMPORTED_MODULE_7__["RenderPosition"].AFTERBEGIN);
 Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["render"])(siteCatalogElement, new _view_breadcrumbs_js__WEBPACK_IMPORTED_MODULE_1__["default"](), _utils_render_js__WEBPACK_IMPORTED_MODULE_7__["RenderPosition"].BEFOREBEGIN);
-// render(siteFiltersColumnElement, filtersComponent, RenderPosition.BEFOREEND);
 
 filterPresenter.init();
 catalogPresenter.init();
@@ -185,126 +181,127 @@ catalogPresenter.init();
 
 /***/ }),
 
-/***/ "./source/js/mock/product.js":
-/*!***********************************!*\
-  !*** ./source/js/mock/product.js ***!
-  \***********************************/
-/*! exports provided: generateProduct */
+/***/ "./source/js/mock/json.js":
+/*!********************************!*\
+  !*** ./source/js/mock/json.js ***!
+  \********************************/
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "generateProduct", function() { return generateProduct; });
-/* harmony import */ var _utils_common_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/common.js */ "./source/js/utils/common.js");
-// import {COLORS} from "../const.js";
-
-
-const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
-
-const generatePrice = () => {
-  const prices = [
-    `17500`,
-    `13000`,
-    `1000`,
-    `11500`,
-    `22000`,
-    `91000`
-  ];
-
-  const randomIndex = Object(_utils_common_js__WEBPACK_IMPORTED_MODULE_0__["getRandomInteger"])(0, prices.length - 1);
-
-  return prices[randomIndex];
-};
-
-const generatePopularity = () => {
-  const popularity = [
-    `17`,
-    `13`,
-    `9`,
-    `11`,
-    `22`,
-    `91`
-  ];
-
-  const randomIndex = Object(_utils_common_js__WEBPACK_IMPORTED_MODULE_0__["getRandomInteger"])(0, popularity.length - 1);
-
-  return popularity[randomIndex];
-};
-
-const generateStringAmount = () => {
-  const stringAmount = [
-    `4`,
-    `6`,
-    `7`,
-    `12`
-  ];
-
-  const randomIndex = Object(_utils_common_js__WEBPACK_IMPORTED_MODULE_0__["getRandomInteger"])(0, stringAmount.length - 1);
-
-  return stringAmount[randomIndex];
-};
-
-const generateType = () => {
-  const type = [
-    `электрогитара`,
-    `акустическая гитара`,
-    `укулеле`
-  ];
-
-  const randomIndex = Object(_utils_common_js__WEBPACK_IMPORTED_MODULE_0__["getRandomInteger"])(0, type.length - 1);
-
-  return type[randomIndex];
-};
-
-// const generateDate = () => {
-//   const isDate = Boolean(getRandomInteger(0, 1));
-
-//   if (!isDate) {
-//     return null;
-//   }
-
-//   const maxDaysGap = 7;
-//   const daysGap = getRandomInteger(-maxDaysGap, maxDaysGap);
-//   const currentDate = new Date();
-
-//   currentDate.setHours(23, 59, 59, 999);
-
-//   currentDate.setDate(currentDate.getDate() + daysGap);
-
-//   return new Date(currentDate);
-// };
-
-// const generateRepeating = () => {
-//   return {
-//     mo: false,
-//     tu: false,
-//     we: Boolean(getRandomInteger(0, 1)),
-//     th: false,
-//     fr: Boolean(getRandomInteger(0, 1)),
-//     sa: false,
-//     su: false
-//   };
-// };
-
-// const getRandomColor = () => {
-//   const randomIndex = getRandomInteger(0, COLORS.length - 1);
-
-//   return COLORS[randomIndex];
-// };
-
-const generateProduct = () => {
-  return {
-    id: generateId(),
+/* harmony default export */ __webpack_exports__["default"] = ([
+  {
+    id: 0,
     identiferNumber: `SO757575`,
     name: `Честер Bass`,
-    type: generateType(),
-    reviewAmount: generatePopularity(),
-    stringAmount: generateStringAmount(),
-    price: generatePrice(),
-    image: `img/gitar-electric_1.png`
-    // image: `http://picsum.photos/248/152?r=${Math.random()}`
-  };
-};
+    type: `электрогитара`,
+    reviewAmount: `15`,
+    stringAmount: `7`,
+    price: `17500`,
+    image: `img/gitar-electric_1.png`,
+    starsCount: `3.2`
+  },
+  {
+    id: 1,
+    identiferNumber: `TK129049`,
+    name: `СURT Z300`,
+    type: `электрогитара`,
+    reviewAmount: `9`,
+    stringAmount: `7`,
+    price: `29500`,
+    image: `img/gitar-electric_2.png`,
+    starsCount: `4.5`
+  },
+  {
+    id: 2,
+    identiferNumber: `RO111111`,
+    name: `Roman LX`,
+    type: `укулеле`,
+    reviewAmount: `21`,
+    stringAmount: `4`,
+    price: `6800`,
+    image: `img/gitar-ukulele_1.png`,
+    starsCount: `5`
+  },
+  {
+    id: 3,
+    identiferNumber: `TK436457`,
+    name: `СURT T300`,
+    type: `электрогитара`,
+    reviewAmount: `15`,
+    stringAmount: `6`,
+    price: `30000`,
+    image: `img/gitar-electric_3.png`,
+    starsCount: `3`
+  },
+  {
+    id: 4,
+    identiferNumber: `DI192138`,
+    name: `Dania Super`,
+    type: `акустическая гитара`,
+    reviewAmount: `5`,
+    stringAmount: `7`,
+    price: `3500`,
+    image: `img/gitar-acoustic_2.png`,
+    starsCount: `4.5`
+  },
+  {
+    id: 5,
+    identiferNumber: `SO934345`,
+    name: `Честер WX`,
+    type: `электрогитара`,
+    reviewAmount: `17`,
+    stringAmount: `6`,
+    price: `15300`,
+    image: `img/gitar-electric_1.png`,
+    starsCount: `4.15`
+  },
+  {
+    id: 6,
+    identiferNumber: `DI082347`,
+    name: `Dania VX`,
+    type: `укулеле`,
+    reviewAmount: `5`,
+    stringAmount: `4`,
+    price: `2200`,
+    image: `img/gitar-ukulele_1.png`,
+    starsCount: `3.15`
+  },
+  {
+    id: 7,
+    identiferNumber: `SO135646`,
+    name: `Честер Plus`,
+    type: `электрогитара`,
+    reviewAmount: `27`,
+    stringAmount: `4`,
+    price: `30000`,
+    image: `img/gitar-electric_1.png`,
+    starsCount: `2.15`
+  },
+  {
+    id: 8,
+    identiferNumber: `VO154751`,
+    name: `Виолана 300`,
+    type: `акустическая гитара`,
+    reviewAmount: `3`,
+    stringAmount: `7`,
+    price: `1700`,
+    image: `img/gitar-acoustic_2.png`,
+    starsCount: `3.15`
+  },
+  {
+    id: 9,
+    identiferNumber: `TK244556`,
+    name: `СURT Clasic`,
+    type: `электрогитара`,
+    reviewAmount: `20`,
+    stringAmount: `4`,
+    price: `23000`,
+    image: `img/gitar-electric_2.png`,
+    starsCount: `5`
+  },
+]);
 
 
 /***/ }),
@@ -426,27 +423,107 @@ class Filter extends _utils_observer_js__WEBPACK_IMPORTED_MODULE_0__["default"] 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Card; });
 /* harmony import */ var _view_catalog_item_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../view/catalog-item.js */ "./source/js/view/catalog-item.js");
-/* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/render.js */ "./source/js/utils/render.js");
+/* harmony import */ var _view_catalog_popUp_add_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../view/catalog-popUp-add.js */ "./source/js/view/catalog-popUp-add.js");
+/* harmony import */ var _view_catalog_popUp_success_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../view/catalog-popUp-success.js */ "./source/js/view/catalog-popUp-success.js");
+/* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/render.js */ "./source/js/utils/render.js");
+
+
 
 
 
 class Card {
-  constructor(catalogListContainer) {
-    this.catalogListContainer = catalogListContainer;
+  constructor(catalogListContainer, changeMode) {
+    this._catalogListContainer = catalogListContainer;
+    this._catalogPopUpContainer = document.querySelector(`body`);
+    this._changeMode = changeMode;
 
-    this.catalogItemComponent = null;
+    this._catalogItemComponent = null;
+    this._catalogPopUpAddComponent = null;
+    this._catalogPopUpSuccessComponent = null;
+
+    this._handleAddToBasketClick = this._handleAddToBasketClick.bind(this);
+    this._handleAddToBasketPopUpClick = this._handleAddToBasketPopUpClick.bind(this);
+    this._handleAddToBasketPopUpSuccesClick = this._handleAddToBasketPopUpSuccesClick.bind(this);
+    this._handleToShoppingPopUpClick = this._handleToShoppingPopUpClick.bind(this);
+    this._handleCloseClick = this._handleCloseClick.bind(this);
+    this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
   }
 
-  init(catalogCard) {
-    this.catalogCard = catalogCard;
+  init(catalogCards) {
+    this._catalogCards = catalogCards;
 
-    this.catalogItemComponent = new _view_catalog_item_js__WEBPACK_IMPORTED_MODULE_0__["default"](catalogCard);
+    this._catalogItemComponent = new _view_catalog_item_js__WEBPACK_IMPORTED_MODULE_0__["default"](catalogCards);
 
-    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_1__["render"])(this.catalogListContainer, this.catalogItemComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_1__["RenderPosition"].AFTERBEGIN);
+    this._catalogItemComponent.setAddClickHandler(this._handleAddToBasketClick);
+
+    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_3__["render"])(this._catalogListContainer, this._catalogItemComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_3__["RenderPosition"].BEFOREEND);
   }
 
   destroy() {
-    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_1__["remove"])(this.catalogItemComponent);
+    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_3__["remove"])(this._catalogItemComponent);
+  }
+
+  _removePopUpAddComponent() {
+    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_3__["remove"])(this._catalogPopUpAddComponent);
+    document.removeEventListener(`keydown`, this._escKeyDownHandler);
+  }
+
+  _removePopUpSuccessComponent() {
+    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_3__["remove"])(this._catalogPopUpSuccessComponent);
+    document.removeEventListener(`keydown`, this._escKeyDownHandler);
+  }
+
+  _escKeyDownHandler(evt) {
+    if (evt.key === `Escape` || evt.key === `Esc`) {
+      evt.preventDefault();
+
+      if (this._catalogPopUpAddComponent !== null) {
+        this._removePopUpAddComponent();
+      }
+      if (this._catalogPopUpSuccessComponent !== null) {
+        this._removePopUpSuccessComponent();
+      }
+    }
+  }
+
+  _handleCloseClick() {
+    if (this._catalogPopUpAddComponent !== null) {
+      this._removePopUpAddComponent();
+    }
+    if (this._catalogPopUpSuccessComponent !== null) {
+      this._removePopUpSuccessComponent();
+    }
+  }
+
+  _handleAddToBasketClick() {
+    this._catalogPopUpAddComponent = new _view_catalog_popUp_add_js__WEBPACK_IMPORTED_MODULE_1__["default"](this._catalogCards);
+
+    this._catalogPopUpAddComponent.setCloseClickHandler(this._handleCloseClick);
+    this._catalogPopUpAddComponent.setAddClickHandler(this._handleAddToBasketPopUpClick);
+
+    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_3__["render"])(this._catalogPopUpContainer, this._catalogPopUpAddComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_3__["RenderPosition"].AFTERBEGIN);
+    document.addEventListener(`keydown`, this._escKeyDownHandler);
+  }
+
+  _handleAddToBasketPopUpClick() {
+    this._removePopUpAddComponent();
+    this._catalogPopUpSuccessComponent = new _view_catalog_popUp_success_js__WEBPACK_IMPORTED_MODULE_2__["default"]();
+
+    this._catalogPopUpSuccessComponent.setCloseClickHandler(this._handleCloseClick);
+    this._catalogPopUpSuccessComponent.setToBasketClickHandler(this._handleAddToBasketPopUpSuccesClick);
+    this._catalogPopUpSuccessComponent.setToShoppingClickHandler(this._handleToShoppingPopUpClick);
+    this._catalogPopUpSuccessComponent.setCloseClickHandler(this._handleCloseClick);
+
+    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_3__["render"])(this._catalogPopUpContainer, this._catalogPopUpSuccessComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_3__["RenderPosition"].AFTERBEGIN);
+    document.addEventListener(`keydown`, this._escKeyDownHandler);
+  }
+
+  _handleAddToBasketPopUpSuccesClick() {
+    this._removePopUpSuccessComponent();
+  }
+
+  _handleToShoppingPopUpClick() {
+    this._removePopUpSuccessComponent();
   }
 }
 
@@ -501,6 +578,7 @@ class Board {
 
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
+    // this._handleModeChange = this._handleModeChange.bind(this);
 
     this._cardsModel.addObserver(this._handleModelEvent);
     this._filterModel.addObserver(this._handleModelEvent);
@@ -543,7 +621,7 @@ class Board {
     //   case SortType.POPULARITY:
     //     return this._cardsModel.getCards().slice().sort(sortPriceDown);
     // }
-    console.log(filtredTasks);
+    // console.log(filtredTasks);
     return filtredTasks;
   }
 
@@ -630,7 +708,7 @@ class Board {
     this._renderCards(cards.slice(0, Math.min(cardCount, this._renderedCardsCount)));
 
     // if (cardCount > this._renderedCardsCount) {
-    //   this._renderPagination();
+    this._renderPagination();
     // }
   }
 }
@@ -675,7 +753,7 @@ class Filter {
   init() {
     this._currentFilter = this._filterModel.getFilter();
 
-    const filters = this._getFilters();
+    // const filters = this._getFilters();
     const prevFilterComponent = this._filterComponent;
 
     this._filterComponent = new _view_filters_js__WEBPACK_IMPORTED_MODULE_0__["default"](this._currentFilter);
@@ -696,7 +774,7 @@ class Filter {
   }
 
   _handleFilterTypeChange(filterType) {
-    console.log(filterType);
+    // console.log(filterType);
     if (this._currentFilter === filterType) {
       return;
     }
@@ -755,28 +833,6 @@ const sortPriceUp = (pointA, pointB) => Number(pointA.price) > Number(pointB.pri
 
 const sortPopularityDown = (pointA, pointB) => Number(pointA.reviewAmount) > Number(pointB.reviewAmount) ? 1 : -1;
 const sortPopularityUp = (pointA, pointB) => Number(pointA.reviewAmount) > Number(pointB.reviewAmount) ? -1 : 1;
-
-
-/***/ }),
-
-/***/ "./source/js/utils/common.js":
-/*!***********************************!*\
-  !*** ./source/js/utils/common.js ***!
-  \***********************************/
-/*! exports provided: getRandomInteger */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getRandomInteger", function() { return getRandomInteger; });
-// Функция из интернета по генерации случайного числа из диапазона
-// Источник - https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_random
-const getRandomInteger = (a = 0, b = 1) => {
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
-
-  return Math.floor(lower + Math.random() * (upper - lower + 1));
-};
 
 
 /***/ }),
@@ -1026,13 +1082,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const createCatalogItemElement = (card) => {
-  const {image, reviewAmount, name, price} = card;
+  const {image, reviewAmount, name, price, starsCount} = card;
   return (
     `<li class="list__item">
       <img src="${image}" width="80" height="202" alt="Изображение товара">
       <div class="list__rating rating">
         <div class="list__stars rating__stars">
-          <span style="width: 85%;"></span>
+          <span style="width: ${starsCount * 20}%;"></span>
           <span class="visually-hidden">Rating</span>
         </div>
         <span class="rating__amount">${reviewAmount}</span>
@@ -1053,10 +1109,22 @@ class CatalogItem extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
   constructor(card) {
     super();
     this.card = card;
+
+    this._addClickHandler = this._addClickHandler.bind(this);
   }
 
   getTemplate() {
     return createCatalogItemElement(this.card);
+  }
+
+  _addClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.addClick();
+  }
+
+  setAddClickHandler(callback) {
+    this._callback.addClick = callback;
+    this.getElement().querySelector(`.catalog__button--buy`).addEventListener(`click`, this._addClickHandler);
   }
 }
 
@@ -1130,6 +1198,161 @@ const createCatalogPaginationElement = () => {
 class CatalogPagination extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
   getTemplate() {
     return createCatalogPaginationElement();
+  }
+}
+
+
+/***/ }),
+
+/***/ "./source/js/view/catalog-popUp-add.js":
+/*!*********************************************!*\
+  !*** ./source/js/view/catalog-popUp-add.js ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CatalogPopUpAdd; });
+/* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./source/js/view/abstract.js");
+
+
+const createCatalogPopUpAddElement = (card) => {
+  const {image, name, identiferNumber, stringAmount, price} = card;
+  return `<section class="modal">
+    <div class="modal__popup">
+      <h2 class="modal__title">Добавить товар в корзину</h2>
+
+      <div class="modal__content">
+        <div class="modal__image-container">
+          <img src="${image}" width="80" height="202" alt="Изображение товара">
+        </div>
+        <div class="modal__content-container">
+          <ul class="modal__deckription-list">
+            <li class="modal__name">Гитара ${name}</li>
+            <li class="modal__identifer-number">Артикул: ${identiferNumber}</li>
+            <li class="modal__type">Электрогитара, ${stringAmount} струнная </li>
+          </ul>
+          <div class="modal__price">Цена: ${price} ₽</div>
+        </div>
+        <button class="modal__button">Добавить в корзину</button>
+        <button class="modal__close" type="button">
+          <span class="visually-hidden">Закрыть</span>
+        </button>
+      </div>
+    </div>
+  </section>`;
+};
+
+class CatalogPopUpAdd extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  constructor(card) {
+    super();
+    this._data = card;
+
+    this._addClickHandler = this._addClickHandler.bind(this);
+    this._closeClickHandler = this._closeClickHandler.bind(this);
+  }
+
+  getTemplate() {
+    return createCatalogPopUpAddElement(this._data);
+  }
+
+  _addClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.addClick();
+  }
+
+  _closeClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.closeClick();
+  }
+
+  setAddClickHandler(callback) {
+    this._callback.addClick = callback;
+    this.getElement().querySelector(`.modal__button`).addEventListener(`click`, this._addClickHandler);
+  }
+
+  setCloseClickHandler(callback) {
+    this._callback.closeClick = callback;
+    this.getElement().querySelector(`.modal__close`).addEventListener(`click`, this._closeClickHandler);
+  }
+}
+
+
+/***/ }),
+
+/***/ "./source/js/view/catalog-popUp-success.js":
+/*!*************************************************!*\
+  !*** ./source/js/view/catalog-popUp-success.js ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CatalogPopUpSuccess; });
+/* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./source/js/view/abstract.js");
+
+
+const createCatalogPopUpSuccessElement = () => {
+  return `<section class="modal">
+  <div class="modal__popup">
+    <h2 class="modal__title">Товар успешно добавлен в корзину</h2>
+
+    <div class="modal__content">
+      <div class="modal__buttons-wrapper">
+        <button class="modal__button modal__button--to-basket">Перейти в корзину</button>
+        <button class="modal__button modal__button--to-shoping">Продолжить покупки</button>
+      </div>
+      <button class="modal__close" type="button">
+        <span class="visually-hidden">Закрыть</span>
+      </button>
+    </div>
+  </div>
+</section>`;
+};
+
+class CatalogPopUpSuccess extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  constructor() {
+    super();
+
+    this._toBasketClickHandler = this._toBasketClickHandler.bind(this);
+    this._toShoppingClickHandler = this._toShoppingClickHandler.bind(this);
+    this._closeClickHandler = this._closeClickHandler.bind(this);
+  }
+
+  getTemplate() {
+    return createCatalogPopUpSuccessElement();
+  }
+
+  _toBasketClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.toBasketClick();
+  }
+
+  _toShoppingClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.toShoppingClick();
+  }
+
+  _closeClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.closeClick();
+  }
+
+  setToBasketClickHandler(callback) {
+    this._callback.toBasketClick = callback;
+    this.getElement().querySelector(`.modal__button--to-basket`).addEventListener(`click`, this._toBasketClickHandler);
+  }
+
+  setToShoppingClickHandler(callback) {
+    this._callback.toShoppingClick = callback;
+    this.getElement().querySelector(`.modal__button--to-shoping`).addEventListener(`click`, this._toShoppingClickHandler);
+  }
+
+  setCloseClickHandler(callback) {
+    this._callback.closeClick = callback;
+    this.getElement().querySelector(`.modal__close`).addEventListener(`click`, this._closeClickHandler);
   }
 }
 
@@ -1233,9 +1456,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const createFiltersElement = (currentFilterType) => {
-  console.log(JSON.stringify(currentFilterType));
-  console.log(JSON.stringify(_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ELECTRO));
-  console.log(JSON.stringify(currentFilterType) === JSON.stringify(_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ELECTRO));
+  // console.log(JSON.stringify(currentFilterType));
+  // console.log(JSON.stringify(FilterType.ELECTRO));
+  // console.log(JSON.stringify(currentFilterType) === JSON.stringify(FilterType.ELECTRO));
 
   return `<form class="catalog__filters-form" action="#" method="GET">
       <fieldset>
@@ -1351,7 +1574,7 @@ class Filters extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
     super();
     // this.filters = filters;
     this.currentFilterType = currentFilterType;
-    console.log(currentFilterType);
+    // console.log(currentFilterType);
 
     this._filterTypeChangeHandler = this._filterTypeChangeHandler.bind(this);
   }
@@ -1366,7 +1589,7 @@ class Filters extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
     let optionsTypeArray = [];
     document.querySelectorAll(`input[type='checkbox']`).forEach((chbx) => chbx.checked === true ? optionsTypeArray.push(chbx.dataset.filterType) : null);
     options.type = optionsTypeArray;
-    console.log(optionsTypeArray);
+    // console.log(optionsTypeArray);
 
     this._callback.filterTypeChange(optionsTypeArray);
     // this._callback.filterTypeChange(evt.target.dataset.filterType);

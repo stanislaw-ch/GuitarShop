@@ -2,9 +2,9 @@ import AbstractView from "./abstract.js";
 import {FilterType} from "../const.js";
 
 const createFiltersElement = (currentFilterType) => {
-  console.log(JSON.stringify(currentFilterType));
-  console.log(JSON.stringify(FilterType.ELECTRO));
-  console.log(JSON.stringify(currentFilterType) === JSON.stringify(FilterType.ELECTRO));
+  // console.log(JSON.stringify(currentFilterType));
+  // console.log(JSON.stringify(FilterType.ELECTRO));
+  // console.log(JSON.stringify(currentFilterType) === JSON.stringify(FilterType.ELECTRO));
 
   return `<form class="catalog__filters-form" action="#" method="GET">
       <fieldset>
@@ -120,7 +120,7 @@ export default class Filters extends AbstractView {
     super();
     // this.filters = filters;
     this.currentFilterType = currentFilterType;
-    console.log(currentFilterType);
+    // console.log(currentFilterType);
 
     this._filterTypeChangeHandler = this._filterTypeChangeHandler.bind(this);
   }
@@ -135,7 +135,7 @@ export default class Filters extends AbstractView {
     let optionsTypeArray = [];
     document.querySelectorAll(`input[type='checkbox']`).forEach((chbx) => chbx.checked === true ? optionsTypeArray.push(chbx.dataset.filterType) : null);
     options.type = optionsTypeArray;
-    console.log(optionsTypeArray);
+    // console.log(optionsTypeArray);
 
     this._callback.filterTypeChange(optionsTypeArray);
     // this._callback.filterTypeChange(evt.target.dataset.filterType);

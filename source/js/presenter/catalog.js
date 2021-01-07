@@ -28,6 +28,7 @@ export default class Board {
 
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
+    // this._handleModeChange = this._handleModeChange.bind(this);
 
     this._cardsModel.addObserver(this._handleModelEvent);
     this._filterModel.addObserver(this._handleModelEvent);
@@ -70,7 +71,7 @@ export default class Board {
     //   case SortType.POPULARITY:
     //     return this._cardsModel.getCards().slice().sort(sortPriceDown);
     // }
-    console.log(filtredTasks);
+    // console.log(filtredTasks);
     return filtredTasks;
   }
 
@@ -157,7 +158,7 @@ export default class Board {
     this._renderCards(cards.slice(0, Math.min(cardCount, this._renderedCardsCount)));
 
     // if (cardCount > this._renderedCardsCount) {
-    //   this._renderPagination();
+    this._renderPagination();
     // }
   }
 }
