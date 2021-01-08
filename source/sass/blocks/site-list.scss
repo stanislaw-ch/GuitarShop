@@ -12,6 +12,10 @@
 
 .site-list__item {
   margin-right: 40px;
+
+  &--active a {
+    pointer-events: none;
+  }
 }
 
 .site-list__item a {

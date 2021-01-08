@@ -1,5 +1,5 @@
 import FilterView from "../view/filters.js";
-import {render, RenderPosition} from "../utils/render.js";
+import {render, RenderPosition, remove} from "../utils/render.js";
 // import {filter} from "../utils/filter.js";
 import {FilterType} from "../const.js";
 
@@ -14,9 +14,6 @@ export default class Filter {
 
     this._handleModelEvent = this._handleModelEvent.bind(this);
     this._handleFilterTypeChange = this._handleFilterTypeChange.bind(this);
-
-    this._cardsModel.addObserver(this._handleModelEvent);
-    this._filterModel.addObserver(this._handleModelEvent);
   }
 
   init() {
@@ -30,12 +27,22 @@ export default class Filter {
     this._filterComponent.setFilterTypeChangeHandler(this._handleFilterTypeChange);
 
     if (prevFilterComponent === null) {
+      // console.log(this._filterContainer);
       render(this._filterContainer, this._filterComponent, RenderPosition.BEFOREEND);
       return;
     }
 
-    // replace(this._filterComponent, prevFilterComponent);
-    // remove(prevFilterComponent);
+    this._cardsModel.addObserver(this._handleModelEvent);
+    this._filterModel.addObserver(this._handleModelEvent);
+  }
+
+  destroy() {
+    remove(this._filterComponent);
+
+    this._filterComponent = null;
+
+    this._cardsModel.removeObserver(this._handleModelEvent);
+    this._filterModel.removeObserver(this._handleModelEvent);
   }
 
   _handleModelEvent() {

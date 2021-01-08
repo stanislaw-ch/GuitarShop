@@ -26,3 +26,8 @@ export const FilterType = {
 //   ACOUSTIC: `акустическая гитара`,
 //   UKULELE: `укулеле`
 // };
+
+export const MenuItem = {
+  CARDS: `CARDS`,
+  BASKET: `BASKET`
+};

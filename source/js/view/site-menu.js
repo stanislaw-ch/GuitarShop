@@ -1,6 +1,7 @@
 import AbstractView from "./abstract.js";
+import {MenuItem} from "../const.js";
 
-const createSiteMenuTemplate = () => {
+const createSiteMenuTemplate = (currentMenuType) => {
   return `<nav class="main-nav">
     <div class="container">
       <div class="main-nav__wrapper">
@@ -10,8 +11,8 @@ const createSiteMenuTemplate = () => {
           </svg>
         </a>
         <ul class="main-nav__list site-list">
-          <li class="site-list__item">
-            <a href="#">Каталог</a>
+          <li class="site-list__item ${currentMenuType === MenuItem.CARDS ? `site-list__item--active` : ``}">
+            <a href="#" data-menu-type="${MenuItem.CARDS}">Каталог</a>
           </li>
           <li class="site-list__item">
             <a href="#">Где купить?</a>
@@ -43,9 +44,9 @@ const createSiteMenuTemplate = () => {
             </a>
           </li>
           <li class="user-list__item user-list__item--basket">
-            <a href="basket.html">
+            <a href="#" data-menu-type="${MenuItem.BASKET}">
               <span class="visually-hidden">Корзина</span>
-              <svg width="16" height="18">
+              <svg width="16" height="18" data-menu-type="${MenuItem.BASKET}">
                 <use xlink:href="img/sprite.svg#icon_basket"></use>
               </svg>
               <!-- <img src="img/icon_basket.svg" width="16" height="18" alt="Корзина"> -->
@@ -59,7 +60,35 @@ const createSiteMenuTemplate = () => {
 };
 
 export default class SiteMenu extends AbstractView {
-  getTemplate() {
-    return createSiteMenuTemplate();
+  constructor(currentMenuType) {
+    super();
+    // console.log(currentMenuType);
+    this._currentMenuType = currentMenuType;
+    this._menuClickHandler = this._menuClickHandler.bind(this);
   }
+
+  getTemplate() {
+    return createSiteMenuTemplate(this._currentMenuType);
+  }
+
+  _menuClickHandler(evt) {
+    // if (evt.target.tagName === `A`) {
+    evt.preventDefault();
+    // console.log(evt.target.dataset.menuType);
+    this._callback.menuClick(evt.target.dataset.menuType);
+    // }
+  }
+
+  setMenuClickHandler(callback) {
+    this._callback.menuClick = callback;
+    this.getElement().addEventListener(`click`, this._menuClickHandler);
+  }
+
+  // setMenuItem(menuItem) {
+  //   const item = this.getElement().querySelector(`[value=${menuItem}]`);
+
+  //   if (item !== null) {
+  //     item.checked = true;
+  //   }
+  // }
 }

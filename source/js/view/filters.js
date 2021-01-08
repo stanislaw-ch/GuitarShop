@@ -6,7 +6,9 @@ const createFiltersElement = (currentFilterType) => {
   // console.log(JSON.stringify(FilterType.ELECTRO));
   // console.log(JSON.stringify(currentFilterType) === JSON.stringify(FilterType.ELECTRO));
 
-  return `<form class="catalog__filters-form" action="#" method="GET">
+  return (`<div class="catalog__filters-column">
+  <h2>Фильтр</h2>
+  <form class="catalog__filters-form" action="#" method="GET">
       <fieldset>
         <h3>Цена, ₽</h3>
         <div class="catalog__filters-price-wrapper">
@@ -112,7 +114,7 @@ const createFiltersElement = (currentFilterType) => {
         </div>
       </fieldset>
       <button type="submit" disabled="">показать</button>
-    </form>`;
+    </form></div>`);
 };
 
 export default class Filters extends AbstractView {

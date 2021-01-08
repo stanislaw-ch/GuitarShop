@@ -22,23 +22,33 @@ export default class Board {
     this._cardPresenter = {};
 
     this._catalogComponent = new CatalogBoardView();
-
     this._cataloglistComponent = new CatalogListView();
     this._catalogPaginationComponent = new CatalogPaginationView();
 
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
     // this._handleModeChange = this._handleModeChange.bind(this);
-
-    this._cardsModel.addObserver(this._handleModelEvent);
-    this._filterModel.addObserver(this._handleModelEvent);
   }
 
   init() {
     render(this._catalogContainer, this._catalogComponent, RenderPosition.BEFOREEND);
     render(this._catalogComponent, this._cataloglistComponent, RenderPosition.BEFOREEND);
 
+    this._cardsModel.addObserver(this._handleModelEvent);
+    this._filterModel.addObserver(this._handleModelEvent);
+
     this._renderBoard();
+  }
+
+  destroy() {
+    // console.log(2);
+    this._clearBoard({resetRenderedCardsCount: true, resetSortType: true});
+
+    remove(this._cataloglistComponent);
+    remove(this._catalogComponent);
+
+    this._cardsModel.removeObserver(this._handleModelEvent);
+    this._filterModel.removeObserver(this._handleModelEvent);
   }
 
   _getCards() {
