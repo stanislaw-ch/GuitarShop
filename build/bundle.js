@@ -90,13 +90,14 @@
 /*!****************************!*\
   !*** ./source/js/const.js ***!
   \****************************/
-/*! exports provided: SortType, FilterType */
+/*! exports provided: SortType, FilterType, MenuItem */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SortType", function() { return SortType; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FilterType", function() { return FilterType; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MenuItem", function() { return MenuItem; });
 const SortType = {
   DEFAULT: `default`,
   PRICE: `price`,
@@ -126,6 +127,11 @@ const FilterType = {
 //   UKULELE: `укулеле`
 // };
 
+const MenuItem = {
+  CARDS: `CARDS`,
+  BASKET: `BASKET`
+};
+
 
 /***/ }),
 
@@ -140,12 +146,18 @@ const FilterType = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _view_site_menu_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./view/site-menu.js */ "./source/js/view/site-menu.js");
 /* harmony import */ var _view_breadcrumbs_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./view/breadcrumbs.js */ "./source/js/view/breadcrumbs.js");
-/* harmony import */ var _presenter_catalog_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./presenter/catalog.js */ "./source/js/presenter/catalog.js");
-/* harmony import */ var _presenter_filter_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./presenter/filter.js */ "./source/js/presenter/filter.js");
-/* harmony import */ var _model_cards_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./model/cards.js */ "./source/js/model/cards.js");
-/* harmony import */ var _model_filter_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./model/filter.js */ "./source/js/model/filter.js");
-/* harmony import */ var _mock_json_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./mock/json.js */ "./source/js/mock/json.js");
-/* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./utils/render.js */ "./source/js/utils/render.js");
+/* harmony import */ var _view_catalog_section_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./view/catalog-section.js */ "./source/js/view/catalog-section.js");
+/* harmony import */ var _view_catalog_section_wrapper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./view/catalog-section-wrapper.js */ "./source/js/view/catalog-section-wrapper.js");
+/* harmony import */ var _presenter_catalog_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./presenter/catalog.js */ "./source/js/presenter/catalog.js");
+/* harmony import */ var _presenter_filter_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./presenter/filter.js */ "./source/js/presenter/filter.js");
+/* harmony import */ var _model_cards_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./model/cards.js */ "./source/js/model/cards.js");
+/* harmony import */ var _model_filter_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./model/filter.js */ "./source/js/model/filter.js");
+/* harmony import */ var _mock_json_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./mock/json.js */ "./source/js/mock/json.js");
+/* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./utils/render.js */ "./source/js/utils/render.js");
+/* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./const.js */ "./source/js/const.js");
+
+
+
 
 
 
@@ -159,21 +171,49 @@ __webpack_require__.r(__webpack_exports__);
 // const PRODUCT_COUNT = 10;
 // const cards = new Array(PRODUCT_COUNT).fill().map(generateProduct);
 
-const cardsModel = new _model_cards_js__WEBPACK_IMPORTED_MODULE_4__["default"]();
-cardsModel.setCards(_mock_json_js__WEBPACK_IMPORTED_MODULE_6__["default"]);
+const cardsModel = new _model_cards_js__WEBPACK_IMPORTED_MODULE_6__["default"]();
+cardsModel.setCards(_mock_json_js__WEBPACK_IMPORTED_MODULE_8__["default"]);
 
-const filterModel = new _model_filter_js__WEBPACK_IMPORTED_MODULE_5__["default"]();
+const filterModel = new _model_filter_js__WEBPACK_IMPORTED_MODULE_7__["default"]();
+const siteMenuComponent = new _view_site_menu_js__WEBPACK_IMPORTED_MODULE_0__["default"]();
+const siteCatalogSectionComponent = new _view_catalog_section_js__WEBPACK_IMPORTED_MODULE_2__["default"]();
+const siteCatalogSectionWrapperComponent = new _view_catalog_section_wrapper_js__WEBPACK_IMPORTED_MODULE_3__["default"]();
 
 const siteHeaderElement = document.querySelector(`.page-header`);
-const siteCatalogElement = document.querySelector(`.catalog`);
-const siteCatalogWrapperElement = document.querySelector(`.catalog__content-wrapper`);
-const siteFiltersColumnElement = document.querySelector(`.catalog__filters-column`);
+const siteMainElement = document.querySelector(`.page-main`);
+const siteMainContainerElement = siteMainElement.querySelector(`.container`);
 
-const catalogPresenter = new _presenter_catalog_js__WEBPACK_IMPORTED_MODULE_2__["default"](siteCatalogWrapperElement, cardsModel, filterModel);
-const filterPresenter = new _presenter_filter_js__WEBPACK_IMPORTED_MODULE_3__["default"](siteFiltersColumnElement, filterModel, cardsModel);
+Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_9__["render"])(siteHeaderElement, siteMenuComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_9__["RenderPosition"].AFTERBEGIN);
+Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_9__["render"])(siteMainContainerElement, new _view_breadcrumbs_js__WEBPACK_IMPORTED_MODULE_1__["default"](), _utils_render_js__WEBPACK_IMPORTED_MODULE_9__["RenderPosition"].BEFOREEND);
+Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_9__["render"])(siteMainContainerElement, siteCatalogSectionComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_9__["RenderPosition"].BEFOREEND);
+Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_9__["render"])(siteCatalogSectionComponent, siteCatalogSectionWrapperComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_9__["RenderPosition"].BEFOREEND);
 
-Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["render"])(siteHeaderElement, new _view_site_menu_js__WEBPACK_IMPORTED_MODULE_0__["default"](), _utils_render_js__WEBPACK_IMPORTED_MODULE_7__["RenderPosition"].AFTERBEGIN);
-Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["render"])(siteCatalogElement, new _view_breadcrumbs_js__WEBPACK_IMPORTED_MODULE_1__["default"](), _utils_render_js__WEBPACK_IMPORTED_MODULE_7__["RenderPosition"].BEFOREBEGIN);
+const catalogPresenter = new _presenter_catalog_js__WEBPACK_IMPORTED_MODULE_4__["default"](siteCatalogSectionWrapperComponent, cardsModel, filterModel);
+const filterPresenter = new _presenter_filter_js__WEBPACK_IMPORTED_MODULE_5__["default"](siteCatalogSectionWrapperComponent, filterModel, cardsModel);
+
+// siteMenuComponent.setMenuItem(MenuItem.CARDS);
+
+const handleSiteMenuClick = (menuItem) => {
+  switch (menuItem) {
+    case _const_js__WEBPACK_IMPORTED_MODULE_10__["MenuItem"].CARDS:
+      Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_9__["render"])(siteMainContainerElement, siteCatalogSectionComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_9__["RenderPosition"].BEFOREEND);
+      Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_9__["render"])(siteCatalogSectionComponent, siteCatalogSectionWrapperComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_9__["RenderPosition"].BEFOREEND);
+      filterPresenter.init();
+      catalogPresenter.init();
+      // remove(statisticsComponent);
+      break;
+    case _const_js__WEBPACK_IMPORTED_MODULE_10__["MenuItem"].BASKET:
+      filterPresenter.destroy();
+      catalogPresenter.destroy();
+      Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_9__["remove"])(siteCatalogSectionComponent);
+      Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_9__["remove"])(siteCatalogSectionWrapperComponent);
+      // statisticsComponent = new StatisticsView(tasksModel.getTasks());
+      // render(siteMainElement, statisticsComponent, RenderPosition.BEFOREEND);
+      break;
+  }
+};
+
+siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
 
 filterPresenter.init();
 catalogPresenter.init();
@@ -572,23 +612,33 @@ class Board {
     this._cardPresenter = {};
 
     this._catalogComponent = new _view_catalog_board_js__WEBPACK_IMPORTED_MODULE_0__["default"]();
-
     this._cataloglistComponent = new _view_catalog_list_js__WEBPACK_IMPORTED_MODULE_2__["default"]();
     this._catalogPaginationComponent = new _view_catalog_pagination_js__WEBPACK_IMPORTED_MODULE_3__["default"]();
 
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
     // this._handleModeChange = this._handleModeChange.bind(this);
-
-    this._cardsModel.addObserver(this._handleModelEvent);
-    this._filterModel.addObserver(this._handleModelEvent);
   }
 
   init() {
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_5__["render"])(this._catalogContainer, this._catalogComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_5__["RenderPosition"].BEFOREEND);
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_5__["render"])(this._catalogComponent, this._cataloglistComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_5__["RenderPosition"].BEFOREEND);
 
+    this._cardsModel.addObserver(this._handleModelEvent);
+    this._filterModel.addObserver(this._handleModelEvent);
+
     this._renderBoard();
+  }
+
+  destroy() {
+    // console.log(2);
+    this._clearBoard({resetRenderedCardsCount: true, resetSortType: true});
+
+    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_5__["remove"])(this._cataloglistComponent);
+    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_5__["remove"])(this._catalogComponent);
+
+    this._cardsModel.removeObserver(this._handleModelEvent);
+    this._filterModel.removeObserver(this._handleModelEvent);
   }
 
   _getCards() {
@@ -745,9 +795,6 @@ class Filter {
 
     this._handleModelEvent = this._handleModelEvent.bind(this);
     this._handleFilterTypeChange = this._handleFilterTypeChange.bind(this);
-
-    this._cardsModel.addObserver(this._handleModelEvent);
-    this._filterModel.addObserver(this._handleModelEvent);
   }
 
   init() {
@@ -761,12 +808,22 @@ class Filter {
     this._filterComponent.setFilterTypeChangeHandler(this._handleFilterTypeChange);
 
     if (prevFilterComponent === null) {
+      // console.log(this._filterContainer);
       Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_1__["render"])(this._filterContainer, this._filterComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_1__["RenderPosition"].BEFOREEND);
       return;
     }
 
-    // replace(this._filterComponent, prevFilterComponent);
-    // remove(prevFilterComponent);
+    this._cardsModel.addObserver(this._handleModelEvent);
+    this._filterModel.addObserver(this._handleModelEvent);
+  }
+
+  destroy() {
+    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_1__["remove"])(this._filterComponent);
+
+    this._filterComponent = null;
+
+    this._cardsModel.removeObserver(this._handleModelEvent);
+    this._filterModel.removeObserver(this._handleModelEvent);
   }
 
   _handleModelEvent() {
@@ -1359,6 +1416,59 @@ class CatalogPopUpSuccess extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["def
 
 /***/ }),
 
+/***/ "./source/js/view/catalog-section-wrapper.js":
+/*!***************************************************!*\
+  !*** ./source/js/view/catalog-section-wrapper.js ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CatalogSectionWrapper; });
+/* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./source/js/view/abstract.js");
+
+
+const createCatalogSectionWrapperElement = () => {
+  return `<div class="catalog__content-wrapper">
+    </div>`;
+};
+
+class CatalogSectionWrapper extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  getTemplate() {
+    return createCatalogSectionWrapperElement();
+  }
+}
+
+
+/***/ }),
+
+/***/ "./source/js/view/catalog-section.js":
+/*!*******************************************!*\
+  !*** ./source/js/view/catalog-section.js ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CatalogSection; });
+/* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./source/js/view/abstract.js");
+
+
+const createCatalogSectionElement = () => {
+  return `<section class="catalog"></section>`;
+};
+
+class CatalogSection extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  getTemplate() {
+    return createCatalogSectionElement();
+  }
+}
+
+
+/***/ }),
+
 /***/ "./source/js/view/catalog-sort.js":
 /*!****************************************!*\
   !*** ./source/js/view/catalog-sort.js ***!
@@ -1460,7 +1570,9 @@ const createFiltersElement = (currentFilterType) => {
   // console.log(JSON.stringify(FilterType.ELECTRO));
   // console.log(JSON.stringify(currentFilterType) === JSON.stringify(FilterType.ELECTRO));
 
-  return `<form class="catalog__filters-form" action="#" method="GET">
+  return (`<div class="catalog__filters-column">
+  <h2>Фильтр</h2>
+  <form class="catalog__filters-form" action="#" method="GET">
       <fieldset>
         <h3>Цена, ₽</h3>
         <div class="catalog__filters-price-wrapper">
@@ -1566,7 +1678,7 @@ const createFiltersElement = (currentFilterType) => {
         </div>
       </fieldset>
       <button type="submit" disabled="">показать</button>
-    </form>`;
+    </form></div>`);
 };
 
 class Filters extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
@@ -1615,9 +1727,11 @@ class Filters extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return SiteMenu; });
 /* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./source/js/view/abstract.js");
+/* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../const.js */ "./source/js/const.js");
 
 
-const createSiteMenuTemplate = () => {
+
+const createSiteMenuTemplate = (currentMenuType) => {
   return `<nav class="main-nav">
     <div class="container">
       <div class="main-nav__wrapper">
@@ -1627,8 +1741,8 @@ const createSiteMenuTemplate = () => {
           </svg>
         </a>
         <ul class="main-nav__list site-list">
-          <li class="site-list__item">
-            <a href="#">Каталог</a>
+          <li class="site-list__item ${currentMenuType === _const_js__WEBPACK_IMPORTED_MODULE_1__["MenuItem"].CARDS ? `site-list__item--active` : ``}">
+            <a href="#" data-menu-type="${_const_js__WEBPACK_IMPORTED_MODULE_1__["MenuItem"].CARDS}">Каталог</a>
           </li>
           <li class="site-list__item">
             <a href="#">Где купить?</a>
@@ -1660,9 +1774,9 @@ const createSiteMenuTemplate = () => {
             </a>
           </li>
           <li class="user-list__item user-list__item--basket">
-            <a href="basket.html">
+            <a href="#" data-menu-type="${_const_js__WEBPACK_IMPORTED_MODULE_1__["MenuItem"].BASKET}">
               <span class="visually-hidden">Корзина</span>
-              <svg width="16" height="18">
+              <svg width="16" height="18" data-menu-type="${_const_js__WEBPACK_IMPORTED_MODULE_1__["MenuItem"].BASKET}">
                 <use xlink:href="img/sprite.svg#icon_basket"></use>
               </svg>
               <!-- <img src="img/icon_basket.svg" width="16" height="18" alt="Корзина"> -->
@@ -1676,9 +1790,37 @@ const createSiteMenuTemplate = () => {
 };
 
 class SiteMenu extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
-  getTemplate() {
-    return createSiteMenuTemplate();
+  constructor(currentMenuType) {
+    super();
+    // console.log(currentMenuType);
+    this._currentMenuType = currentMenuType;
+    this._menuClickHandler = this._menuClickHandler.bind(this);
   }
+
+  getTemplate() {
+    return createSiteMenuTemplate(this._currentMenuType);
+  }
+
+  _menuClickHandler(evt) {
+    // if (evt.target.tagName === `A`) {
+    evt.preventDefault();
+    // console.log(evt.target.dataset.menuType);
+    this._callback.menuClick(evt.target.dataset.menuType);
+    // }
+  }
+
+  setMenuClickHandler(callback) {
+    this._callback.menuClick = callback;
+    this.getElement().addEventListener(`click`, this._menuClickHandler);
+  }
+
+  // setMenuItem(menuItem) {
+  //   const item = this.getElement().querySelector(`[value=${menuItem}]`);
+
+  //   if (item !== null) {
+  //     item.checked = true;
+  //   }
+  // }
 }
 
 
