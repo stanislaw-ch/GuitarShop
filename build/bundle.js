@@ -148,13 +148,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _view_breadcrumbs_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./view/breadcrumbs.js */ "./source/js/view/breadcrumbs.js");
 /* harmony import */ var _view_catalog_section_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./view/catalog-section.js */ "./source/js/view/catalog-section.js");
 /* harmony import */ var _view_catalog_section_wrapper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./view/catalog-section-wrapper.js */ "./source/js/view/catalog-section-wrapper.js");
-/* harmony import */ var _presenter_catalog_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./presenter/catalog.js */ "./source/js/presenter/catalog.js");
-/* harmony import */ var _presenter_filter_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./presenter/filter.js */ "./source/js/presenter/filter.js");
-/* harmony import */ var _model_cards_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./model/cards.js */ "./source/js/model/cards.js");
-/* harmony import */ var _model_filter_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./model/filter.js */ "./source/js/model/filter.js");
-/* harmony import */ var _mock_json_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./mock/json.js */ "./source/js/mock/json.js");
-/* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./utils/render.js */ "./source/js/utils/render.js");
-/* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./const.js */ "./source/js/const.js");
+/* harmony import */ var _view_basket_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./view/basket.js */ "./source/js/view/basket.js");
+/* harmony import */ var _presenter_catalog_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./presenter/catalog.js */ "./source/js/presenter/catalog.js");
+/* harmony import */ var _presenter_filter_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./presenter/filter.js */ "./source/js/presenter/filter.js");
+/* harmony import */ var _model_cards_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./model/cards.js */ "./source/js/model/cards.js");
+/* harmony import */ var _model_filter_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./model/filter.js */ "./source/js/model/filter.js");
+/* harmony import */ var _mock_json_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./mock/json.js */ "./source/js/mock/json.js");
+/* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./utils/render.js */ "./source/js/utils/render.js");
+/* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./const.js */ "./source/js/const.js");
+
 
 
 
@@ -171,42 +173,44 @@ __webpack_require__.r(__webpack_exports__);
 // const PRODUCT_COUNT = 10;
 // const cards = new Array(PRODUCT_COUNT).fill().map(generateProduct);
 
-const cardsModel = new _model_cards_js__WEBPACK_IMPORTED_MODULE_6__["default"]();
-cardsModel.setCards(_mock_json_js__WEBPACK_IMPORTED_MODULE_8__["default"]);
+const cardsModel = new _model_cards_js__WEBPACK_IMPORTED_MODULE_7__["default"]();
+cardsModel.setCards(_mock_json_js__WEBPACK_IMPORTED_MODULE_9__["default"]);
 
-const filterModel = new _model_filter_js__WEBPACK_IMPORTED_MODULE_7__["default"]();
+const filterModel = new _model_filter_js__WEBPACK_IMPORTED_MODULE_8__["default"]();
 const siteMenuComponent = new _view_site_menu_js__WEBPACK_IMPORTED_MODULE_0__["default"]();
 const siteCatalogSectionComponent = new _view_catalog_section_js__WEBPACK_IMPORTED_MODULE_2__["default"]();
 const siteCatalogSectionWrapperComponent = new _view_catalog_section_wrapper_js__WEBPACK_IMPORTED_MODULE_3__["default"]();
+const siteBasketComponent = new _view_basket_js__WEBPACK_IMPORTED_MODULE_4__["default"]();
 
 const siteHeaderElement = document.querySelector(`.page-header`);
 const siteMainElement = document.querySelector(`.page-main`);
 const siteMainContainerElement = siteMainElement.querySelector(`.container`);
 
-Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_9__["render"])(siteHeaderElement, siteMenuComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_9__["RenderPosition"].AFTERBEGIN);
-Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_9__["render"])(siteMainContainerElement, new _view_breadcrumbs_js__WEBPACK_IMPORTED_MODULE_1__["default"](), _utils_render_js__WEBPACK_IMPORTED_MODULE_9__["RenderPosition"].BEFOREEND);
-Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_9__["render"])(siteMainContainerElement, siteCatalogSectionComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_9__["RenderPosition"].BEFOREEND);
-Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_9__["render"])(siteCatalogSectionComponent, siteCatalogSectionWrapperComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_9__["RenderPosition"].BEFOREEND);
+Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_10__["render"])(siteHeaderElement, siteMenuComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_10__["RenderPosition"].AFTERBEGIN);
+Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_10__["render"])(siteMainContainerElement, new _view_breadcrumbs_js__WEBPACK_IMPORTED_MODULE_1__["default"](), _utils_render_js__WEBPACK_IMPORTED_MODULE_10__["RenderPosition"].BEFOREEND);
+Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_10__["render"])(siteMainContainerElement, siteCatalogSectionComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_10__["RenderPosition"].BEFOREEND);
+Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_10__["render"])(siteCatalogSectionComponent, siteCatalogSectionWrapperComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_10__["RenderPosition"].BEFOREEND);
 
-const catalogPresenter = new _presenter_catalog_js__WEBPACK_IMPORTED_MODULE_4__["default"](siteCatalogSectionWrapperComponent, cardsModel, filterModel);
-const filterPresenter = new _presenter_filter_js__WEBPACK_IMPORTED_MODULE_5__["default"](siteCatalogSectionWrapperComponent, filterModel, cardsModel);
+const catalogPresenter = new _presenter_catalog_js__WEBPACK_IMPORTED_MODULE_5__["default"](siteCatalogSectionWrapperComponent, cardsModel, filterModel);
+const filterPresenter = new _presenter_filter_js__WEBPACK_IMPORTED_MODULE_6__["default"](siteCatalogSectionWrapperComponent, filterModel, cardsModel);
 
 // siteMenuComponent.setMenuItem(MenuItem.CARDS);
 
 const handleSiteMenuClick = (menuItem) => {
   switch (menuItem) {
-    case _const_js__WEBPACK_IMPORTED_MODULE_10__["MenuItem"].CARDS:
-      Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_9__["render"])(siteMainContainerElement, siteCatalogSectionComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_9__["RenderPosition"].BEFOREEND);
-      Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_9__["render"])(siteCatalogSectionComponent, siteCatalogSectionWrapperComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_9__["RenderPosition"].BEFOREEND);
+    case _const_js__WEBPACK_IMPORTED_MODULE_11__["MenuItem"].CARDS:
+      Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_10__["render"])(siteMainContainerElement, siteCatalogSectionComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_10__["RenderPosition"].BEFOREEND);
+      Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_10__["render"])(siteCatalogSectionComponent, siteCatalogSectionWrapperComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_10__["RenderPosition"].BEFOREEND);
       filterPresenter.init();
       catalogPresenter.init();
-      // remove(statisticsComponent);
+      Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_10__["remove"])(siteBasketComponent);
       break;
-    case _const_js__WEBPACK_IMPORTED_MODULE_10__["MenuItem"].BASKET:
+    case _const_js__WEBPACK_IMPORTED_MODULE_11__["MenuItem"].BASKET:
       filterPresenter.destroy();
       catalogPresenter.destroy();
-      Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_9__["remove"])(siteCatalogSectionComponent);
-      Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_9__["remove"])(siteCatalogSectionWrapperComponent);
+      Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_10__["remove"])(siteCatalogSectionComponent);
+      Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_10__["remove"])(siteCatalogSectionWrapperComponent);
+      Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_10__["render"])(siteMainContainerElement, siteBasketComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_10__["RenderPosition"].BEFOREEND);
       // statisticsComponent = new StatisticsView(tasksModel.getTasks());
       // render(siteMainElement, statisticsComponent, RenderPosition.BEFOREEND);
       break;
@@ -1060,6 +1064,99 @@ class Abstract {
 
   removeElement() {
     this._element = null;
+  }
+}
+
+
+/***/ }),
+
+/***/ "./source/js/view/basket.js":
+/*!**********************************!*\
+  !*** ./source/js/view/basket.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Basket; });
+/* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./source/js/view/abstract.js");
+
+
+const createBasketElement = () => {
+  return `<section class="shoppingbag">
+  <div class="shoppingbag__content">
+    <div class="shoppingbag__product product">
+      <ul class="product__list">
+        <li class="product__item">
+          <div class="product__image-container">
+            <img src="img/gitar-electric_1.png" width="80" height="202" alt="Изображение товара">
+          </div>
+          <ul class="product__deckription-list">
+            <li class="product__name">Электрогитара Честер bass</li>
+            <li class="product__identifer-number">Артикул: SO757575</li>
+            <li class="product__type">Электрогитара, 6 струнная </li>
+          </ul>
+          <div class="product__price">17 500 ₽</div>
+          <div class="product__quantity">
+            <button class="product__quantity-button" type="button">-</button>
+            <input id="product-quantity" type="text" value="1" name="product-quantity">
+            <button class="product__quantity-button" type="button">+</button>
+          </div>
+          <div class="product__price-total">17 500 ₽</div>
+          <button class="product__delete" type="button">
+            <span class="visually-hidden">Удалить товар</span>
+          </button>
+        </li>
+        <li class="product__item">
+          <div class="product__image-container">
+            <img src="img/gitar-electric_1.png" width="80" height="202" alt="Изображение товара">
+          </div>
+          <ul class="product__deckription-list">
+            <li class="product__name">Электрогитара Честер bass</li>
+            <li class="product__identifer-number">Артикул: SO757575</li>
+            <li class="product__type">Электрогитара, 6 струнная </li>
+          </ul>
+          <div class="product__price">17 500 ₽</div>
+          <div class="product__quantity">
+            <button class="product__quantity-button" type="button">-</button>
+            <input id="product-quantity" type="text" value="2" name="product-quantity">
+            <button class="product__quantity-button" type="button">+</button>
+          </div>
+          <div class="product__price-total">17 500 ₽</div>
+          <button class="product__delete" type="button">
+            <span class="visually-hidden">Удалить товар</span>
+          </button>
+        </li>
+      </ul>
+    </div>
+    <div class="shoppingbag__order order">
+      <div class="order__discount">
+        <div class="order__discount-wrapper">
+          <span class="order__discount-title">Промокод на скидку</span>
+          <span class="order__discount-subtitle">Введите свой промокод, если он у вас есть.</span>
+        </div>
+        <div class="order__discount-promo">
+          <input type="text" name="order-discount-promo" id="order-discount-promo" placeholder="GITARAHIT" value="GITARAHIT">
+          <button type="button">Применить купон</button>
+        </div>
+      </div>
+      <div class="order__to-order">
+        <span>Всего: 47 000 ₽</span>
+        <button type="button">Оформить заказ</button>
+      </div>
+    </div>
+  </div>
+</section>`;
+};
+
+class Basket extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  constructor() {
+    super();
+  }
+
+  getTemplate() {
+    return createBasketElement();
   }
 }
 
