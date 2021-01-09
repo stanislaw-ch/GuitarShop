@@ -2,6 +2,7 @@ import SiteMenuView from "./view/site-menu.js";
 import BreadcrumbsView from "./view/breadcrumbs.js";
 import CatalogSectionView from "./view/catalog-section.js";
 import CatalogSectionWrapperView from "./view/catalog-section-wrapper.js";
+import BasketView from "./view/basket.js";
 import CatalogPresenter from "./presenter/catalog.js";
 import FilterPresenter from "./presenter/filter.js";
 import CardsModel from "./model/cards.js";
@@ -21,6 +22,7 @@ const filterModel = new FilterModel();
 const siteMenuComponent = new SiteMenuView();
 const siteCatalogSectionComponent = new CatalogSectionView();
 const siteCatalogSectionWrapperComponent = new CatalogSectionWrapperView();
+const siteBasketComponent = new BasketView();
 
 const siteHeaderElement = document.querySelector(`.page-header`);
 const siteMainElement = document.querySelector(`.page-main`);
@@ -43,13 +45,14 @@ const handleSiteMenuClick = (menuItem) => {
       render(siteCatalogSectionComponent, siteCatalogSectionWrapperComponent, RenderPosition.BEFOREEND);
       filterPresenter.init();
       catalogPresenter.init();
-      // remove(statisticsComponent);
+      remove(siteBasketComponent);
       break;
     case MenuItem.BASKET:
       filterPresenter.destroy();
       catalogPresenter.destroy();
       remove(siteCatalogSectionComponent);
       remove(siteCatalogSectionWrapperComponent);
+      render(siteMainContainerElement, siteBasketComponent, RenderPosition.BEFOREEND);
       // statisticsComponent = new StatisticsView(tasksModel.getTasks());
       // render(siteMainElement, statisticsComponent, RenderPosition.BEFOREEND);
       break;
