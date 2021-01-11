@@ -1,5 +1,5 @@
 import AbstractView from "./abstract.js";
-import {FilterType} from "../const.js";
+import {FilterType, FilterTypeS} from "../const.js";
 
 const createFiltersElement = (currentFilterType) => {
   // console.log(JSON.stringify(currentFilterType));
@@ -76,7 +76,7 @@ const createFiltersElement = (currentFilterType) => {
                 type="checkbox"
                 name="filters-form-amount"
                 id="4"
-                data-filter-type="${FilterType.FOUR}"
+                data-filter-type="${FilterTypeS.FOUR}"
                 >
             <span>4</span>
           </label>
@@ -86,7 +86,7 @@ const createFiltersElement = (currentFilterType) => {
                 type="checkbox"
                 name="filters-form-amount"
                 id="6"
-                data-filter-type="${FilterType.SIX}"
+                data-filter-type="${FilterTypeS.SIX}"
                 >
             <span>6</span>
           </label>
@@ -96,7 +96,7 @@ const createFiltersElement = (currentFilterType) => {
                 type="checkbox"
                 name="filters-form-amount"
                 id="7"
-                data-filter-type="${FilterType.SEVEN}"
+                data-filter-type="${FilterTypeS.SEVEN}"
                 >
             <span>7</span>
           </label>
@@ -106,7 +106,7 @@ const createFiltersElement = (currentFilterType) => {
                 type="checkbox"
                 name="filters-form-amount"
                 id="12"
-                data-filter-type="${FilterType.TWELVE}"
+                data-filter-type="${FilterTypeS.TWELVE}"
                 ${JSON.stringify(currentFilterType) === JSON.stringify(FilterType.ELECTRO) ? `disabled` : ``}
                 >
             <span>12</span>
@@ -135,7 +135,9 @@ export default class Filters extends AbstractView {
     evt.preventDefault();
     let options = {};
     let optionsTypeArray = [];
-    document.querySelectorAll(`input[type='checkbox']`).forEach((chbx) => chbx.checked === true ? optionsTypeArray.push(chbx.dataset.filterType) : null);
+    document.querySelectorAll(`input[type='checkbox']`)
+        .forEach((chbx) => chbx.checked === true ? optionsTypeArray
+            .push(chbx.dataset.filterType) : null);
     options.type = optionsTypeArray;
     // console.log(optionsTypeArray);
 

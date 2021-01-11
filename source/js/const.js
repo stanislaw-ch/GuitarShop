@@ -11,9 +11,16 @@ export const SortType = {
 // };
 
 export const FilterType = {
-  ELECTRO: [`электрогитара`],
+  ELECTRO: `электрогитара`,
   ACOUSTIC: `акустическая гитара`,
   UKULELE: `укулеле`,
+  FOUR: `4`,
+  SIX: `6`,
+  SEVEN: `7`,
+  TWELVE: `12`,
+};
+
+export const FilterTypeS = {
   FOUR: `4`,
   SIX: `6`,
   SEVEN: `7`,

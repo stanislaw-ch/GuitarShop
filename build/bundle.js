@@ -90,13 +90,14 @@
 /*!****************************!*\
   !*** ./source/js/const.js ***!
   \****************************/
-/*! exports provided: SortType, FilterType, MenuItem */
+/*! exports provided: SortType, FilterType, FilterTypeS, MenuItem */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SortType", function() { return SortType; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FilterType", function() { return FilterType; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FilterTypeS", function() { return FilterTypeS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MenuItem", function() { return MenuItem; });
 const SortType = {
   DEFAULT: `default`,
@@ -111,9 +112,16 @@ const SortType = {
 // };
 
 const FilterType = {
-  ELECTRO: [`электрогитара`],
+  ELECTRO: `электрогитара`,
   ACOUSTIC: `акустическая гитара`,
   UKULELE: `укулеле`,
+  FOUR: `4`,
+  SIX: `6`,
+  SEVEN: `7`,
+  TWELVE: `12`,
+};
+
+const FilterTypeS = {
   FOUR: `4`,
   SIX: `6`,
   SEVEN: `7`,
@@ -649,24 +657,34 @@ class Board {
     const filterType = this._filterModel.getFilter();
     const cards = this._cardsModel.getCards();
 
-    const fiteredCards = (type, card) => {
-      const cardType = card.type;
-      return type.includes(cardType);
-    };
+    console.log(filterType);
 
-    let filtredTasks = null;
+    let filtredCards = null;
 
     if (filterType.length !== 0) {
-      filtredTasks = cards.filter((card) => fiteredCards(filterType, card));
+      // filtredCards = cards
+      //     .filter((item) => {
+      //       if (filterType.includes(item.type) || filterType.includes(item.type).some()) {
+      //         filterType
+      //             .some((type) => Object.values(item)
+      //                 .includes((type)));
+      //         return true;
+      //       }
+      //       return false;
+      //     });
+      filtredCards = cards
+          .filter((item) => filterType
+              .some((type) => Object.values(item)
+                  .includes((type))));
     } else {
-      filtredTasks = cards;
+      filtredCards = cards;
     }
 
     switch (this._currentSortType) {
       case _const_js__WEBPACK_IMPORTED_MODULE_7__["SortType"].PRICE:
-        return filtredTasks.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_6__["sortPriceUp"]);
+        return filtredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_6__["sortPriceUp"]);
       case _const_js__WEBPACK_IMPORTED_MODULE_7__["SortType"].POPULARITY:
-        return filtredTasks.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_6__["sortPriceDown"]);
+        return filtredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_6__["sortPriceDown"]);
     }
 
     // switch (this._currentSortType) {
@@ -675,8 +693,8 @@ class Board {
     //   case SortType.POPULARITY:
     //     return this._cardsModel.getCards().slice().sort(sortPriceDown);
     // }
-    // console.log(filtredTasks);
-    return filtredTasks;
+    console.log(filtredCards);
+    return filtredCards;
   }
 
   _handleSortTypeChange(sortType) {
@@ -1737,7 +1755,7 @@ const createFiltersElement = (currentFilterType) => {
                 type="checkbox"
                 name="filters-form-amount"
                 id="4"
-                data-filter-type="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].FOUR}"
+                data-filter-type="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].FOUR}"
                 >
             <span>4</span>
           </label>
@@ -1747,7 +1765,7 @@ const createFiltersElement = (currentFilterType) => {
                 type="checkbox"
                 name="filters-form-amount"
                 id="6"
-                data-filter-type="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].SIX}"
+                data-filter-type="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].SIX}"
                 >
             <span>6</span>
           </label>
@@ -1757,7 +1775,7 @@ const createFiltersElement = (currentFilterType) => {
                 type="checkbox"
                 name="filters-form-amount"
                 id="7"
-                data-filter-type="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].SEVEN}"
+                data-filter-type="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].SEVEN}"
                 >
             <span>7</span>
           </label>
@@ -1767,7 +1785,7 @@ const createFiltersElement = (currentFilterType) => {
                 type="checkbox"
                 name="filters-form-amount"
                 id="12"
-                data-filter-type="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].TWELVE}"
+                data-filter-type="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].TWELVE}"
                 ${JSON.stringify(currentFilterType) === JSON.stringify(_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ELECTRO) ? `disabled` : ``}
                 >
             <span>12</span>
@@ -1796,7 +1814,9 @@ class Filters extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
     evt.preventDefault();
     let options = {};
     let optionsTypeArray = [];
-    document.querySelectorAll(`input[type='checkbox']`).forEach((chbx) => chbx.checked === true ? optionsTypeArray.push(chbx.dataset.filterType) : null);
+    document.querySelectorAll(`input[type='checkbox']`)
+        .forEach((chbx) => chbx.checked === true ? optionsTypeArray
+            .push(chbx.dataset.filterType) : null);
     options.type = optionsTypeArray;
     // console.log(optionsTypeArray);
 

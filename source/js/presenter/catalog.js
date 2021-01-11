@@ -55,24 +55,34 @@ export default class Board {
     const filterType = this._filterModel.getFilter();
     const cards = this._cardsModel.getCards();
 
-    const fiteredCards = (type, card) => {
-      const cardType = card.type;
-      return type.includes(cardType);
-    };
+    console.log(filterType);
 
-    let filtredTasks = null;
+    let filtredCards = null;
 
     if (filterType.length !== 0) {
-      filtredTasks = cards.filter((card) => fiteredCards(filterType, card));
+      // filtredCards = cards
+      //     .filter((item) => {
+      //       if (filterType.includes(item.type) || filterType.includes(item.type).some()) {
+      //         filterType
+      //             .some((type) => Object.values(item)
+      //                 .includes((type)));
+      //         return true;
+      //       }
+      //       return false;
+      //     });
+      filtredCards = cards
+          .filter((item) => filterType
+              .some((type) => Object.values(item)
+                  .includes((type))));
     } else {
-      filtredTasks = cards;
+      filtredCards = cards;
     }
 
     switch (this._currentSortType) {
       case SortType.PRICE:
-        return filtredTasks.sort(sortPriceUp);
+        return filtredCards.sort(sortPriceUp);
       case SortType.POPULARITY:
-        return filtredTasks.sort(sortPriceDown);
+        return filtredCards.sort(sortPriceDown);
     }
 
     // switch (this._currentSortType) {
@@ -81,8 +91,8 @@ export default class Board {
     //   case SortType.POPULARITY:
     //     return this._cardsModel.getCards().slice().sort(sortPriceDown);
     // }
-    // console.log(filtredTasks);
-    return filtredTasks;
+    console.log(filtredCards);
+    return filtredCards;
   }
 
   _handleSortTypeChange(sortType) {
