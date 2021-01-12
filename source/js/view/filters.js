@@ -2,6 +2,7 @@ import AbstractView from "./abstract.js";
 import {FilterType, FilterTypeS} from "../const.js";
 
 const createFiltersElement = (currentFilterType) => {
+  // console.log(currentFilterType);
   // console.log(JSON.stringify(currentFilterType));
   // console.log(JSON.stringify(FilterType.ELECTRO));
   // console.log(JSON.stringify(currentFilterType) === JSON.stringify(FilterType.ELECTRO));
@@ -41,7 +42,7 @@ const createFiltersElement = (currentFilterType) => {
                 type="checkbox"
                 name="filters-form-type"
                 id="filters-form-type-value-1"
-                data-filter-type="${FilterType.ACOUSTIC}"
+                data-filter-type-gitar="${FilterType.ACOUSTIC}"
                 >
             <label for="filters-form-type-value-1">Акустические гитары</label>
           </div>
@@ -51,7 +52,7 @@ const createFiltersElement = (currentFilterType) => {
                 type="checkbox"
                 name="filters-form-type"
                 id="filters-form-type-value-2"
-                data-filter-type="${FilterType.ELECTRO}"
+                data-filter-type-gitar="${FilterType.ELECTRO}"
                 >
             <label for="filters-form-type-value-2">Электрогитары</label>
           </div>
@@ -61,7 +62,7 @@ const createFiltersElement = (currentFilterType) => {
                 type="checkbox"
                 name="filters-form-type"
                 id="filters-form-type-value-3"
-                data-filter-type="${FilterType.UKULELE}"
+                data-filter-type-gitar="${FilterType.UKULELE}"
                 >
             <label for="filters-form-type-value-3">Укулеле</label>
           </div>
@@ -76,7 +77,7 @@ const createFiltersElement = (currentFilterType) => {
                 type="checkbox"
                 name="filters-form-amount"
                 id="4"
-                data-filter-type="${FilterTypeS.FOUR}"
+                data-filter-type-strings="${FilterTypeS.FOUR}"
                 >
             <span>4</span>
           </label>
@@ -86,7 +87,7 @@ const createFiltersElement = (currentFilterType) => {
                 type="checkbox"
                 name="filters-form-amount"
                 id="6"
-                data-filter-type="${FilterTypeS.SIX}"
+                data-filter-type-strings="${FilterTypeS.SIX}"
                 >
             <span>6</span>
           </label>
@@ -96,7 +97,7 @@ const createFiltersElement = (currentFilterType) => {
                 type="checkbox"
                 name="filters-form-amount"
                 id="7"
-                data-filter-type="${FilterTypeS.SEVEN}"
+                data-filter-type-strings="${FilterTypeS.SEVEN}"
                 >
             <span>7</span>
           </label>
@@ -106,7 +107,7 @@ const createFiltersElement = (currentFilterType) => {
                 type="checkbox"
                 name="filters-form-amount"
                 id="12"
-                data-filter-type="${FilterTypeS.TWELVE}"
+                data-filter-type-strings="${FilterTypeS.TWELVE}"
                 ${JSON.stringify(currentFilterType) === JSON.stringify(FilterType.ELECTRO) ? `disabled` : ``}
                 >
             <span>12</span>
@@ -121,28 +122,42 @@ export default class Filters extends AbstractView {
   constructor(currentFilterType) {
     super();
     // this.filters = filters;
-    this.currentFilterType = currentFilterType;
     // console.log(currentFilterType);
+    this._currentFilterType = currentFilterType;
 
     this._filterTypeChangeHandler = this._filterTypeChangeHandler.bind(this);
   }
 
   getTemplate() {
-    return createFiltersElement(this.currentFilterType);
+    return createFiltersElement(this._currentFilterType);
   }
 
   _filterTypeChangeHandler(evt) {
     evt.preventDefault();
     let options = {};
-    let optionsTypeArray = [];
-    document.querySelectorAll(`input[type='checkbox']`)
-        .forEach((chbx) => chbx.checked === true ? optionsTypeArray
-            .push(chbx.dataset.filterType) : null);
-    options.type = optionsTypeArray;
-    // console.log(optionsTypeArray);
+    // let options1 = {};
+    let optionsTypeGitarArray = [];
+    // let optionsTypeGitarArray1 = [];
+    let optionsTypeStringArray = [];
 
-    this._callback.filterTypeChange(optionsTypeArray);
+    // optionsTypeGitarArray1.push(evt.target.dataset.filterTypeGitar);
+    // console.log(optionsTypeGitarArray1);
+
+    // options1.type = optionsTypeGitarArray1;
+    // console.log(options1);
+
+    document.querySelectorAll(`input[type='checkbox']`)
+        .forEach((chbx) => chbx.checked === true && !chbx.dataset.filterTypeStrings ? optionsTypeGitarArray
+            .push(chbx.dataset.filterTypeGitar) : null);
+    options.type = optionsTypeGitarArray;
+
+    document.querySelectorAll(`input[type='checkbox']`)
+        .forEach((chbx) => chbx.checked === true && !chbx.dataset.filterTypeGitar ? optionsTypeStringArray
+            .push(chbx.dataset.filterTypeStrings) : null);
+    options.stringAmount = optionsTypeStringArray;
+
     // this._callback.filterTypeChange(evt.target.dataset.filterType);
+    this._callback.filterTypeChange(options);
   }
 
   setFilterTypeChangeHandler(callback) {

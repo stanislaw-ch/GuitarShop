@@ -6,3 +6,15 @@ export const filter = {
   [FilterType.ELECTRO]: (cards) => cards.filter((card) => card.type === FilterType.ELECTRO),
   [FilterType.UKULELE]: (cards) => cards.filter((card) => card.type === FilterType.UKULELE),
 };
+
+export const filtredCardsByKey = (targetArray, filters) => {
+  const filterKeys = Object.keys(filters);
+  return targetArray.filter((eachObj) => {
+    return filterKeys.every((eachKey) => {
+      if (!filters[eachKey].length) {
+        return true;
+      }
+      return filters[eachKey].includes(eachObj[eachKey]);
+    });
+  });
+};

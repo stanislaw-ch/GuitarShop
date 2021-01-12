@@ -1,7 +1,7 @@
 import AbstractView from "./abstract.js";
 import {MenuItem} from "../const.js";
 
-const createSiteMenuTemplate = (currentMenuType) => {
+const createSiteMenuTemplate = () => {
   return `<nav class="main-nav">
     <div class="container">
       <div class="main-nav__wrapper">
@@ -11,7 +11,7 @@ const createSiteMenuTemplate = (currentMenuType) => {
           </svg>
         </a>
         <ul class="main-nav__list site-list">
-          <li class="site-list__item ${currentMenuType === MenuItem.CARDS ? `site-list__item--active` : ``}">
+          <li class="site-list__item">
             <a href="#" data-menu-type="${MenuItem.CARDS}">Каталог</a>
           </li>
           <li class="site-list__item">
@@ -44,7 +44,7 @@ const createSiteMenuTemplate = (currentMenuType) => {
             </a>
           </li>
           <li class="user-list__item user-list__item--basket">
-            <a href="#" data-menu-type="${MenuItem.BASKET}">
+            <a href="#">
               <span class="visually-hidden">Корзина</span>
               <svg width="16" height="18" data-menu-type="${MenuItem.BASKET}">
                 <use xlink:href="img/sprite.svg#icon_basket"></use>
@@ -60,10 +60,10 @@ const createSiteMenuTemplate = (currentMenuType) => {
 };
 
 export default class SiteMenu extends AbstractView {
-  constructor(currentMenuType) {
+  constructor() {
     super();
     // console.log(currentMenuType);
-    this._currentMenuType = currentMenuType;
+    // this._currentMenuType = currentMenuType;
     this._menuClickHandler = this._menuClickHandler.bind(this);
   }
 
@@ -72,9 +72,8 @@ export default class SiteMenu extends AbstractView {
   }
 
   _menuClickHandler(evt) {
-    // if (evt.target.tagName === `A`) {
+    // if (evt.target.tagName === `SVG`) {
     evt.preventDefault();
-    // console.log(evt.target.dataset.menuType);
     this._callback.menuClick(evt.target.dataset.menuType);
     // }
   }

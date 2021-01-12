@@ -18,6 +18,7 @@ export const FilterType = {
   SIX: `6`,
   SEVEN: `7`,
   TWELVE: `12`,
+  type: `электрогитара`
 };
 
 export const FilterTypeS = {

@@ -1,7 +1,7 @@
 import FilterView from "../view/filters.js";
 import {render, RenderPosition, remove} from "../utils/render.js";
 // import {filter} from "../utils/filter.js";
-import {FilterType} from "../const.js";
+// import {FilterType} from "../const.js";
 
 export default class Filter {
   constructor(filterContainer, filterModel, cardsModel) {
@@ -18,6 +18,7 @@ export default class Filter {
 
   init() {
     this._currentFilter = this._filterModel.getFilter();
+    // console.log(this._currentFilter);
 
     // const filters = this._getFilters();
     const prevFilterComponent = this._filterComponent;
@@ -27,8 +28,7 @@ export default class Filter {
     this._filterComponent.setFilterTypeChangeHandler(this._handleFilterTypeChange);
 
     if (prevFilterComponent === null) {
-      // console.log(this._filterContainer);
-      render(this._filterContainer, this._filterComponent, RenderPosition.BEFOREEND);
+      render(this._filterContainer, this._filterComponent, RenderPosition.AFTERBEGIN);
       return;
     }
 
@@ -50,7 +50,6 @@ export default class Filter {
   }
 
   _handleFilterTypeChange(filterType) {
-    // console.log(filterType);
     if (this._currentFilter === filterType) {
       return;
     }
@@ -61,19 +60,19 @@ export default class Filter {
   _getFilters() {
     // const cards = this._cardsModel.getCards();
 
-    return [
-      {
-        type: FilterType.ALL
-      },
-      {
-        type: FilterType.ELECTRO,
-      },
-      {
-        type: FilterType.ACOUSTIC,
-      },
-      {
-        type: FilterType.UKULELE
-      },
+    // return [
+    //   {
+    //     type: FilterType.ALL
+    //   },
+    //   {
+    //     type: FilterType.ELECTRO,
+    //   },
+    //   {
+    //     type: FilterType.ACOUSTIC,
+    //   },
+    //   {
+    //     type: FilterType.UKULELE
+    //   },
     // {
     //   type: FilterType.REPEATING,
     //   name: `Repeating`,
@@ -84,6 +83,6 @@ export default class Filter {
     //   name: `Archive`,
     //   count: filter[FilterType.ARCHIVE](cards).length
     // }
-    ];
+    // ];
   }
 }

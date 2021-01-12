@@ -1,4 +1,5 @@
 import AbstractView from "./abstract.js";
+import {MenuItem} from "../const.js";
 
 const createCatalogPopUpSuccessElement = () => {
   return `<section class="modal">
@@ -7,7 +8,7 @@ const createCatalogPopUpSuccessElement = () => {
 
     <div class="modal__content">
       <div class="modal__buttons-wrapper">
-        <button class="modal__button modal__button--to-basket">Перейти в корзину</button>
+        <button class="modal__button modal__button--to-basket" data-menu-type="${MenuItem.BASKET}">Перейти в корзину</button>
         <button class="modal__button modal__button--to-shoping">Продолжить покупки</button>
       </div>
       <button class="modal__close" type="button">
@@ -33,7 +34,7 @@ export default class CatalogPopUpSuccess extends AbstractView {
 
   _toBasketClickHandler(evt) {
     evt.preventDefault();
-    this._callback.toBasketClick();
+    this._callback.toBasketClick(evt.target.dataset.menuType);
   }
 
   _toShoppingClickHandler(evt) {

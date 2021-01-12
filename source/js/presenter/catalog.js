@@ -4,18 +4,22 @@ import CatalogListView from "../view/catalog-list.js";
 import CatalogPaginationView from "../view/catalog-pagination.js";
 
 import CardPresenter from "../presenter/card.js";
+import BasketPresenter from "../presenter/basket.js";
+import FilterPresenter from "../presenter/filter.js";
 
 import {render, RenderPosition, remove} from "../utils/render.js";
 import {sortPriceUp, sortPriceDown} from "../utils/card.js";
 import {SortType} from "../const.js";
-// import {filter} from "../utils/filter.js";
+import {filtredCardsByKey} from "../utils/filter.js";
+import {MenuItem} from "../const.js";
 
 const CARD_COUNT_PER_STEP = 9;
 
 export default class Board {
-  constructor(catalogContainer, cardsModel, filterModel) {
+  constructor(catalogContainer, cardsModel, filterModel, siteMenuModel) {
     this._cardsModel = cardsModel;
     this._filterModel = filterModel;
+    this._siteMenuModel = siteMenuModel;
     this._catalogContainer = catalogContainer;
     this._renderedCardsCount = CARD_COUNT_PER_STEP;
     this._currentSortType = SortType.DEFAULT;
@@ -25,9 +29,13 @@ export default class Board {
     this._cataloglistComponent = new CatalogListView();
     this._catalogPaginationComponent = new CatalogPaginationView();
 
+    this._filterPresenter = new FilterPresenter(this._catalogContainer, this._filterModel, this._cardsModel);
+
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
+    this._handleMenuModel = this._handleMenuModel.bind(this);
     // this._handleModeChange = this._handleModeChange.bind(this);
+    this._siteMenuModel.addObserver(this._handleMenuModel);
   }
 
   init() {
@@ -55,25 +63,10 @@ export default class Board {
     const filterType = this._filterModel.getFilter();
     const cards = this._cardsModel.getCards();
 
-    console.log(filterType);
-
     let filtredCards = null;
 
     if (filterType.length !== 0) {
-      // filtredCards = cards
-      //     .filter((item) => {
-      //       if (filterType.includes(item.type) || filterType.includes(item.type).some()) {
-      //         filterType
-      //             .some((type) => Object.values(item)
-      //                 .includes((type)));
-      //         return true;
-      //       }
-      //       return false;
-      //     });
-      filtredCards = cards
-          .filter((item) => filterType
-              .some((type) => Object.values(item)
-                  .includes((type))));
+      filtredCards = filtredCardsByKey(cards, filterType);
     } else {
       filtredCards = cards;
     }
@@ -85,13 +78,6 @@ export default class Board {
         return filtredCards.sort(sortPriceDown);
     }
 
-    // switch (this._currentSortType) {
-    //   case SortType.PRICE:
-    //     return this._cardsModel.getCards().slice().sort(sortPriceUp);
-    //   case SortType.POPULARITY:
-    //     return this._cardsModel.getCards().slice().sort(sortPriceDown);
-    // }
-    console.log(filtredCards);
     return filtredCards;
   }
 
@@ -111,6 +97,29 @@ export default class Board {
     this._renderBoard();
   }
 
+
+  _handleMenuModel(menuItem) {
+    switch (menuItem) {
+      case MenuItem.CARDS:
+
+        this.destroy();
+        this.init();
+        this._basketPresenter.destroy();
+        break;
+      case MenuItem.BASKET:
+        this.destroy();
+        this._filterPresenter.destroy();
+
+        const siteMainElement = document.querySelector(`.page-main`);
+        const siteMainContainerElement = siteMainElement.querySelector(`.container`);
+
+        this._basketPresenter = new BasketPresenter(siteMainContainerElement);
+
+        this._basketPresenter.init();
+        break;
+    }
+  }
+
   _renderSort() {
     if (this._catalogSortComponent !== null) {
       this._catalogSortComponent = null;
@@ -123,7 +132,7 @@ export default class Board {
   }
 
   _renderCard(card) {
-    const cardPresenter = new CardPresenter(this._cataloglistComponent);
+    const cardPresenter = new CardPresenter(this._cataloglistComponent, this._siteMenuModel);
     cardPresenter.init(card);
     this._cardPresenter[card.id] = cardPresenter;
   }
@@ -149,9 +158,6 @@ export default class Board {
     if (resetRenderedCardsCount) {
       this._renderedCardsCount = CARD_COUNT_PER_STEP;
     } else {
-      // На случай, если перерисовка доски вызвана
-      // уменьшением количества задач (например, удаление или перенос в архив)
-      // нужно скорректировать число показанных задач
       this._renderedCardsCount = Math.min(cardCount, this._renderedCardsCount);
     }
 
@@ -169,16 +175,17 @@ export default class Board {
     //   return;
     // }
 
-    this._renderSort();
+    if (this._filterPresenter !== null) {
+      this._filterPresenter.init();
+    }
 
-    // Теперь, когда _renderBoard рендерит доску не только на старте,
-    // но и по ходу работы приложения, нужно заменить
-    // константу TASK_COUNT_PER_STEP на свойство _renderedTaskCount,
-    // чтобы в случае перерисовки сохранить N-показанных карточек
+    this._renderSort();
     this._renderCards(cards.slice(0, Math.min(cardCount, this._renderedCardsCount)));
 
     // if (cardCount > this._renderedCardsCount) {
     this._renderPagination();
+
+
     // }
   }
 }

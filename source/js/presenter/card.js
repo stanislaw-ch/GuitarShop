@@ -4,10 +4,10 @@ import CatalogPopUpSuccessView from "../view/catalog-popUp-success.js";
 import {render, RenderPosition, remove} from "../utils/render.js";
 
 export default class Card {
-  constructor(catalogListContainer, changeMode) {
+  constructor(catalogListContainer, siteMenuModel) {
     this._catalogListContainer = catalogListContainer;
     this._catalogPopUpContainer = document.querySelector(`body`);
-    this._changeMode = changeMode;
+    this._siteMenuModel = siteMenuModel;
 
     this._catalogItemComponent = null;
     this._catalogPopUpAddComponent = null;
@@ -21,10 +21,11 @@ export default class Card {
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
   }
 
-  init(catalogCards) {
-    this._catalogCards = catalogCards;
+  init(catalogCard) {
+    this._catalogCard = catalogCard;
+    this._cardBasket = {};
 
-    this._catalogItemComponent = new CatalogItemView(catalogCards);
+    this._catalogItemComponent = new CatalogItemView(catalogCard);
 
     this._catalogItemComponent.setAddClickHandler(this._handleAddToBasketClick);
 
@@ -68,7 +69,7 @@ export default class Card {
   }
 
   _handleAddToBasketClick() {
-    this._catalogPopUpAddComponent = new CatalogPopUpAddView(this._catalogCards);
+    this._catalogPopUpAddComponent = new CatalogPopUpAddView(this._catalogCard);
 
     this._catalogPopUpAddComponent.setCloseClickHandler(this._handleCloseClick);
     this._catalogPopUpAddComponent.setAddClickHandler(this._handleAddToBasketPopUpClick);
@@ -88,10 +89,14 @@ export default class Card {
 
     render(this._catalogPopUpContainer, this._catalogPopUpSuccessComponent, RenderPosition.AFTERBEGIN);
     document.addEventListener(`keydown`, this._escKeyDownHandler);
+
+    this._cardBasket = new Array(Object.assign({}, this._catalogCard));
+    // console.log(this._cardBasket);
   }
 
-  _handleAddToBasketPopUpSuccesClick() {
+  _handleAddToBasketPopUpSuccesClick(menuItem) {
     this._removePopUpSuccessComponent();
+    this._siteMenuModel.setMenuItem(menuItem);
   }
 
   _handleToShoppingPopUpClick() {

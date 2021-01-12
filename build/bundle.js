@@ -119,6 +119,7 @@ const FilterType = {
   SIX: `6`,
   SEVEN: `7`,
   TWELVE: `12`,
+  type: `электрогитара`
 };
 
 const FilterTypeS = {
@@ -152,18 +153,16 @@ const MenuItem = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _view_site_menu_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./view/site-menu.js */ "./source/js/view/site-menu.js");
-/* harmony import */ var _view_breadcrumbs_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./view/breadcrumbs.js */ "./source/js/view/breadcrumbs.js");
-/* harmony import */ var _view_catalog_section_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./view/catalog-section.js */ "./source/js/view/catalog-section.js");
-/* harmony import */ var _view_catalog_section_wrapper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./view/catalog-section-wrapper.js */ "./source/js/view/catalog-section-wrapper.js");
-/* harmony import */ var _view_basket_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./view/basket.js */ "./source/js/view/basket.js");
-/* harmony import */ var _presenter_catalog_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./presenter/catalog.js */ "./source/js/presenter/catalog.js");
-/* harmony import */ var _presenter_filter_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./presenter/filter.js */ "./source/js/presenter/filter.js");
-/* harmony import */ var _model_cards_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./model/cards.js */ "./source/js/model/cards.js");
-/* harmony import */ var _model_filter_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./model/filter.js */ "./source/js/model/filter.js");
-/* harmony import */ var _mock_json_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./mock/json.js */ "./source/js/mock/json.js");
-/* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./utils/render.js */ "./source/js/utils/render.js");
-/* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./const.js */ "./source/js/const.js");
+/* harmony import */ var _view_breadcrumbs_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./view/breadcrumbs.js */ "./source/js/view/breadcrumbs.js");
+/* harmony import */ var _view_catalog_section_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./view/catalog-section.js */ "./source/js/view/catalog-section.js");
+/* harmony import */ var _view_catalog_section_wrapper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./view/catalog-section-wrapper.js */ "./source/js/view/catalog-section-wrapper.js");
+/* harmony import */ var _presenter_site_menu_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./presenter/site-menu.js */ "./source/js/presenter/site-menu.js");
+/* harmony import */ var _presenter_catalog_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./presenter/catalog.js */ "./source/js/presenter/catalog.js");
+/* harmony import */ var _model_cards_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./model/cards.js */ "./source/js/model/cards.js");
+/* harmony import */ var _model_filter_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./model/filter.js */ "./source/js/model/filter.js");
+/* harmony import */ var _model_site_menu_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./model/site-menu.js */ "./source/js/model/site-menu.js");
+/* harmony import */ var _mock_json_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./mock/json.js */ "./source/js/mock/json.js");
+/* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./utils/render.js */ "./source/js/utils/render.js");
 
 
 
@@ -176,58 +175,26 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+const cardsModel = new _model_cards_js__WEBPACK_IMPORTED_MODULE_5__["default"]();
+cardsModel.setCards(_mock_json_js__WEBPACK_IMPORTED_MODULE_8__["default"]);
 
-
-// const PRODUCT_COUNT = 10;
-// const cards = new Array(PRODUCT_COUNT).fill().map(generateProduct);
-
-const cardsModel = new _model_cards_js__WEBPACK_IMPORTED_MODULE_7__["default"]();
-cardsModel.setCards(_mock_json_js__WEBPACK_IMPORTED_MODULE_9__["default"]);
-
-const filterModel = new _model_filter_js__WEBPACK_IMPORTED_MODULE_8__["default"]();
-const siteMenuComponent = new _view_site_menu_js__WEBPACK_IMPORTED_MODULE_0__["default"]();
-const siteCatalogSectionComponent = new _view_catalog_section_js__WEBPACK_IMPORTED_MODULE_2__["default"]();
-const siteCatalogSectionWrapperComponent = new _view_catalog_section_wrapper_js__WEBPACK_IMPORTED_MODULE_3__["default"]();
-const siteBasketComponent = new _view_basket_js__WEBPACK_IMPORTED_MODULE_4__["default"]();
+const filterModel = new _model_filter_js__WEBPACK_IMPORTED_MODULE_6__["default"]();
+const siteMenuModel = new _model_site_menu_js__WEBPACK_IMPORTED_MODULE_7__["default"]();
+const siteCatalogSectionComponent = new _view_catalog_section_js__WEBPACK_IMPORTED_MODULE_1__["default"]();
+const siteCatalogSectionWrapperComponent = new _view_catalog_section_wrapper_js__WEBPACK_IMPORTED_MODULE_2__["default"]();
 
 const siteHeaderElement = document.querySelector(`.page-header`);
 const siteMainElement = document.querySelector(`.page-main`);
 const siteMainContainerElement = siteMainElement.querySelector(`.container`);
 
-Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_10__["render"])(siteHeaderElement, siteMenuComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_10__["RenderPosition"].AFTERBEGIN);
-Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_10__["render"])(siteMainContainerElement, new _view_breadcrumbs_js__WEBPACK_IMPORTED_MODULE_1__["default"](), _utils_render_js__WEBPACK_IMPORTED_MODULE_10__["RenderPosition"].BEFOREEND);
-Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_10__["render"])(siteMainContainerElement, siteCatalogSectionComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_10__["RenderPosition"].BEFOREEND);
-Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_10__["render"])(siteCatalogSectionComponent, siteCatalogSectionWrapperComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_10__["RenderPosition"].BEFOREEND);
+Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_9__["render"])(siteMainContainerElement, new _view_breadcrumbs_js__WEBPACK_IMPORTED_MODULE_0__["default"](), _utils_render_js__WEBPACK_IMPORTED_MODULE_9__["RenderPosition"].BEFOREEND);
+Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_9__["render"])(siteMainContainerElement, siteCatalogSectionComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_9__["RenderPosition"].BEFOREEND);
+Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_9__["render"])(siteCatalogSectionComponent, siteCatalogSectionWrapperComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_9__["RenderPosition"].BEFOREEND);
 
-const catalogPresenter = new _presenter_catalog_js__WEBPACK_IMPORTED_MODULE_5__["default"](siteCatalogSectionWrapperComponent, cardsModel, filterModel);
-const filterPresenter = new _presenter_filter_js__WEBPACK_IMPORTED_MODULE_6__["default"](siteCatalogSectionWrapperComponent, filterModel, cardsModel);
+const catalogPresenter = new _presenter_catalog_js__WEBPACK_IMPORTED_MODULE_4__["default"](siteCatalogSectionWrapperComponent, cardsModel, filterModel, siteMenuModel);
+const siteMenuPresenter = new _presenter_site_menu_js__WEBPACK_IMPORTED_MODULE_3__["default"](siteHeaderElement, siteMenuModel);
 
-// siteMenuComponent.setMenuItem(MenuItem.CARDS);
-
-const handleSiteMenuClick = (menuItem) => {
-  switch (menuItem) {
-    case _const_js__WEBPACK_IMPORTED_MODULE_11__["MenuItem"].CARDS:
-      Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_10__["render"])(siteMainContainerElement, siteCatalogSectionComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_10__["RenderPosition"].BEFOREEND);
-      Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_10__["render"])(siteCatalogSectionComponent, siteCatalogSectionWrapperComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_10__["RenderPosition"].BEFOREEND);
-      filterPresenter.init();
-      catalogPresenter.init();
-      Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_10__["remove"])(siteBasketComponent);
-      break;
-    case _const_js__WEBPACK_IMPORTED_MODULE_11__["MenuItem"].BASKET:
-      filterPresenter.destroy();
-      catalogPresenter.destroy();
-      Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_10__["remove"])(siteCatalogSectionComponent);
-      Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_10__["remove"])(siteCatalogSectionWrapperComponent);
-      Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_10__["render"])(siteMainContainerElement, siteBasketComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_10__["RenderPosition"].BEFOREEND);
-      // statisticsComponent = new StatisticsView(tasksModel.getTasks());
-      // render(siteMainElement, statisticsComponent, RenderPosition.BEFOREEND);
-      break;
-  }
-};
-
-siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
-
-filterPresenter.init();
+siteMenuPresenter.init();
 catalogPresenter.init();
 
 
@@ -464,6 +431,94 @@ class Filter extends _utils_observer_js__WEBPACK_IMPORTED_MODULE_0__["default"] 
 
 /***/ }),
 
+/***/ "./source/js/model/site-menu.js":
+/*!**************************************!*\
+  !*** ./source/js/model/site-menu.js ***!
+  \**************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return SiteMenu; });
+/* harmony import */ var _utils_observer_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/observer.js */ "./source/js/utils/observer.js");
+/* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../const.js */ "./source/js/const.js");
+
+
+
+class SiteMenu extends _utils_observer_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  constructor() {
+    super();
+    this._activeItem = _const_js__WEBPACK_IMPORTED_MODULE_1__["MenuItem"].CARDS;
+  }
+
+  setMenuItem(itemType) {
+    this._activeItem = itemType;
+    this._notify(itemType);
+  }
+
+  getMenuItem() {
+    return this._activeItem;
+  }
+}
+
+
+/***/ }),
+
+/***/ "./source/js/presenter/basket.js":
+/*!***************************************!*\
+  !*** ./source/js/presenter/basket.js ***!
+  \***************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Basket; });
+/* harmony import */ var _view_basket_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../view/basket.js */ "./source/js/view/basket.js");
+/* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/render.js */ "./source/js/utils/render.js");
+
+
+
+class Basket {
+  constructor(basketContainer) {
+    this._basketContainer = basketContainer;
+    // this._basketModel = basketModel;
+    // this._cardsModel = cardsModel;
+    this._currentFilter = null;
+
+    this._basketComponent = null;
+
+    // this._handleModelEvent = this._handleModelEvent.bind(this);
+    // this._handleFilterTypeChange = this._handleFilterTypeChange.bind(this);
+  }
+
+  init() {
+    this._basketComponent = new _view_basket_js__WEBPACK_IMPORTED_MODULE_0__["default"]();
+
+    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_1__["render"])(this._basketContainer, this._basketComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_1__["RenderPosition"].BEFOREEND);
+
+    // this._cardsModel.addObserver(this._handleModelEvent);
+    // this._basketModel.addObserver(this._handleModelEvent);
+  }
+
+  destroy() {
+    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_1__["remove"])(this._basketComponent);
+
+    this._basketComponent = null;
+
+    // this._cardsModel.removeObserver(this._handleModelEvent);
+    // this._basketModel.removeObserver(this._handleModelEvent);
+  }
+
+  _handleModelEvent() {
+    this.init();
+  }
+}
+
+
+/***/ }),
+
 /***/ "./source/js/presenter/card.js":
 /*!*************************************!*\
   !*** ./source/js/presenter/card.js ***!
@@ -484,10 +539,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class Card {
-  constructor(catalogListContainer, changeMode) {
+  constructor(catalogListContainer, siteMenuModel) {
     this._catalogListContainer = catalogListContainer;
     this._catalogPopUpContainer = document.querySelector(`body`);
-    this._changeMode = changeMode;
+    this._siteMenuModel = siteMenuModel;
 
     this._catalogItemComponent = null;
     this._catalogPopUpAddComponent = null;
@@ -501,10 +556,11 @@ class Card {
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
   }
 
-  init(catalogCards) {
-    this._catalogCards = catalogCards;
+  init(catalogCard) {
+    this._catalogCard = catalogCard;
+    this._cardBasket = {};
 
-    this._catalogItemComponent = new _view_catalog_item_js__WEBPACK_IMPORTED_MODULE_0__["default"](catalogCards);
+    this._catalogItemComponent = new _view_catalog_item_js__WEBPACK_IMPORTED_MODULE_0__["default"](catalogCard);
 
     this._catalogItemComponent.setAddClickHandler(this._handleAddToBasketClick);
 
@@ -548,7 +604,7 @@ class Card {
   }
 
   _handleAddToBasketClick() {
-    this._catalogPopUpAddComponent = new _view_catalog_popUp_add_js__WEBPACK_IMPORTED_MODULE_1__["default"](this._catalogCards);
+    this._catalogPopUpAddComponent = new _view_catalog_popUp_add_js__WEBPACK_IMPORTED_MODULE_1__["default"](this._catalogCard);
 
     this._catalogPopUpAddComponent.setCloseClickHandler(this._handleCloseClick);
     this._catalogPopUpAddComponent.setAddClickHandler(this._handleAddToBasketPopUpClick);
@@ -568,10 +624,14 @@ class Card {
 
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_3__["render"])(this._catalogPopUpContainer, this._catalogPopUpSuccessComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_3__["RenderPosition"].AFTERBEGIN);
     document.addEventListener(`keydown`, this._escKeyDownHandler);
+
+    this._cardBasket = new Array(Object.assign({}, this._catalogCard));
+    // console.log(this._cardBasket);
   }
 
-  _handleAddToBasketPopUpSuccesClick() {
+  _handleAddToBasketPopUpSuccesClick(menuItem) {
     this._removePopUpSuccessComponent();
+    this._siteMenuModel.setMenuItem(menuItem);
   }
 
   _handleToShoppingPopUpClick() {
@@ -597,9 +657,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _view_catalog_list_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../view/catalog-list.js */ "./source/js/view/catalog-list.js");
 /* harmony import */ var _view_catalog_pagination_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../view/catalog-pagination.js */ "./source/js/view/catalog-pagination.js");
 /* harmony import */ var _presenter_card_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../presenter/card.js */ "./source/js/presenter/card.js");
-/* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/render.js */ "./source/js/utils/render.js");
-/* harmony import */ var _utils_card_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/card.js */ "./source/js/utils/card.js");
-/* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../const.js */ "./source/js/const.js");
+/* harmony import */ var _presenter_basket_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../presenter/basket.js */ "./source/js/presenter/basket.js");
+/* harmony import */ var _presenter_filter_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../presenter/filter.js */ "./source/js/presenter/filter.js");
+/* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../utils/render.js */ "./source/js/utils/render.js");
+/* harmony import */ var _utils_card_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../utils/card.js */ "./source/js/utils/card.js");
+/* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../const.js */ "./source/js/const.js");
+/* harmony import */ var _utils_filter_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../utils/filter.js */ "./source/js/utils/filter.js");
 
 
 
@@ -610,31 +673,39 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-// import {filter} from "../utils/filter.js";
+
+
+
+
 
 const CARD_COUNT_PER_STEP = 9;
 
 class Board {
-  constructor(catalogContainer, cardsModel, filterModel) {
+  constructor(catalogContainer, cardsModel, filterModel, siteMenuModel) {
     this._cardsModel = cardsModel;
     this._filterModel = filterModel;
+    this._siteMenuModel = siteMenuModel;
     this._catalogContainer = catalogContainer;
     this._renderedCardsCount = CARD_COUNT_PER_STEP;
-    this._currentSortType = _const_js__WEBPACK_IMPORTED_MODULE_7__["SortType"].DEFAULT;
+    this._currentSortType = _const_js__WEBPACK_IMPORTED_MODULE_9__["SortType"].DEFAULT;
     this._cardPresenter = {};
 
     this._catalogComponent = new _view_catalog_board_js__WEBPACK_IMPORTED_MODULE_0__["default"]();
     this._cataloglistComponent = new _view_catalog_list_js__WEBPACK_IMPORTED_MODULE_2__["default"]();
     this._catalogPaginationComponent = new _view_catalog_pagination_js__WEBPACK_IMPORTED_MODULE_3__["default"]();
 
+    this._filterPresenter = new _presenter_filter_js__WEBPACK_IMPORTED_MODULE_6__["default"](this._catalogContainer, this._filterModel, this._cardsModel);
+
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
+    this._handleMenuModel = this._handleMenuModel.bind(this);
     // this._handleModeChange = this._handleModeChange.bind(this);
+    this._siteMenuModel.addObserver(this._handleMenuModel);
   }
 
   init() {
-    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_5__["render"])(this._catalogContainer, this._catalogComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_5__["RenderPosition"].BEFOREEND);
-    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_5__["render"])(this._catalogComponent, this._cataloglistComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_5__["RenderPosition"].BEFOREEND);
+    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["render"])(this._catalogContainer, this._catalogComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_7__["RenderPosition"].BEFOREEND);
+    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["render"])(this._catalogComponent, this._cataloglistComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_7__["RenderPosition"].BEFOREEND);
 
     this._cardsModel.addObserver(this._handleModelEvent);
     this._filterModel.addObserver(this._handleModelEvent);
@@ -646,8 +717,8 @@ class Board {
     // console.log(2);
     this._clearBoard({resetRenderedCardsCount: true, resetSortType: true});
 
-    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_5__["remove"])(this._cataloglistComponent);
-    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_5__["remove"])(this._catalogComponent);
+    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["remove"])(this._cataloglistComponent);
+    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["remove"])(this._catalogComponent);
 
     this._cardsModel.removeObserver(this._handleModelEvent);
     this._filterModel.removeObserver(this._handleModelEvent);
@@ -657,43 +728,21 @@ class Board {
     const filterType = this._filterModel.getFilter();
     const cards = this._cardsModel.getCards();
 
-    console.log(filterType);
-
     let filtredCards = null;
 
     if (filterType.length !== 0) {
-      // filtredCards = cards
-      //     .filter((item) => {
-      //       if (filterType.includes(item.type) || filterType.includes(item.type).some()) {
-      //         filterType
-      //             .some((type) => Object.values(item)
-      //                 .includes((type)));
-      //         return true;
-      //       }
-      //       return false;
-      //     });
-      filtredCards = cards
-          .filter((item) => filterType
-              .some((type) => Object.values(item)
-                  .includes((type))));
+      filtredCards = Object(_utils_filter_js__WEBPACK_IMPORTED_MODULE_10__["filtredCardsByKey"])(cards, filterType);
     } else {
       filtredCards = cards;
     }
 
     switch (this._currentSortType) {
-      case _const_js__WEBPACK_IMPORTED_MODULE_7__["SortType"].PRICE:
-        return filtredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_6__["sortPriceUp"]);
-      case _const_js__WEBPACK_IMPORTED_MODULE_7__["SortType"].POPULARITY:
-        return filtredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_6__["sortPriceDown"]);
+      case _const_js__WEBPACK_IMPORTED_MODULE_9__["SortType"].PRICE:
+        return filtredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_8__["sortPriceUp"]);
+      case _const_js__WEBPACK_IMPORTED_MODULE_9__["SortType"].POPULARITY:
+        return filtredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_8__["sortPriceDown"]);
     }
 
-    // switch (this._currentSortType) {
-    //   case SortType.PRICE:
-    //     return this._cardsModel.getCards().slice().sort(sortPriceUp);
-    //   case SortType.POPULARITY:
-    //     return this._cardsModel.getCards().slice().sort(sortPriceDown);
-    // }
-    console.log(filtredCards);
     return filtredCards;
   }
 
@@ -713,6 +762,29 @@ class Board {
     this._renderBoard();
   }
 
+
+  _handleMenuModel(menuItem) {
+    switch (menuItem) {
+      case _const_js__WEBPACK_IMPORTED_MODULE_9__["MenuItem"].CARDS:
+
+        this.destroy();
+        this.init();
+        this._basketPresenter.destroy();
+        break;
+      case _const_js__WEBPACK_IMPORTED_MODULE_9__["MenuItem"].BASKET:
+        this.destroy();
+        this._filterPresenter.destroy();
+
+        const siteMainElement = document.querySelector(`.page-main`);
+        const siteMainContainerElement = siteMainElement.querySelector(`.container`);
+
+        this._basketPresenter = new _presenter_basket_js__WEBPACK_IMPORTED_MODULE_5__["default"](siteMainContainerElement);
+
+        this._basketPresenter.init();
+        break;
+    }
+  }
+
   _renderSort() {
     if (this._catalogSortComponent !== null) {
       this._catalogSortComponent = null;
@@ -721,11 +793,11 @@ class Board {
     this._catalogSortComponent = new _view_catalog_sort_js__WEBPACK_IMPORTED_MODULE_1__["default"](this._currentSortType);
     this._catalogSortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
 
-    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_5__["render"])(this._catalogComponent, this._catalogSortComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_5__["RenderPosition"].AFTERBEGIN);
+    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["render"])(this._catalogComponent, this._catalogSortComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_7__["RenderPosition"].AFTERBEGIN);
   }
 
   _renderCard(card) {
-    const cardPresenter = new _presenter_card_js__WEBPACK_IMPORTED_MODULE_4__["default"](this._cataloglistComponent);
+    const cardPresenter = new _presenter_card_js__WEBPACK_IMPORTED_MODULE_4__["default"](this._cataloglistComponent, this._siteMenuModel);
     cardPresenter.init(card);
     this._cardPresenter[card.id] = cardPresenter;
   }
@@ -735,7 +807,7 @@ class Board {
   }
 
   _renderPagination() {
-    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_5__["render"])(this._catalogComponent, this._catalogPaginationComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_5__["RenderPosition"].BEFOREEND);
+    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["render"])(this._catalogComponent, this._catalogPaginationComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_7__["RenderPosition"].BEFOREEND);
   }
 
   _clearBoard({resetRenderedCardsCount = false, resetSortType = false} = {}) {
@@ -746,19 +818,16 @@ class Board {
         .forEach((presenter) => presenter.destroy());
     this._cardPresenter = {};
 
-    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_5__["remove"])(this._catalogSortComponent);
+    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["remove"])(this._catalogSortComponent);
 
     if (resetRenderedCardsCount) {
       this._renderedCardsCount = CARD_COUNT_PER_STEP;
     } else {
-      // На случай, если перерисовка доски вызвана
-      // уменьшением количества задач (например, удаление или перенос в архив)
-      // нужно скорректировать число показанных задач
       this._renderedCardsCount = Math.min(cardCount, this._renderedCardsCount);
     }
 
     if (resetSortType) {
-      this._currentSortType = _const_js__WEBPACK_IMPORTED_MODULE_7__["SortType"].DEFAULT;
+      this._currentSortType = _const_js__WEBPACK_IMPORTED_MODULE_9__["SortType"].DEFAULT;
     }
   }
 
@@ -771,16 +840,17 @@ class Board {
     //   return;
     // }
 
-    this._renderSort();
+    if (this._filterPresenter !== null) {
+      this._filterPresenter.init();
+    }
 
-    // Теперь, когда _renderBoard рендерит доску не только на старте,
-    // но и по ходу работы приложения, нужно заменить
-    // константу TASK_COUNT_PER_STEP на свойство _renderedTaskCount,
-    // чтобы в случае перерисовки сохранить N-показанных карточек
+    this._renderSort();
     this._renderCards(cards.slice(0, Math.min(cardCount, this._renderedCardsCount)));
 
     // if (cardCount > this._renderedCardsCount) {
     this._renderPagination();
+
+
     // }
   }
 }
@@ -800,11 +870,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Filter; });
 /* harmony import */ var _view_filters_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../view/filters.js */ "./source/js/view/filters.js");
 /* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/render.js */ "./source/js/utils/render.js");
-/* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../const.js */ "./source/js/const.js");
 
 
 // import {filter} from "../utils/filter.js";
-
+// import {FilterType} from "../const.js";
 
 class Filter {
   constructor(filterContainer, filterModel, cardsModel) {
@@ -821,6 +890,7 @@ class Filter {
 
   init() {
     this._currentFilter = this._filterModel.getFilter();
+    // console.log(this._currentFilter);
 
     // const filters = this._getFilters();
     const prevFilterComponent = this._filterComponent;
@@ -830,8 +900,7 @@ class Filter {
     this._filterComponent.setFilterTypeChangeHandler(this._handleFilterTypeChange);
 
     if (prevFilterComponent === null) {
-      // console.log(this._filterContainer);
-      Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_1__["render"])(this._filterContainer, this._filterComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_1__["RenderPosition"].BEFOREEND);
+      Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_1__["render"])(this._filterContainer, this._filterComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_1__["RenderPosition"].AFTERBEGIN);
       return;
     }
 
@@ -853,7 +922,6 @@ class Filter {
   }
 
   _handleFilterTypeChange(filterType) {
-    // console.log(filterType);
     if (this._currentFilter === filterType) {
       return;
     }
@@ -864,19 +932,19 @@ class Filter {
   _getFilters() {
     // const cards = this._cardsModel.getCards();
 
-    return [
-      {
-        type: _const_js__WEBPACK_IMPORTED_MODULE_2__["FilterType"].ALL
-      },
-      {
-        type: _const_js__WEBPACK_IMPORTED_MODULE_2__["FilterType"].ELECTRO,
-      },
-      {
-        type: _const_js__WEBPACK_IMPORTED_MODULE_2__["FilterType"].ACOUSTIC,
-      },
-      {
-        type: _const_js__WEBPACK_IMPORTED_MODULE_2__["FilterType"].UKULELE
-      },
+    // return [
+    //   {
+    //     type: FilterType.ALL
+    //   },
+    //   {
+    //     type: FilterType.ELECTRO,
+    //   },
+    //   {
+    //     type: FilterType.ACOUSTIC,
+    //   },
+    //   {
+    //     type: FilterType.UKULELE
+    //   },
     // {
     //   type: FilterType.REPEATING,
     //   name: `Repeating`,
@@ -887,8 +955,78 @@ class Filter {
     //   name: `Archive`,
     //   count: filter[FilterType.ARCHIVE](cards).length
     // }
-    ];
+    // ];
   }
+}
+
+
+/***/ }),
+
+/***/ "./source/js/presenter/site-menu.js":
+/*!******************************************!*\
+  !*** ./source/js/presenter/site-menu.js ***!
+  \******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return SiteMenu; });
+/* harmony import */ var _view_site_menu_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../view/site-menu.js */ "./source/js/view/site-menu.js");
+/* harmony import */ var _view_catalog_popUp_success_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../view/catalog-popUp-success.js */ "./source/js/view/catalog-popUp-success.js");
+/* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/render.js */ "./source/js/utils/render.js");
+
+
+
+
+class SiteMenu {
+  constructor(siteMenuContainer, siteMenuModel) {
+    this._siteMenuContainer = siteMenuContainer;
+    this._siteMenuModel = siteMenuModel;
+    this._currentFilter = null;
+
+    this._siteMenuComponent = new _view_site_menu_js__WEBPACK_IMPORTED_MODULE_0__["default"]();
+
+    this._catalogPopUpSuccessComponent = new _view_catalog_popUp_success_js__WEBPACK_IMPORTED_MODULE_1__["default"]();
+
+    this._handleSiteMenuChange = this._handleSiteMenuChange.bind(this);
+  }
+
+  init() {
+    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_2__["render"])(this._siteMenuContainer, this._siteMenuComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_2__["RenderPosition"].AFTERBEGIN);
+
+    this._siteMenuComponent.setMenuClickHandler(this._handleSiteMenuChange);
+  }
+
+  _handleSiteMenuChange(menuItem) {
+    this._currentMenuItem = this._siteMenuModel.getMenuItem();
+    if (this._currentMenuItem === menuItem || menuItem === null) {
+      return;
+    }
+
+    this._siteMenuComponent.getElement()
+        .querySelector(`[data-menu-type="${this._currentMenuItem}"]`)
+        .parentElement.classList.remove(`site-list__item--active`);
+
+    this._siteMenuComponent.getElement()
+        .querySelector(`[data-menu-type="${menuItem}"]`)
+        .parentElement.classList.add(`site-list__item--active`);
+
+    this._siteMenuModel.setMenuItem(menuItem);
+  }
+
+  // destroy() {
+  //   remove(this._siteMenuComponent);
+
+  //   this._siteMenuComponent = null;
+
+  //   this._cardsModel.removeObserver(this._handleModelEvent);
+  //   this._siteMenuModel.removeObserver(this._handleModelEvent);
+  // }
+
+  // _handleModelEvent() {
+  //   this.init();
+  // }
 }
 
 
@@ -912,6 +1050,42 @@ const sortPriceUp = (pointA, pointB) => Number(pointA.price) > Number(pointB.pri
 
 const sortPopularityDown = (pointA, pointB) => Number(pointA.reviewAmount) > Number(pointB.reviewAmount) ? 1 : -1;
 const sortPopularityUp = (pointA, pointB) => Number(pointA.reviewAmount) > Number(pointB.reviewAmount) ? -1 : 1;
+
+
+/***/ }),
+
+/***/ "./source/js/utils/filter.js":
+/*!***********************************!*\
+  !*** ./source/js/utils/filter.js ***!
+  \***********************************/
+/*! exports provided: filter, filtredCardsByKey */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "filter", function() { return filter; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "filtredCardsByKey", function() { return filtredCardsByKey; });
+/* harmony import */ var _const__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../const */ "./source/js/const.js");
+
+
+const filter = {
+  [_const__WEBPACK_IMPORTED_MODULE_0__["FilterType"].ALL]: (cards) => cards.filter((card) => card),
+  [_const__WEBPACK_IMPORTED_MODULE_0__["FilterType"].ACOUSTIC]: (cards) => cards.filter((card) => card.type === _const__WEBPACK_IMPORTED_MODULE_0__["FilterType"].ACOUSTIC),
+  [_const__WEBPACK_IMPORTED_MODULE_0__["FilterType"].ELECTRO]: (cards) => cards.filter((card) => card.type === _const__WEBPACK_IMPORTED_MODULE_0__["FilterType"].ELECTRO),
+  [_const__WEBPACK_IMPORTED_MODULE_0__["FilterType"].UKULELE]: (cards) => cards.filter((card) => card.type === _const__WEBPACK_IMPORTED_MODULE_0__["FilterType"].UKULELE),
+};
+
+const filtredCardsByKey = (targetArray, filters) => {
+  const filterKeys = Object.keys(filters);
+  return targetArray.filter((eachObj) => {
+    return filterKeys.every((eachKey) => {
+      if (!filters[eachKey].length) {
+        return true;
+      }
+      return filters[eachKey].includes(eachObj[eachKey]);
+    });
+  });
+};
 
 
 /***/ }),
@@ -1464,6 +1638,8 @@ class CatalogPopUpAdd extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CatalogPopUpSuccess; });
 /* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./source/js/view/abstract.js");
+/* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../const.js */ "./source/js/const.js");
+
 
 
 const createCatalogPopUpSuccessElement = () => {
@@ -1473,7 +1649,7 @@ const createCatalogPopUpSuccessElement = () => {
 
     <div class="modal__content">
       <div class="modal__buttons-wrapper">
-        <button class="modal__button modal__button--to-basket">Перейти в корзину</button>
+        <button class="modal__button modal__button--to-basket" data-menu-type="${_const_js__WEBPACK_IMPORTED_MODULE_1__["MenuItem"].BASKET}">Перейти в корзину</button>
         <button class="modal__button modal__button--to-shoping">Продолжить покупки</button>
       </div>
       <button class="modal__close" type="button">
@@ -1499,7 +1675,7 @@ class CatalogPopUpSuccess extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["def
 
   _toBasketClickHandler(evt) {
     evt.preventDefault();
-    this._callback.toBasketClick();
+    this._callback.toBasketClick(evt.target.dataset.menuType);
   }
 
   _toShoppingClickHandler(evt) {
@@ -1681,6 +1857,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const createFiltersElement = (currentFilterType) => {
+  // console.log(currentFilterType);
   // console.log(JSON.stringify(currentFilterType));
   // console.log(JSON.stringify(FilterType.ELECTRO));
   // console.log(JSON.stringify(currentFilterType) === JSON.stringify(FilterType.ELECTRO));
@@ -1720,7 +1897,7 @@ const createFiltersElement = (currentFilterType) => {
                 type="checkbox"
                 name="filters-form-type"
                 id="filters-form-type-value-1"
-                data-filter-type="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ACOUSTIC}"
+                data-filter-type-gitar="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ACOUSTIC}"
                 >
             <label for="filters-form-type-value-1">Акустические гитары</label>
           </div>
@@ -1730,7 +1907,7 @@ const createFiltersElement = (currentFilterType) => {
                 type="checkbox"
                 name="filters-form-type"
                 id="filters-form-type-value-2"
-                data-filter-type="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ELECTRO}"
+                data-filter-type-gitar="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ELECTRO}"
                 >
             <label for="filters-form-type-value-2">Электрогитары</label>
           </div>
@@ -1740,7 +1917,7 @@ const createFiltersElement = (currentFilterType) => {
                 type="checkbox"
                 name="filters-form-type"
                 id="filters-form-type-value-3"
-                data-filter-type="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].UKULELE}"
+                data-filter-type-gitar="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].UKULELE}"
                 >
             <label for="filters-form-type-value-3">Укулеле</label>
           </div>
@@ -1755,7 +1932,7 @@ const createFiltersElement = (currentFilterType) => {
                 type="checkbox"
                 name="filters-form-amount"
                 id="4"
-                data-filter-type="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].FOUR}"
+                data-filter-type-strings="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].FOUR}"
                 >
             <span>4</span>
           </label>
@@ -1765,7 +1942,7 @@ const createFiltersElement = (currentFilterType) => {
                 type="checkbox"
                 name="filters-form-amount"
                 id="6"
-                data-filter-type="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].SIX}"
+                data-filter-type-strings="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].SIX}"
                 >
             <span>6</span>
           </label>
@@ -1775,7 +1952,7 @@ const createFiltersElement = (currentFilterType) => {
                 type="checkbox"
                 name="filters-form-amount"
                 id="7"
-                data-filter-type="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].SEVEN}"
+                data-filter-type-strings="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].SEVEN}"
                 >
             <span>7</span>
           </label>
@@ -1785,7 +1962,7 @@ const createFiltersElement = (currentFilterType) => {
                 type="checkbox"
                 name="filters-form-amount"
                 id="12"
-                data-filter-type="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].TWELVE}"
+                data-filter-type-strings="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].TWELVE}"
                 ${JSON.stringify(currentFilterType) === JSON.stringify(_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ELECTRO) ? `disabled` : ``}
                 >
             <span>12</span>
@@ -1800,28 +1977,42 @@ class Filters extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
   constructor(currentFilterType) {
     super();
     // this.filters = filters;
-    this.currentFilterType = currentFilterType;
     // console.log(currentFilterType);
+    this._currentFilterType = currentFilterType;
 
     this._filterTypeChangeHandler = this._filterTypeChangeHandler.bind(this);
   }
 
   getTemplate() {
-    return createFiltersElement(this.currentFilterType);
+    return createFiltersElement(this._currentFilterType);
   }
 
   _filterTypeChangeHandler(evt) {
     evt.preventDefault();
     let options = {};
-    let optionsTypeArray = [];
-    document.querySelectorAll(`input[type='checkbox']`)
-        .forEach((chbx) => chbx.checked === true ? optionsTypeArray
-            .push(chbx.dataset.filterType) : null);
-    options.type = optionsTypeArray;
-    // console.log(optionsTypeArray);
+    // let options1 = {};
+    let optionsTypeGitarArray = [];
+    // let optionsTypeGitarArray1 = [];
+    let optionsTypeStringArray = [];
 
-    this._callback.filterTypeChange(optionsTypeArray);
+    // optionsTypeGitarArray1.push(evt.target.dataset.filterTypeGitar);
+    // console.log(optionsTypeGitarArray1);
+
+    // options1.type = optionsTypeGitarArray1;
+    // console.log(options1);
+
+    document.querySelectorAll(`input[type='checkbox']`)
+        .forEach((chbx) => chbx.checked === true && !chbx.dataset.filterTypeStrings ? optionsTypeGitarArray
+            .push(chbx.dataset.filterTypeGitar) : null);
+    options.type = optionsTypeGitarArray;
+
+    document.querySelectorAll(`input[type='checkbox']`)
+        .forEach((chbx) => chbx.checked === true && !chbx.dataset.filterTypeGitar ? optionsTypeStringArray
+            .push(chbx.dataset.filterTypeStrings) : null);
+    options.stringAmount = optionsTypeStringArray;
+
     // this._callback.filterTypeChange(evt.target.dataset.filterType);
+    this._callback.filterTypeChange(options);
   }
 
   setFilterTypeChangeHandler(callback) {
@@ -1848,7 +2039,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const createSiteMenuTemplate = (currentMenuType) => {
+const createSiteMenuTemplate = () => {
   return `<nav class="main-nav">
     <div class="container">
       <div class="main-nav__wrapper">
@@ -1858,7 +2049,7 @@ const createSiteMenuTemplate = (currentMenuType) => {
           </svg>
         </a>
         <ul class="main-nav__list site-list">
-          <li class="site-list__item ${currentMenuType === _const_js__WEBPACK_IMPORTED_MODULE_1__["MenuItem"].CARDS ? `site-list__item--active` : ``}">
+          <li class="site-list__item">
             <a href="#" data-menu-type="${_const_js__WEBPACK_IMPORTED_MODULE_1__["MenuItem"].CARDS}">Каталог</a>
           </li>
           <li class="site-list__item">
@@ -1891,7 +2082,7 @@ const createSiteMenuTemplate = (currentMenuType) => {
             </a>
           </li>
           <li class="user-list__item user-list__item--basket">
-            <a href="#" data-menu-type="${_const_js__WEBPACK_IMPORTED_MODULE_1__["MenuItem"].BASKET}">
+            <a href="#">
               <span class="visually-hidden">Корзина</span>
               <svg width="16" height="18" data-menu-type="${_const_js__WEBPACK_IMPORTED_MODULE_1__["MenuItem"].BASKET}">
                 <use xlink:href="img/sprite.svg#icon_basket"></use>
@@ -1907,10 +2098,10 @@ const createSiteMenuTemplate = (currentMenuType) => {
 };
 
 class SiteMenu extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
-  constructor(currentMenuType) {
+  constructor() {
     super();
     // console.log(currentMenuType);
-    this._currentMenuType = currentMenuType;
+    // this._currentMenuType = currentMenuType;
     this._menuClickHandler = this._menuClickHandler.bind(this);
   }
 
@@ -1919,9 +2110,8 @@ class SiteMenu extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
   }
 
   _menuClickHandler(evt) {
-    // if (evt.target.tagName === `A`) {
+    // if (evt.target.tagName === `SVG`) {
     evt.preventDefault();
-    // console.log(evt.target.dataset.menuType);
     this._callback.menuClick(evt.target.dataset.menuType);
     // }
   }
