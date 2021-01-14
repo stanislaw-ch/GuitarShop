@@ -18,7 +18,7 @@ export default class Card {
 
     this._handleAddToBasketClick = this._handleAddToBasketClick.bind(this);
     this._handleAddToBasketPopUpClick = this._handleAddToBasketPopUpClick.bind(this);
-    this._handleAddToBasketPopUpSuccesClick = this._handleAddToBasketPopUpSuccesClick.bind(this);
+    this._handleAddToBasketPopUpSuccessClick = this._handleAddToBasketPopUpSuccessClick.bind(this);
     this._handleToShoppingPopUpClick = this._handleToShoppingPopUpClick.bind(this);
     this._handleCloseClick = this._handleCloseClick.bind(this);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
@@ -86,7 +86,7 @@ export default class Card {
     this._catalogPopUpSuccessComponent = new CatalogPopUpSuccessView();
 
     this._catalogPopUpSuccessComponent.setCloseClickHandler(this._handleCloseClick);
-    this._catalogPopUpSuccessComponent.setToBasketClickHandler(this._handleAddToBasketPopUpSuccesClick);
+    this._catalogPopUpSuccessComponent.setToBasketClickHandler(this._handleAddToBasketPopUpSuccessClick);
     this._catalogPopUpSuccessComponent.setToShoppingClickHandler(this._handleToShoppingPopUpClick);
     this._catalogPopUpSuccessComponent.setCloseClickHandler(this._handleCloseClick);
 
