@@ -1,7 +1,11 @@
 export const SortType = {
   DEFAULT: `default`,
   PRICE: `price`,
-  POPULARITY: `popularity`,
+  POPULARITY: `popularity`
+};
+
+export const OrderType = {
+  DEFAULT: `default`,
   UP: `up`,
   DOWN: `down`
 };

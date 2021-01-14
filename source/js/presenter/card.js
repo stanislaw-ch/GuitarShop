@@ -1,6 +1,7 @@
 import CatalogItemView from "../view/catalog-item.js";
 import CatalogPopUpAddView from "../view/catalog-popUp-add.js";
 import CatalogPopUpSuccessView from "../view/catalog-popUp-success.js";
+import SiteMenuView from "../view/site-menu.js";
 import {render, RenderPosition, remove} from "../utils/render.js";
 
 export default class Card {
@@ -12,6 +13,8 @@ export default class Card {
     this._catalogItemComponent = null;
     this._catalogPopUpAddComponent = null;
     this._catalogPopUpSuccessComponent = null;
+
+    this._siteMenuComponent = new SiteMenuView();
 
     this._handleAddToBasketClick = this._handleAddToBasketClick.bind(this);
     this._handleAddToBasketPopUpClick = this._handleAddToBasketPopUpClick.bind(this);
@@ -95,8 +98,10 @@ export default class Card {
   }
 
   _handleAddToBasketPopUpSuccesClick(menuItem) {
-    this._removePopUpSuccessComponent();
+    this._currentMenuItem = this._siteMenuModel.getMenuItem();
+
     this._siteMenuModel.setMenuItem(menuItem);
+    this._removePopUpSuccessComponent();
   }
 
   _handleToShoppingPopUpClick() {

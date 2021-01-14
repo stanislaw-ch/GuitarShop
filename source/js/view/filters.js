@@ -135,16 +135,8 @@ export default class Filters extends AbstractView {
   _filterTypeChangeHandler(evt) {
     evt.preventDefault();
     let options = {};
-    // let options1 = {};
     let optionsTypeGitarArray = [];
-    // let optionsTypeGitarArray1 = [];
     let optionsTypeStringArray = [];
-
-    // optionsTypeGitarArray1.push(evt.target.dataset.filterTypeGitar);
-    // console.log(optionsTypeGitarArray1);
-
-    // options1.type = optionsTypeGitarArray1;
-    // console.log(options1);
 
     document.querySelectorAll(`input[type='checkbox']`)
         .forEach((chbx) => chbx.checked === true && !chbx.dataset.filterTypeStrings ? optionsTypeGitarArray

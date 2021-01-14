@@ -1,5 +1,4 @@
 import SiteMenuView from "../view/site-menu.js";
-import CatalogPopUpSuccessView from "../view/catalog-popUp-success.js";
 import {render, RenderPosition} from "../utils/render.js";
 
 export default class SiteMenu {
@@ -9,8 +8,6 @@ export default class SiteMenu {
     this._currentFilter = null;
 
     this._siteMenuComponent = new SiteMenuView();
-
-    this._catalogPopUpSuccessComponent = new CatalogPopUpSuccessView();
 
     this._handleSiteMenuChange = this._handleSiteMenuChange.bind(this);
   }
@@ -23,6 +20,7 @@ export default class SiteMenu {
 
   _handleSiteMenuChange(menuItem) {
     this._currentMenuItem = this._siteMenuModel.getMenuItem();
+
     if (this._currentMenuItem === menuItem || menuItem === null) {
       return;
     }

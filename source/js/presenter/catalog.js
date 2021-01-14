@@ -8,8 +8,8 @@ import BasketPresenter from "../presenter/basket.js";
 import FilterPresenter from "../presenter/filter.js";
 
 import {render, RenderPosition, remove} from "../utils/render.js";
-import {sortPriceUp, sortPriceDown} from "../utils/card.js";
-import {SortType} from "../const.js";
+import {sortPriceUp, sortPriceDown, sortPopularityUp, sortPopularityDown} from "../utils/card.js";
+import {SortType, OrderType} from "../const.js";
 import {filtredCardsByKey} from "../utils/filter.js";
 import {MenuItem} from "../const.js";
 
@@ -23,6 +23,7 @@ export default class Board {
     this._catalogContainer = catalogContainer;
     this._renderedCardsCount = CARD_COUNT_PER_STEP;
     this._currentSortType = SortType.DEFAULT;
+    this._currentOrderType = OrderType.DEFAULT;
     this._cardPresenter = {};
 
     this._catalogComponent = new CatalogBoardView();
@@ -32,6 +33,7 @@ export default class Board {
     this._filterPresenter = new FilterPresenter(this._catalogContainer, this._filterModel, this._cardsModel);
 
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
+    this._handleOrderTypeChange = this._handleOrderTypeChange.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
     this._handleMenuModel = this._handleMenuModel.bind(this);
     // this._handleModeChange = this._handleModeChange.bind(this);
@@ -72,10 +74,40 @@ export default class Board {
     }
 
     switch (this._currentSortType) {
+      case SortType.DEFAULT:
+        if (this._currentOrderType === OrderType.UP) {
+          this._currentSortType = SortType.PRICE;
+          return filtredCards.sort(sortPopularityUp);
+        }
+        if (this._currentOrderType === OrderType.DOWN) {
+          this._currentSortType = SortType.PRICE;
+          return filtredCards.sort(sortPopularityDown);
+        }
+        break;
       case SortType.PRICE:
-        return filtredCards.sort(sortPriceUp);
+        if (this._currentOrderType === OrderType.DEFAULT) {
+          this._currentOrderType = OrderType.UP;
+          return filtredCards.sort(sortPriceUp);
+        }
+        if (this._currentOrderType === OrderType.UP) {
+          return filtredCards.sort(sortPriceUp);
+        }
+        if (this._currentOrderType === OrderType.DOWN) {
+          return filtredCards.sort(sortPriceDown);
+        }
+        break;
       case SortType.POPULARITY:
-        return filtredCards.sort(sortPriceDown);
+        if (this._currentOrderType === OrderType.DEFAULT) {
+          this._currentOrderType = OrderType.UP;
+          return filtredCards.sort(sortPopularityUp);
+        }
+        if (this._currentOrderType === OrderType.UP) {
+          return filtredCards.sort(sortPopularityUp);
+        }
+        if (this._currentOrderType === OrderType.DOWN) {
+          return filtredCards.sort(sortPopularityDown);
+        }
+        break;
     }
 
     return filtredCards;
@@ -87,6 +119,17 @@ export default class Board {
     }
 
     this._currentSortType = sortType;
+
+    this._clearBoard({resetRenderedCardsCount: true});
+    this._renderBoard();
+  }
+
+  _handleOrderTypeChange(orderType) {
+    if (this._currentOrderType === orderType) {
+      return;
+    }
+
+    this._currentOrderType = orderType;
 
     this._clearBoard({resetRenderedCardsCount: true});
     this._renderBoard();
@@ -125,8 +168,9 @@ export default class Board {
       this._catalogSortComponent = null;
     }
 
-    this._catalogSortComponent = new CatalogSortView(this._currentSortType);
+    this._catalogSortComponent = new CatalogSortView(this._currentSortType, this._currentOrderType);
     this._catalogSortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
+    this._catalogSortComponent.setOrderTypeChangeHandler(this._handleOrderTypeChange);
 
     render(this._catalogComponent, this._catalogSortComponent, RenderPosition.AFTERBEGIN);
   }
@@ -163,6 +207,7 @@ export default class Board {
 
     if (resetSortType) {
       this._currentSortType = SortType.DEFAULT;
+      this._currentOrderType = OrderType.DEFAULT;
     }
   }
 
