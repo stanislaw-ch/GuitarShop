@@ -638,7 +638,7 @@ class Card {
     // console.log(this._cardBasket);
   }
 
-  _handleAddToBasketPopUpSuccesClick(menuItem) {
+  _handleAddToBasketPopUpSuccessClick(menuItem) {
     this._currentMenuItem = this._siteMenuModel.getMenuItem();
 
     this._siteMenuModel.setMenuItem(menuItem);
@@ -703,7 +703,7 @@ class Board {
     this._cardPresenter = {};
 
     this._catalogComponent = new _view_catalog_board_js__WEBPACK_IMPORTED_MODULE_0__["default"]();
-    this._cataloglistComponent = new _view_catalog_list_js__WEBPACK_IMPORTED_MODULE_2__["default"]();
+    this._catalogListComponent = new _view_catalog_list_js__WEBPACK_IMPORTED_MODULE_2__["default"]();
     this._catalogPaginationComponent = new _view_catalog_pagination_js__WEBPACK_IMPORTED_MODULE_3__["default"]();
 
     this._filterPresenter = new _presenter_filter_js__WEBPACK_IMPORTED_MODULE_6__["default"](this._catalogContainer, this._filterModel, this._cardsModel);
@@ -718,7 +718,7 @@ class Board {
 
   init() {
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["render"])(this._catalogContainer, this._catalogComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_7__["RenderPosition"].BEFOREEND);
-    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["render"])(this._catalogComponent, this._cataloglistComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_7__["RenderPosition"].BEFOREEND);
+    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["render"])(this._catalogComponent, this._catalogListComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_7__["RenderPosition"].BEFOREEND);
 
     this._cardsModel.addObserver(this._handleModelEvent);
     this._filterModel.addObserver(this._handleModelEvent);
@@ -730,7 +730,7 @@ class Board {
     // console.log(2);
     this._clearBoard({resetRenderedCardsCount: true, resetSortType: true});
 
-    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["remove"])(this._cataloglistComponent);
+    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["remove"])(this._catalogListComponent);
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["remove"])(this._catalogComponent);
 
     this._cardsModel.removeObserver(this._handleModelEvent);
@@ -741,52 +741,52 @@ class Board {
     const filterType = this._filterModel.getFilter();
     const cards = this._cardsModel.getCards();
 
-    let filtredCards = null;
+    let filteredCards = null;
 
     if (filterType.length !== 0) {
-      filtredCards = Object(_utils_filter_js__WEBPACK_IMPORTED_MODULE_10__["filtredCardsByKey"])(cards, filterType);
+      filteredCards = Object(_utils_filter_js__WEBPACK_IMPORTED_MODULE_10__["filteredCardsByKey"])(cards, filterType);
     } else {
-      filtredCards = cards;
+      filteredCards = cards;
     }
 
     switch (this._currentSortType) {
       case _const_js__WEBPACK_IMPORTED_MODULE_9__["SortType"].DEFAULT:
         if (this._currentOrderType === _const_js__WEBPACK_IMPORTED_MODULE_9__["OrderType"].UP) {
           this._currentSortType = _const_js__WEBPACK_IMPORTED_MODULE_9__["SortType"].PRICE;
-          return filtredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_8__["sortPopularityUp"]);
+          return filteredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_8__["sortPopularityUp"]);
         }
         if (this._currentOrderType === _const_js__WEBPACK_IMPORTED_MODULE_9__["OrderType"].DOWN) {
           this._currentSortType = _const_js__WEBPACK_IMPORTED_MODULE_9__["SortType"].PRICE;
-          return filtredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_8__["sortPopularityDown"]);
+          return filteredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_8__["sortPopularityDown"]);
         }
         break;
       case _const_js__WEBPACK_IMPORTED_MODULE_9__["SortType"].PRICE:
         if (this._currentOrderType === _const_js__WEBPACK_IMPORTED_MODULE_9__["OrderType"].DEFAULT) {
           this._currentOrderType = _const_js__WEBPACK_IMPORTED_MODULE_9__["OrderType"].UP;
-          return filtredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_8__["sortPriceUp"]);
+          return filteredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_8__["sortPriceUp"]);
         }
         if (this._currentOrderType === _const_js__WEBPACK_IMPORTED_MODULE_9__["OrderType"].UP) {
-          return filtredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_8__["sortPriceUp"]);
+          return filteredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_8__["sortPriceUp"]);
         }
         if (this._currentOrderType === _const_js__WEBPACK_IMPORTED_MODULE_9__["OrderType"].DOWN) {
-          return filtredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_8__["sortPriceDown"]);
+          return filteredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_8__["sortPriceDown"]);
         }
         break;
       case _const_js__WEBPACK_IMPORTED_MODULE_9__["SortType"].POPULARITY:
         if (this._currentOrderType === _const_js__WEBPACK_IMPORTED_MODULE_9__["OrderType"].DEFAULT) {
           this._currentOrderType = _const_js__WEBPACK_IMPORTED_MODULE_9__["OrderType"].UP;
-          return filtredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_8__["sortPopularityUp"]);
+          return filteredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_8__["sortPopularityUp"]);
         }
         if (this._currentOrderType === _const_js__WEBPACK_IMPORTED_MODULE_9__["OrderType"].UP) {
-          return filtredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_8__["sortPopularityUp"]);
+          return filteredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_8__["sortPopularityUp"]);
         }
         if (this._currentOrderType === _const_js__WEBPACK_IMPORTED_MODULE_9__["OrderType"].DOWN) {
-          return filtredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_8__["sortPopularityDown"]);
+          return filteredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_8__["sortPopularityDown"]);
         }
         break;
     }
 
-    return filtredCards;
+    return filteredCards;
   }
 
   _handleSortTypeChange(sortType) {
@@ -852,7 +852,7 @@ class Board {
   }
 
   _renderCard(card) {
-    const cardPresenter = new _presenter_card_js__WEBPACK_IMPORTED_MODULE_4__["default"](this._cataloglistComponent, this._siteMenuModel);
+    const cardPresenter = new _presenter_card_js__WEBPACK_IMPORTED_MODULE_4__["default"](this._catalogListComponent, this._siteMenuModel);
     cardPresenter.init(card);
     this._cardPresenter[card.id] = cardPresenter;
   }
@@ -1111,13 +1111,13 @@ const sortPopularityUp = (pointA, pointB) => Number(pointA.reviewAmount) > Numbe
 /*!***********************************!*\
   !*** ./source/js/utils/filter.js ***!
   \***********************************/
-/*! exports provided: filter, filtredCardsByKey */
+/*! exports provided: filter, filteredCardsByKey */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "filter", function() { return filter; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "filtredCardsByKey", function() { return filtredCardsByKey; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "filteredCardsByKey", function() { return filteredCardsByKey; });
 /* harmony import */ var _const__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../const */ "./source/js/const.js");
 
 
@@ -1128,7 +1128,7 @@ const filter = {
   [_const__WEBPACK_IMPORTED_MODULE_0__["FilterType"].UKULELE]: (cards) => cards.filter((card) => card.type === _const__WEBPACK_IMPORTED_MODULE_0__["FilterType"].UKULELE),
 };
 
-const filtredCardsByKey = (targetArray, filters) => {
+const filteredCardsByKey = (targetArray, filters) => {
   const filterKeys = Object.keys(filters);
   return targetArray.filter((eachObj) => {
     return filterKeys.every((eachKey) => {
@@ -2052,16 +2052,16 @@ class Filters extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
   _filterTypeChangeHandler(evt) {
     evt.preventDefault();
     let options = {};
-    let optionsTypeGitarArray = [];
+    let optionsTypeGuitarArray = [];
     let optionsTypeStringArray = [];
 
     document.querySelectorAll(`input[type='checkbox']`)
-        .forEach((chbx) => chbx.checked === true && !chbx.dataset.filterTypeStrings ? optionsTypeGitarArray
-            .push(chbx.dataset.filterTypeGitar) : null);
-    options.type = optionsTypeGitarArray;
+        .forEach((chbx) => chbx.checked === true && !chbx.dataset.filterTypeStrings ? optionsTypeGuitarArray
+            .push(chbx.dataset.filterTypeGuitar) : null);
+    options.type = optionsTypeGuitarArray;
 
     document.querySelectorAll(`input[type='checkbox']`)
-        .forEach((chbx) => chbx.checked === true && !chbx.dataset.filterTypeGitar ? optionsTypeStringArray
+        .forEach((chbx) => chbx.checked === true && !chbx.dataset.filterTypeGuitar ? optionsTypeStringArray
             .push(chbx.dataset.filterTypeStrings) : null);
     options.stringAmount = optionsTypeStringArray;
 

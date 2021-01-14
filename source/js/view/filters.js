@@ -135,16 +135,16 @@ export default class Filters extends AbstractView {
   _filterTypeChangeHandler(evt) {
     evt.preventDefault();
     let options = {};
-    let optionsTypeGitarArray = [];
+    let optionsTypeGuitarArray = [];
     let optionsTypeStringArray = [];
 
     document.querySelectorAll(`input[type='checkbox']`)
-        .forEach((chbx) => chbx.checked === true && !chbx.dataset.filterTypeStrings ? optionsTypeGitarArray
-            .push(chbx.dataset.filterTypeGitar) : null);
-    options.type = optionsTypeGitarArray;
+        .forEach((chbx) => chbx.checked === true && !chbx.dataset.filterTypeStrings ? optionsTypeGuitarArray
+            .push(chbx.dataset.filterTypeGuitar) : null);
+    options.type = optionsTypeGuitarArray;
 
     document.querySelectorAll(`input[type='checkbox']`)
-        .forEach((chbx) => chbx.checked === true && !chbx.dataset.filterTypeGitar ? optionsTypeStringArray
+        .forEach((chbx) => chbx.checked === true && !chbx.dataset.filterTypeGuitar ? optionsTypeStringArray
             .push(chbx.dataset.filterTypeStrings) : null);
     options.stringAmount = optionsTypeStringArray;
 

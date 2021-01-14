@@ -10,7 +10,7 @@ import FilterPresenter from "../presenter/filter.js";
 import {render, RenderPosition, remove} from "../utils/render.js";
 import {sortPriceUp, sortPriceDown, sortPopularityUp, sortPopularityDown} from "../utils/card.js";
 import {SortType, OrderType} from "../const.js";
-import {filtredCardsByKey} from "../utils/filter.js";
+import {filteredCardsByKey} from "../utils/filter.js";
 import {MenuItem} from "../const.js";
 
 const CARD_COUNT_PER_STEP = 9;
@@ -27,7 +27,7 @@ export default class Board {
     this._cardPresenter = {};
 
     this._catalogComponent = new CatalogBoardView();
-    this._cataloglistComponent = new CatalogListView();
+    this._catalogListComponent = new CatalogListView();
     this._catalogPaginationComponent = new CatalogPaginationView();
 
     this._filterPresenter = new FilterPresenter(this._catalogContainer, this._filterModel, this._cardsModel);
@@ -42,7 +42,7 @@ export default class Board {
 
   init() {
     render(this._catalogContainer, this._catalogComponent, RenderPosition.BEFOREEND);
-    render(this._catalogComponent, this._cataloglistComponent, RenderPosition.BEFOREEND);
+    render(this._catalogComponent, this._catalogListComponent, RenderPosition.BEFOREEND);
 
     this._cardsModel.addObserver(this._handleModelEvent);
     this._filterModel.addObserver(this._handleModelEvent);
@@ -54,7 +54,7 @@ export default class Board {
     // console.log(2);
     this._clearBoard({resetRenderedCardsCount: true, resetSortType: true});
 
-    remove(this._cataloglistComponent);
+    remove(this._catalogListComponent);
     remove(this._catalogComponent);
 
     this._cardsModel.removeObserver(this._handleModelEvent);
@@ -65,52 +65,52 @@ export default class Board {
     const filterType = this._filterModel.getFilter();
     const cards = this._cardsModel.getCards();
 
-    let filtredCards = null;
+    let filteredCards = null;
 
     if (filterType.length !== 0) {
-      filtredCards = filtredCardsByKey(cards, filterType);
+      filteredCards = filteredCardsByKey(cards, filterType);
     } else {
-      filtredCards = cards;
+      filteredCards = cards;
     }
 
     switch (this._currentSortType) {
       case SortType.DEFAULT:
         if (this._currentOrderType === OrderType.UP) {
           this._currentSortType = SortType.PRICE;
-          return filtredCards.sort(sortPopularityUp);
+          return filteredCards.sort(sortPopularityUp);
         }
         if (this._currentOrderType === OrderType.DOWN) {
           this._currentSortType = SortType.PRICE;
-          return filtredCards.sort(sortPopularityDown);
+          return filteredCards.sort(sortPopularityDown);
         }
         break;
       case SortType.PRICE:
         if (this._currentOrderType === OrderType.DEFAULT) {
           this._currentOrderType = OrderType.UP;
-          return filtredCards.sort(sortPriceUp);
+          return filteredCards.sort(sortPriceUp);
         }
         if (this._currentOrderType === OrderType.UP) {
-          return filtredCards.sort(sortPriceUp);
+          return filteredCards.sort(sortPriceUp);
         }
         if (this._currentOrderType === OrderType.DOWN) {
-          return filtredCards.sort(sortPriceDown);
+          return filteredCards.sort(sortPriceDown);
         }
         break;
       case SortType.POPULARITY:
         if (this._currentOrderType === OrderType.DEFAULT) {
           this._currentOrderType = OrderType.UP;
-          return filtredCards.sort(sortPopularityUp);
+          return filteredCards.sort(sortPopularityUp);
         }
         if (this._currentOrderType === OrderType.UP) {
-          return filtredCards.sort(sortPopularityUp);
+          return filteredCards.sort(sortPopularityUp);
         }
         if (this._currentOrderType === OrderType.DOWN) {
-          return filtredCards.sort(sortPopularityDown);
+          return filteredCards.sort(sortPopularityDown);
         }
         break;
     }
 
-    return filtredCards;
+    return filteredCards;
   }
 
   _handleSortTypeChange(sortType) {
@@ -176,7 +176,7 @@ export default class Board {
   }
 
   _renderCard(card) {
-    const cardPresenter = new CardPresenter(this._cataloglistComponent, this._siteMenuModel);
+    const cardPresenter = new CardPresenter(this._catalogListComponent, this._siteMenuModel);
     cardPresenter.init(card);
     this._cardPresenter[card.id] = cardPresenter;
   }

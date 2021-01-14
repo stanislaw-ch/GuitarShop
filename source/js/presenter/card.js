@@ -97,7 +97,7 @@ export default class Card {
     // console.log(this._cardBasket);
   }
 
-  _handleAddToBasketPopUpSuccesClick(menuItem) {
+  _handleAddToBasketPopUpSuccessClick(menuItem) {
     this._currentMenuItem = this._siteMenuModel.getMenuItem();
 
     this._siteMenuModel.setMenuItem(menuItem);

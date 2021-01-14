@@ -7,7 +7,7 @@ export const filter = {
   [FilterType.UKULELE]: (cards) => cards.filter((card) => card.type === FilterType.UKULELE),
 };
 
-export const filtredCardsByKey = (targetArray, filters) => {
+export const filteredCardsByKey = (targetArray, filters) => {
   const filterKeys = Object.keys(filters);
   return targetArray.filter((eachObj) => {
     return filterKeys.every((eachKey) => {
