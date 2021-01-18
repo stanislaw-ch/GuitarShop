@@ -8,32 +8,40 @@ export default class Filter {
     this._filterContainer = filterContainer;
     this._filterModel = filterModel;
     this._cardsModel = cardsModel;
-    this._currentFilter = null;
 
+    this._currentFilter = {
+      type: [],
+      stringAmount: [],
+      price: []
+    };
     this._filterComponent = null;
 
-    this._handleModelEvent = this._handleModelEvent.bind(this);
+    // this._handleModelEvent = this._handleModelEvent.bind(this);
     this._handleFilterTypeChange = this._handleFilterTypeChange.bind(this);
+    this._handleFilterStringChange = this._handleFilterStringChange.bind(this);
+    this._handleFilterPriceChange = this._handleFilterPriceChange.bind(this);
   }
 
   init() {
+    console.log(`init`);
     this._currentFilter = this._filterModel.getFilter();
-    // console.log(this._currentFilter);
+    this._cards = this._cardsModel.getCards();
 
-    // const filters = this._getFilters();
     const prevFilterComponent = this._filterComponent;
 
-    this._filterComponent = new FilterView(this._currentFilter);
-    // this._filterComponent = new FilterView(filters, this._currentFilter);
+    this._filterComponent = new FilterView(this._currentFilter, this._cards);
     this._filterComponent.setFilterTypeChangeHandler(this._handleFilterTypeChange);
+    this._filterComponent.setFilterStringChangeHandler(this._handleFilterStringChange);
+    this._filterComponent.setFilterPriceChangeHandler(this._handleFilterPriceChange);
+
 
     if (prevFilterComponent === null) {
       render(this._filterContainer, this._filterComponent, RenderPosition.AFTERBEGIN);
       return;
     }
 
-    this._cardsModel.addObserver(this._handleModelEvent);
-    this._filterModel.addObserver(this._handleModelEvent);
+    // this._cardsModel.addObserver(this._handleModelEvent);
+    // this._filterModel.addObserver(this._handleModelEvent);
   }
 
   destroy() {
@@ -41,48 +49,36 @@ export default class Filter {
 
     this._filterComponent = null;
 
-    this._cardsModel.removeObserver(this._handleModelEvent);
-    this._filterModel.removeObserver(this._handleModelEvent);
+    // this._cardsModel.removeObserver(this._handleModelEvent);
+    // this._filterModel.removeObserver(this._handleModelEvent);
   }
 
-  _handleModelEvent() {
-    this.init();
+  // _handleModelEvent() {
+  //   console.log(`init`);
+  //   this.init();
+  // }
+
+  _handleFilterTypeChange(filterGuitarType) {
+    // if (filterGuitarType.length === 0) {
+    //   return;
+    // }
+    this._filterModel.setFilter(filterGuitarType, `type`);
   }
 
-  _handleFilterTypeChange(filterType) {
-    if (this._currentFilter === filterType) {
-      return;
-    }
+  _handleFilterStringChange(filterStringType) {
+    // if (filterStringType.length === 0) {
+    //   return;
+    // }
+    this._filterModel.setFilter(filterStringType, `stringAmount`);
+  }
 
-    this._filterModel.setFilter(filterType);
+  _handleFilterPriceChange(filterPriceType) {
+    // if (filterStringType.length === 0) {
+    //   return;
+    // }
+    this._filterModel.setFilter(filterPriceType, `price`);
   }
 
   _getFilters() {
-    // const cards = this._cardsModel.getCards();
-
-    // return [
-    //   {
-    //     type: FilterType.ALL
-    //   },
-    //   {
-    //     type: FilterType.ELECTRO,
-    //   },
-    //   {
-    //     type: FilterType.ACOUSTIC,
-    //   },
-    //   {
-    //     type: FilterType.UKULELE
-    //   },
-    // {
-    //   type: FilterType.REPEATING,
-    //   name: `Repeating`,
-    //   count: filter[FilterType.REPEATING](cards).length
-    // },
-    // {
-    //   type: FilterType.ARCHIVE,
-    //   name: `Archive`,
-    //   count: filter[FilterType.ARCHIVE](cards).length
-    // }
-    // ];
   }
 }

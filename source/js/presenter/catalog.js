@@ -10,7 +10,7 @@ import FilterPresenter from "../presenter/filter.js";
 import {render, RenderPosition, remove} from "../utils/render.js";
 import {sortPriceUp, sortPriceDown, sortPopularityUp, sortPopularityDown} from "../utils/card.js";
 import {SortType, OrderType} from "../const.js";
-import {filteredCardsByKey} from "../utils/filter.js";
+import {filteredCardsByType, filteredCardsByPrice} from "../utils/filter.js";
 import {MenuItem} from "../const.js";
 
 const CARD_COUNT_PER_STEP = 9;
@@ -51,7 +51,6 @@ export default class Board {
   }
 
   destroy() {
-    // console.log(2);
     this._clearBoard({resetRenderedCardsCount: true, resetSortType: true});
 
     remove(this._catalogListComponent);
@@ -67,11 +66,11 @@ export default class Board {
 
     let filteredCards = null;
 
-    if (filterType.length !== 0) {
-      filteredCards = filteredCardsByKey(cards, filterType);
-    } else {
-      filteredCards = cards;
-    }
+    filteredCards = cards.slice(0);
+    filteredCards = filteredCards
+        .filter((card) => filteredCardsByType(card.type, filterType.type))
+        .filter((card) => filteredCardsByType(card.stringAmount, filterType.stringAmount))
+        .filter((card) => filteredCardsByPrice(card.price, filterType.price));
 
     switch (this._currentSortType) {
       case SortType.DEFAULT:

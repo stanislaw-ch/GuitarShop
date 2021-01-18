@@ -17,12 +17,7 @@ export const OrderType = {
 export const FilterType = {
   ELECTRO: `электрогитара`,
   ACOUSTIC: `акустическая гитара`,
-  UKULELE: `укулеле`,
-  FOUR: `4`,
-  SIX: `6`,
-  SEVEN: `7`,
-  TWELVE: `12`,
-  type: `электрогитара`
+  UKULELE: `укулеле`
 };
 
 export const FilterTypeS = {
@@ -42,4 +37,10 @@ export const FilterTypeS = {
 export const MenuItem = {
   CARDS: `CARDS`,
   BASKET: `BASKET`
+};
+
+export const StringsAmount = {
+  ELECTRO: [`4`, `6`, `7`],
+  ACOUSTIC: [`6`, `7`, `12`],
+  UKULELE: [`4`]
 };

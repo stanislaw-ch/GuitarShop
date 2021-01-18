@@ -1,11 +1,43 @@
 import AbstractView from "./abstract.js";
-import {FilterType, FilterTypeS} from "../const.js";
+import {FilterType, FilterTypeS, StringsAmount} from "../const.js";
+import {filteredCardsByType} from "../utils/filter.js";
 
-const createFiltersElement = (currentFilterType) => {
-  // console.log(currentFilterType);
-  // console.log(JSON.stringify(currentFilterType));
-  // console.log(JSON.stringify(FilterType.ELECTRO));
-  // console.log(JSON.stringify(currentFilterType) === JSON.stringify(FilterType.ELECTRO));
+const createFiltersElement = (currentFilterType, cards) => {
+  let filteredGuitars = {};
+  let stringAmountAvailableList = [];
+  if (currentFilterType.type.length === 0) {
+    filteredGuitars = cards
+        .filter((item) => filteredCardsByType(item.type, currentFilterType.type));
+
+    stringAmountAvailableList = Array.from(new Set(filteredGuitars
+        .map((item) => item.stringAmount)));
+
+  }
+  filteredGuitars = currentFilterType.type;
+  const keys = Object.keys(FilterType);
+  let typeGuitar = [];
+  keys.filter((key) => (currentFilterType.type.forEach((type) => {
+    if (type.includes(FilterType[key])) {
+      // let arr = [];
+      // arr.push(FilterType[key]);
+      // typeGuitar[key] = arr;
+      return typeGuitar.push(key);
+    } else {
+      return false;
+    }
+  })));
+
+  typeGuitar.forEach((item) => {
+    stringAmountAvailableList.push(...StringsAmount[item]);
+    return stringAmountAvailableList;
+  });
+  stringAmountAvailableList = Array.from(new Set(stringAmountAvailableList));
+
+  console.log(stringAmountAvailableList);
+
+  const isStringsAvailable = (availableList, stringsCount) => {
+    return availableList.includes(stringsCount);
+  };
 
   return (`<div class="catalog__filters-column">
   <h2>Фильтр</h2>
@@ -42,7 +74,7 @@ const createFiltersElement = (currentFilterType) => {
                 type="checkbox"
                 name="filters-form-type"
                 id="filters-form-type-value-1"
-                data-filter-type-gitar="${FilterType.ACOUSTIC}"
+                data-filter-type-guitar="${FilterType.ACOUSTIC}"
                 >
             <label for="filters-form-type-value-1">Акустические гитары</label>
           </div>
@@ -52,7 +84,7 @@ const createFiltersElement = (currentFilterType) => {
                 type="checkbox"
                 name="filters-form-type"
                 id="filters-form-type-value-2"
-                data-filter-type-gitar="${FilterType.ELECTRO}"
+                data-filter-type-guitar="${FilterType.ELECTRO}"
                 >
             <label for="filters-form-type-value-2">Электрогитары</label>
           </div>
@@ -62,98 +94,126 @@ const createFiltersElement = (currentFilterType) => {
                 type="checkbox"
                 name="filters-form-type"
                 id="filters-form-type-value-3"
-                data-filter-type-gitar="${FilterType.UKULELE}"
+                data-filter-type-guitar="${FilterType.UKULELE}"
                 >
             <label for="filters-form-type-value-3">Укулеле</label>
           </div>
         </div>
       </fieldset>
       <fieldset>
-        <h3>Количество струн</h3>
-        <div class="catalog__filters-amount-wrapper">
-          <label>
-            <input
-                class="visually-hidden"
-                type="checkbox"
-                name="filters-form-amount"
-                id="4"
-                data-filter-type-strings="${FilterTypeS.FOUR}"
-                >
-            <span>4</span>
-          </label>
-          <label>
-            <input
-                class="visually-hidden"
-                type="checkbox"
-                name="filters-form-amount"
-                id="6"
-                data-filter-type-strings="${FilterTypeS.SIX}"
-                >
-            <span>6</span>
-          </label>
-          <label>
-            <input
-                class="visually-hidden"
-                type="checkbox"
-                name="filters-form-amount"
-                id="7"
-                data-filter-type-strings="${FilterTypeS.SEVEN}"
-                >
-            <span>7</span>
-          </label>
-          <label>
-            <input
-                class="visually-hidden"
-                type="checkbox"
-                name="filters-form-amount"
-                id="12"
-                data-filter-type-strings="${FilterTypeS.TWELVE}"
-                ${JSON.stringify(currentFilterType) === JSON.stringify(FilterType.ELECTRO) ? `disabled` : ``}
-                >
-            <span>12</span>
-          </label>
-        </div>
-      </fieldset>
-      <button type="submit" disabled="">показать</button>
+  <h3>Количество струн</h3>
+  <div class="catalog__filters-amount-wrapper">
+    <label>
+      <input
+          class="visually-hidden"
+          type="checkbox"
+          name="filters-form-amount"
+          id="4"
+          data-filter-type-strings="${FilterTypeS.FOUR}"
+          ${isStringsAvailable(stringAmountAvailableList, FilterTypeS.FOUR) ? `` : `disabled`}
+          >
+      <span>4</span>
+    </label>
+    <label>
+      <input
+          class="visually-hidden"
+          type="checkbox"
+          name="filters-form-amount"
+          id="6"
+          data-filter-type-strings="${FilterTypeS.SIX}"
+          ${isStringsAvailable(stringAmountAvailableList, FilterTypeS.SIX) ? `` : `disabled`}
+          >
+      <span>6</span>
+    </label>
+    <label>
+      <input
+          class="visually-hidden"
+          type="checkbox"
+          name="filters-form-amount"
+          id="7"
+          data-filter-type-strings="${FilterTypeS.SEVEN}"
+          ${isStringsAvailable(stringAmountAvailableList, FilterTypeS.SEVEN) ? `` : `disabled`}
+          >
+      <span>7</span>
+    </label>
+    <label>
+      <input
+          class="visually-hidden"
+          type="checkbox"
+          name="filters-form-amount"
+          id="12"
+          data-filter-type-strings="${FilterTypeS.TWELVE}"
+          ${isStringsAvailable(stringAmountAvailableList, FilterTypeS.TWELVE) ? `` : `disabled`}
+          >
+      <span>12</span>
+    </label>
+  </div>
+</fieldset>
+
     </form></div>`);
 };
 
 export default class Filters extends AbstractView {
-  constructor(currentFilterType) {
+  constructor(currentFilterType, cards) {
     super();
-    // this.filters = filters;
-    // console.log(currentFilterType);
     this._currentFilterType = currentFilterType;
+    this._cards = cards;
 
+    this._filterPriceChangeHandler = this._filterPriceChangeHandler.bind(this);
     this._filterTypeChangeHandler = this._filterTypeChangeHandler.bind(this);
+    this._filterStringChangeHandler = this._filterStringChangeHandler.bind(this);
+
   }
 
   getTemplate() {
-    return createFiltersElement(this._currentFilterType);
+    return createFiltersElement(this._currentFilterType, this._cards);
   }
 
   _filterTypeChangeHandler(evt) {
     evt.preventDefault();
-    let options = {};
     let optionsTypeGuitarArray = [];
+
+    document.querySelectorAll(`input[type='checkbox']`)
+        .forEach((checkbox) => checkbox.checked === true && !checkbox.dataset.filterTypeStrings ? optionsTypeGuitarArray
+            .push(checkbox.dataset.filterTypeGuitar) : null);
+
+    this._callback.filterTypeChange(optionsTypeGuitarArray);
+  }
+
+  _filterStringChangeHandler(evt) {
+    evt.preventDefault();
     let optionsTypeStringArray = [];
 
     document.querySelectorAll(`input[type='checkbox']`)
-        .forEach((chbx) => chbx.checked === true && !chbx.dataset.filterTypeStrings ? optionsTypeGuitarArray
-            .push(chbx.dataset.filterTypeGuitar) : null);
-    options.type = optionsTypeGuitarArray;
+        .forEach((checkbox) => checkbox.checked === true && !checkbox.dataset.filterTypeGuitar ? optionsTypeStringArray
+            .push(checkbox.dataset.filterTypeStrings) : null);
 
-    document.querySelectorAll(`input[type='checkbox']`)
-        .forEach((chbx) => chbx.checked === true && !chbx.dataset.filterTypeGuitar ? optionsTypeStringArray
-            .push(chbx.dataset.filterTypeStrings) : null);
-    options.stringAmount = optionsTypeStringArray;
+    this._callback.filterStringChange(optionsTypeStringArray);
+  }
 
-    // this._callback.filterTypeChange(evt.target.dataset.filterType);
-    this._callback.filterTypeChange(options);
+  _filterPriceChangeHandler(evt) {
+    evt.preventDefault();
+    let optionsPriceArray = [];
+
+    document.querySelectorAll(`input[type='number']`)
+        .forEach((checkbox) => optionsPriceArray
+            .push(checkbox.value));
+
+    this._callback.filterPriceChange(optionsPriceArray);
   }
 
   setFilterTypeChangeHandler(callback) {
     this._callback.filterTypeChange = callback;
     this.getElement().addEventListener(`change`, this._filterTypeChangeHandler);
+  }
+
+  setFilterStringChangeHandler(callback) {
+    this._callback.filterStringChange = callback;
+    this.getElement().addEventListener(`change`, this._filterStringChangeHandler);
+  }
+
+  setFilterPriceChangeHandler(callback) {
+    this._callback.filterPriceChange = callback;
+    this.getElement().addEventListener(`input`, this._filterPriceChangeHandler);
   }
 }

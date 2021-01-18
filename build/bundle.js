@@ -90,7 +90,7 @@
 /*!****************************!*\
   !*** ./source/js/const.js ***!
   \****************************/
-/*! exports provided: SortType, OrderType, FilterType, FilterTypeS, MenuItem */
+/*! exports provided: SortType, OrderType, FilterType, FilterTypeS, MenuItem, StringsAmount */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -100,6 +100,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FilterType", function() { return FilterType; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FilterTypeS", function() { return FilterTypeS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MenuItem", function() { return MenuItem; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "StringsAmount", function() { return StringsAmount; });
 const SortType = {
   DEFAULT: `default`,
   PRICE: `price`,
@@ -119,12 +120,7 @@ const OrderType = {
 const FilterType = {
   ELECTRO: `электрогитара`,
   ACOUSTIC: `акустическая гитара`,
-  UKULELE: `укулеле`,
-  FOUR: `4`,
-  SIX: `6`,
-  SEVEN: `7`,
-  TWELVE: `12`,
-  type: `электрогитара`
+  UKULELE: `укулеле`
 };
 
 const FilterTypeS = {
@@ -144,6 +140,12 @@ const FilterTypeS = {
 const MenuItem = {
   CARDS: `CARDS`,
   BASKET: `BASKET`
+};
+
+const StringsAmount = {
+  ELECTRO: [`4`, `6`, `7`],
+  ACOUSTIC: [`6`, `7`, `12`],
+  UKULELE: [`4`]
 };
 
 
@@ -419,11 +421,15 @@ __webpack_require__.r(__webpack_exports__);
 class Filter extends _utils_observer_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
   constructor() {
     super();
-    this._activeFilter = [];
+    this._activeFilter = {
+      type: [],
+      stringAmount: [],
+      price: []
+    };
   }
 
-  setFilter(filter) {
-    this._activeFilter = filter;
+  setFilter(filter, type) {
+    this._activeFilter[type] = filter;
     this._notify(filter);
   }
 
@@ -727,7 +733,6 @@ class Board {
   }
 
   destroy() {
-    // console.log(2);
     this._clearBoard({resetRenderedCardsCount: true, resetSortType: true});
 
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["remove"])(this._catalogListComponent);
@@ -743,11 +748,11 @@ class Board {
 
     let filteredCards = null;
 
-    if (filterType.length !== 0) {
-      filteredCards = Object(_utils_filter_js__WEBPACK_IMPORTED_MODULE_10__["filteredCardsByKey"])(cards, filterType);
-    } else {
-      filteredCards = cards;
-    }
+    filteredCards = cards.slice(0);
+    filteredCards = filteredCards
+        .filter((card) => Object(_utils_filter_js__WEBPACK_IMPORTED_MODULE_10__["filteredCardsByType"])(card.type, filterType.type))
+        .filter((card) => Object(_utils_filter_js__WEBPACK_IMPORTED_MODULE_10__["filteredCardsByType"])(card.stringAmount, filterType.stringAmount))
+        .filter((card) => Object(_utils_filter_js__WEBPACK_IMPORTED_MODULE_10__["filteredCardsByPrice"])(card.price, filterType.price));
 
     switch (this._currentSortType) {
       case _const_js__WEBPACK_IMPORTED_MODULE_9__["SortType"].DEFAULT:
@@ -936,32 +941,40 @@ class Filter {
     this._filterContainer = filterContainer;
     this._filterModel = filterModel;
     this._cardsModel = cardsModel;
-    this._currentFilter = null;
 
+    this._currentFilter = {
+      type: [],
+      stringAmount: [],
+      price: []
+    };
     this._filterComponent = null;
 
-    this._handleModelEvent = this._handleModelEvent.bind(this);
+    // this._handleModelEvent = this._handleModelEvent.bind(this);
     this._handleFilterTypeChange = this._handleFilterTypeChange.bind(this);
+    this._handleFilterStringChange = this._handleFilterStringChange.bind(this);
+    this._handleFilterPriceChange = this._handleFilterPriceChange.bind(this);
   }
 
   init() {
+    console.log(`init`);
     this._currentFilter = this._filterModel.getFilter();
-    // console.log(this._currentFilter);
+    this._cards = this._cardsModel.getCards();
 
-    // const filters = this._getFilters();
     const prevFilterComponent = this._filterComponent;
 
-    this._filterComponent = new _view_filters_js__WEBPACK_IMPORTED_MODULE_0__["default"](this._currentFilter);
-    // this._filterComponent = new FilterView(filters, this._currentFilter);
+    this._filterComponent = new _view_filters_js__WEBPACK_IMPORTED_MODULE_0__["default"](this._currentFilter, this._cards);
     this._filterComponent.setFilterTypeChangeHandler(this._handleFilterTypeChange);
+    this._filterComponent.setFilterStringChangeHandler(this._handleFilterStringChange);
+    this._filterComponent.setFilterPriceChangeHandler(this._handleFilterPriceChange);
+
 
     if (prevFilterComponent === null) {
       Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_1__["render"])(this._filterContainer, this._filterComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_1__["RenderPosition"].AFTERBEGIN);
       return;
     }
 
-    this._cardsModel.addObserver(this._handleModelEvent);
-    this._filterModel.addObserver(this._handleModelEvent);
+    // this._cardsModel.addObserver(this._handleModelEvent);
+    // this._filterModel.addObserver(this._handleModelEvent);
   }
 
   destroy() {
@@ -969,49 +982,37 @@ class Filter {
 
     this._filterComponent = null;
 
-    this._cardsModel.removeObserver(this._handleModelEvent);
-    this._filterModel.removeObserver(this._handleModelEvent);
+    // this._cardsModel.removeObserver(this._handleModelEvent);
+    // this._filterModel.removeObserver(this._handleModelEvent);
   }
 
-  _handleModelEvent() {
-    this.init();
+  // _handleModelEvent() {
+  //   console.log(`init`);
+  //   this.init();
+  // }
+
+  _handleFilterTypeChange(filterGuitarType) {
+    // if (filterGuitarType.length === 0) {
+    //   return;
+    // }
+    this._filterModel.setFilter(filterGuitarType, `type`);
   }
 
-  _handleFilterTypeChange(filterType) {
-    if (this._currentFilter === filterType) {
-      return;
-    }
+  _handleFilterStringChange(filterStringType) {
+    // if (filterStringType.length === 0) {
+    //   return;
+    // }
+    this._filterModel.setFilter(filterStringType, `stringAmount`);
+  }
 
-    this._filterModel.setFilter(filterType);
+  _handleFilterPriceChange(filterPriceType) {
+    // if (filterStringType.length === 0) {
+    //   return;
+    // }
+    this._filterModel.setFilter(filterPriceType, `price`);
   }
 
   _getFilters() {
-    // const cards = this._cardsModel.getCards();
-
-    // return [
-    //   {
-    //     type: FilterType.ALL
-    //   },
-    //   {
-    //     type: FilterType.ELECTRO,
-    //   },
-    //   {
-    //     type: FilterType.ACOUSTIC,
-    //   },
-    //   {
-    //     type: FilterType.UKULELE
-    //   },
-    // {
-    //   type: FilterType.REPEATING,
-    //   name: `Repeating`,
-    //   count: filter[FilterType.REPEATING](cards).length
-    // },
-    // {
-    //   type: FilterType.ARCHIVE,
-    //   name: `Archive`,
-    //   count: filter[FilterType.ARCHIVE](cards).length
-    // }
-    // ];
   }
 }
 
@@ -1111,13 +1112,14 @@ const sortPopularityUp = (pointA, pointB) => Number(pointA.reviewAmount) > Numbe
 /*!***********************************!*\
   !*** ./source/js/utils/filter.js ***!
   \***********************************/
-/*! exports provided: filter, filteredCardsByKey */
+/*! exports provided: filter, filteredCardsByType, filteredCardsByPrice */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "filter", function() { return filter; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "filteredCardsByKey", function() { return filteredCardsByKey; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "filteredCardsByType", function() { return filteredCardsByType; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "filteredCardsByPrice", function() { return filteredCardsByPrice; });
 /* harmony import */ var _const__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../const */ "./source/js/const.js");
 
 
@@ -1128,16 +1130,36 @@ const filter = {
   [_const__WEBPACK_IMPORTED_MODULE_0__["FilterType"].UKULELE]: (cards) => cards.filter((card) => card.type === _const__WEBPACK_IMPORTED_MODULE_0__["FilterType"].UKULELE),
 };
 
-const filteredCardsByKey = (targetArray, filters) => {
-  const filterKeys = Object.keys(filters);
-  return targetArray.filter((eachObj) => {
-    return filterKeys.every((eachKey) => {
-      if (!filters[eachKey].length) {
-        return true;
-      }
-      return filters[eachKey].includes(eachObj[eachKey]);
-    });
-  });
+// export const filteredCardsByKey = (targetArray, filters) => {
+//   const filterKeys = Object.keys(filters);
+//   return targetArray.filter((eachObj) => {
+//     return filterKeys.every((eachKey) => {
+//       if (!filters[eachKey].length) {
+//         return true;
+//       }
+//       return filters[eachKey].includes(eachObj[eachKey]);
+//     });
+//   });
+// };
+
+const filteredCardsByType = (card, filters) => {
+  if (!filters.length) {
+    return true;
+  }
+  return filters.includes(card);
+};
+
+const filteredCardsByPrice = (card, filters) => {
+  const keys = [`min`, `max`];
+  let PriceRange = {};
+
+  PriceRange = Object.assign(...keys.map((k, i) => ({[k]: filters[i]})));
+
+  if (!filters.length) {
+    return true;
+  }
+
+  return Number(card) <= PriceRange.max && Number(card) >= PriceRange.min;
 };
 
 
@@ -1915,14 +1937,47 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Filters; });
 /* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./source/js/view/abstract.js");
 /* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../const.js */ "./source/js/const.js");
+/* harmony import */ var _utils_filter_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/filter.js */ "./source/js/utils/filter.js");
 
 
 
-const createFiltersElement = (currentFilterType) => {
-  // console.log(currentFilterType);
-  // console.log(JSON.stringify(currentFilterType));
-  // console.log(JSON.stringify(FilterType.ELECTRO));
-  // console.log(JSON.stringify(currentFilterType) === JSON.stringify(FilterType.ELECTRO));
+
+const createFiltersElement = (currentFilterType, cards) => {
+  let filteredGuitars = {};
+  let stringAmountAvailableList = [];
+  if (currentFilterType.type.length === 0) {
+    filteredGuitars = cards
+        .filter((item) => Object(_utils_filter_js__WEBPACK_IMPORTED_MODULE_2__["filteredCardsByType"])(item.type, currentFilterType.type));
+
+    stringAmountAvailableList = Array.from(new Set(filteredGuitars
+        .map((item) => item.stringAmount)));
+
+  }
+  filteredGuitars = currentFilterType.type;
+  const keys = Object.keys(_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"]);
+  let typeGuitar = [];
+  keys.filter((key) => (currentFilterType.type.forEach((type) => {
+    if (type.includes(_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"][key])) {
+      // let arr = [];
+      // arr.push(FilterType[key]);
+      // typeGuitar[key] = arr;
+      return typeGuitar.push(key);
+    } else {
+      return false;
+    }
+  })));
+
+  typeGuitar.forEach((item) => {
+    stringAmountAvailableList.push(..._const_js__WEBPACK_IMPORTED_MODULE_1__["StringsAmount"][item]);
+    return stringAmountAvailableList;
+  });
+  stringAmountAvailableList = Array.from(new Set(stringAmountAvailableList));
+
+  console.log(stringAmountAvailableList);
+
+  const isStringsAvailable = (availableList, stringsCount) => {
+    return availableList.includes(stringsCount);
+  };
 
   return (`<div class="catalog__filters-column">
   <h2>Фильтр</h2>
@@ -1959,7 +2014,7 @@ const createFiltersElement = (currentFilterType) => {
                 type="checkbox"
                 name="filters-form-type"
                 id="filters-form-type-value-1"
-                data-filter-type-gitar="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ACOUSTIC}"
+                data-filter-type-guitar="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ACOUSTIC}"
                 >
             <label for="filters-form-type-value-1">Акустические гитары</label>
           </div>
@@ -1969,7 +2024,7 @@ const createFiltersElement = (currentFilterType) => {
                 type="checkbox"
                 name="filters-form-type"
                 id="filters-form-type-value-2"
-                data-filter-type-gitar="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ELECTRO}"
+                data-filter-type-guitar="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ELECTRO}"
                 >
             <label for="filters-form-type-value-2">Электрогитары</label>
           </div>
@@ -1979,99 +2034,127 @@ const createFiltersElement = (currentFilterType) => {
                 type="checkbox"
                 name="filters-form-type"
                 id="filters-form-type-value-3"
-                data-filter-type-gitar="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].UKULELE}"
+                data-filter-type-guitar="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].UKULELE}"
                 >
             <label for="filters-form-type-value-3">Укулеле</label>
           </div>
         </div>
       </fieldset>
       <fieldset>
-        <h3>Количество струн</h3>
-        <div class="catalog__filters-amount-wrapper">
-          <label>
-            <input
-                class="visually-hidden"
-                type="checkbox"
-                name="filters-form-amount"
-                id="4"
-                data-filter-type-strings="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].FOUR}"
-                >
-            <span>4</span>
-          </label>
-          <label>
-            <input
-                class="visually-hidden"
-                type="checkbox"
-                name="filters-form-amount"
-                id="6"
-                data-filter-type-strings="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].SIX}"
-                >
-            <span>6</span>
-          </label>
-          <label>
-            <input
-                class="visually-hidden"
-                type="checkbox"
-                name="filters-form-amount"
-                id="7"
-                data-filter-type-strings="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].SEVEN}"
-                >
-            <span>7</span>
-          </label>
-          <label>
-            <input
-                class="visually-hidden"
-                type="checkbox"
-                name="filters-form-amount"
-                id="12"
-                data-filter-type-strings="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].TWELVE}"
-                ${JSON.stringify(currentFilterType) === JSON.stringify(_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ELECTRO) ? `disabled` : ``}
-                >
-            <span>12</span>
-          </label>
-        </div>
-      </fieldset>
-      <button type="submit" disabled="">показать</button>
+  <h3>Количество струн</h3>
+  <div class="catalog__filters-amount-wrapper">
+    <label>
+      <input
+          class="visually-hidden"
+          type="checkbox"
+          name="filters-form-amount"
+          id="4"
+          data-filter-type-strings="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].FOUR}"
+          ${isStringsAvailable(stringAmountAvailableList, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].FOUR) ? `` : `disabled`}
+          >
+      <span>4</span>
+    </label>
+    <label>
+      <input
+          class="visually-hidden"
+          type="checkbox"
+          name="filters-form-amount"
+          id="6"
+          data-filter-type-strings="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].SIX}"
+          ${isStringsAvailable(stringAmountAvailableList, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].SIX) ? `` : `disabled`}
+          >
+      <span>6</span>
+    </label>
+    <label>
+      <input
+          class="visually-hidden"
+          type="checkbox"
+          name="filters-form-amount"
+          id="7"
+          data-filter-type-strings="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].SEVEN}"
+          ${isStringsAvailable(stringAmountAvailableList, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].SEVEN) ? `` : `disabled`}
+          >
+      <span>7</span>
+    </label>
+    <label>
+      <input
+          class="visually-hidden"
+          type="checkbox"
+          name="filters-form-amount"
+          id="12"
+          data-filter-type-strings="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].TWELVE}"
+          ${isStringsAvailable(stringAmountAvailableList, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].TWELVE) ? `` : `disabled`}
+          >
+      <span>12</span>
+    </label>
+  </div>
+</fieldset>
+
     </form></div>`);
 };
 
 class Filters extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
-  constructor(currentFilterType) {
+  constructor(currentFilterType, cards) {
     super();
-    // this.filters = filters;
-    // console.log(currentFilterType);
     this._currentFilterType = currentFilterType;
+    this._cards = cards;
 
+    this._filterPriceChangeHandler = this._filterPriceChangeHandler.bind(this);
     this._filterTypeChangeHandler = this._filterTypeChangeHandler.bind(this);
+    this._filterStringChangeHandler = this._filterStringChangeHandler.bind(this);
+
   }
 
   getTemplate() {
-    return createFiltersElement(this._currentFilterType);
+    return createFiltersElement(this._currentFilterType, this._cards);
   }
 
   _filterTypeChangeHandler(evt) {
     evt.preventDefault();
-    let options = {};
     let optionsTypeGuitarArray = [];
+
+    document.querySelectorAll(`input[type='checkbox']`)
+        .forEach((checkbox) => checkbox.checked === true && !checkbox.dataset.filterTypeStrings ? optionsTypeGuitarArray
+            .push(checkbox.dataset.filterTypeGuitar) : null);
+
+    this._callback.filterTypeChange(optionsTypeGuitarArray);
+  }
+
+  _filterStringChangeHandler(evt) {
+    evt.preventDefault();
     let optionsTypeStringArray = [];
 
     document.querySelectorAll(`input[type='checkbox']`)
-        .forEach((chbx) => chbx.checked === true && !chbx.dataset.filterTypeStrings ? optionsTypeGuitarArray
-            .push(chbx.dataset.filterTypeGuitar) : null);
-    options.type = optionsTypeGuitarArray;
+        .forEach((checkbox) => checkbox.checked === true && !checkbox.dataset.filterTypeGuitar ? optionsTypeStringArray
+            .push(checkbox.dataset.filterTypeStrings) : null);
 
-    document.querySelectorAll(`input[type='checkbox']`)
-        .forEach((chbx) => chbx.checked === true && !chbx.dataset.filterTypeGuitar ? optionsTypeStringArray
-            .push(chbx.dataset.filterTypeStrings) : null);
-    options.stringAmount = optionsTypeStringArray;
+    this._callback.filterStringChange(optionsTypeStringArray);
+  }
 
-    // this._callback.filterTypeChange(evt.target.dataset.filterType);
-    this._callback.filterTypeChange(options);
+  _filterPriceChangeHandler(evt) {
+    evt.preventDefault();
+    let optionsPriceArray = [];
+
+    document.querySelectorAll(`input[type='number']`)
+        .forEach((checkbox) => optionsPriceArray
+            .push(checkbox.value));
+
+    this._callback.filterPriceChange(optionsPriceArray);
   }
 
   setFilterTypeChangeHandler(callback) {
     this._callback.filterTypeChange = callback;
     this.getElement().addEventListener(`change`, this._filterTypeChangeHandler);
+  }
+
+  setFilterStringChangeHandler(callback) {
+    this._callback.filterStringChange = callback;
+    this.getElement().addEventListener(`change`, this._filterStringChangeHandler);
+  }
+
+  setFilterPriceChangeHandler(callback) {
+    this._callback.filterPriceChange = callback;
+    this.getElement().addEventListener(`input`, this._filterPriceChangeHandler);
   }
 }
 
