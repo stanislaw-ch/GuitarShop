@@ -1,74 +1,74 @@
 import AbstractView from "./abstract.js";
-import {SortType, OrderType} from "../const.js";
+import {SortByCategoryType, SortByPriorityType} from "../const.js";
 
-const createCatalogSortElement = (currentSortType, currentOrderType) => {
+const createCatalogSortElement = (currentSortByCategoryType, currentSortByPriorityType) => {
   return (
     `<div class="catalog__sort-wrapper">
       <span>Сортировать:</span>
       <ul class="catalog__sort sort">
-        <li class="sort__item ${currentSortType === SortType.PRICE ? `sort__item--active` : ``}">
+        <li class="sort__item ${currentSortByCategoryType === SortByCategoryType.PRICE ? `sort__item--active` : ``}">
           <a
             href="#"
-            data-sort-type-category="${SortType.PRICE}">по цене
+            data-sort-by-category="${SortByCategoryType.PRICE}">по цене
           </a>
         </li>
-        <li class="sort__item ${currentSortType === SortType.POPULARITY ? `sort__item--active` : ``}">
+        <li class="sort__item ${currentSortByCategoryType === SortByCategoryType.POPULARITY ? `sort__item--active` : ``}">
           <a
             href="#"
-            data-sort-type-category="${SortType.POPULARITY}">по популярности
+            data-sort-by-category="${SortByCategoryType.POPULARITY}">по популярности
           </a>
         </li>
       </ul>
       <div class="catalog__sort-buttons">
         <button
-          class="sort-button sort-button--up ${currentOrderType === OrderType.UP ? `sort-button--active` : ``}"
+          class="sort-button sort-button--up ${currentSortByPriorityType === SortByPriorityType.UP ? `sort-button--active` : ``}"
           type="button"
-          data-sort-type-priority="${OrderType.UP}">
+          data-sort-by-priority="${SortByPriorityType.UP}">
         </button>
         <button
-          class="sort-button sort-button--down ${currentOrderType === OrderType.DOWN ? `sort-button--active` : ``}"
+          class="sort-button sort-button--down ${currentSortByPriorityType === SortByPriorityType.DOWN ? `sort-button--active` : ``}"
           type="button"
-          data-sort-type-priority="${OrderType.DOWN}">
+          data-sort-by-priority="${SortByPriorityType.DOWN}">
         </button>
       </div>
     </div>`
   );
 };
 export default class CatalogSort extends AbstractView {
-  constructor(currentSortType, currentOrderType) {
+  constructor(sortByCategory, sortByPriority) {
     super();
-    this._currentSortType = currentSortType;
-    this._currentOrderType = currentOrderType;
-    this._sortTypeChangeHandler = this._sortTypeChangeHandler.bind(this);
-    this._orderTypeChangeHandler = this._orderTypeChangeHandler.bind(this);
+    this._currentSortByCategory = sortByCategory;
+    this._currentSortByPriority = sortByPriority;
+    this._sortByCategoryChangeHandler = this._sortByCategoryChangeHandler.bind(this);
+    this._sortByPriorityChangeHandler = this._sortByPriorityChangeHandler.bind(this);
   }
 
   getTemplate() {
-    return createCatalogSortElement(this._currentSortType, this._currentOrderType);
+    return createCatalogSortElement(this._currentSortByCategory, this._currentSortByPriority);
   }
 
-  _sortTypeChangeHandler(evt) {
+  _sortByCategoryChangeHandler(evt) {
     evt.preventDefault();
     if (evt.target.tagName === `A`) {
       evt.preventDefault();
-      this._callback.sortTypeChange(evt.target.dataset.sortTypeCategory);
+      this._callback.sortByCategoryChange(evt.target.dataset.sortByCategory);
     }
   }
 
-  _orderTypeChangeHandler(evt) {
+  _sortByPriorityChangeHandler(evt) {
     if (evt.target.tagName === `BUTTON`) {
       evt.preventDefault();
-      this._callback.orderTypeChange(evt.target.dataset.sortTypePriority);
+      this._callback.sortByPriorityChange(evt.target.dataset.sortByPriority);
     }
   }
 
-  setSortTypeChangeHandler(callback) {
-    this._callback.sortTypeChange = callback;
-    this.getElement().addEventListener(`click`, this._sortTypeChangeHandler);
+  setSortByCategoryChangeHandler(callback) {
+    this._callback.sortByCategoryChange = callback;
+    this.getElement().addEventListener(`click`, this._sortByCategoryChangeHandler);
   }
 
-  setOrderTypeChangeHandler(callback) {
-    this._callback.orderTypeChange = callback;
-    this.getElement().addEventListener(`click`, this._orderTypeChangeHandler);
+  setSortByPriorityChangeHandler(callback) {
+    this._callback.sortByPriorityChange = callback;
+    this.getElement().addEventListener(`click`, this._sortByPriorityChangeHandler);
   }
 }

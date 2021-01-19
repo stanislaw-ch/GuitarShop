@@ -9,7 +9,7 @@ import FilterPresenter from "../presenter/filter.js";
 
 import {render, RenderPosition, remove} from "../utils/render.js";
 import {sortPriceUp, sortPriceDown, sortPopularityUp, sortPopularityDown} from "../utils/card.js";
-import {SortType, OrderType} from "../const.js";
+import {SortByCategoryType, SortByPriorityType} from "../const.js";
 import {filteredCardsByType, filteredCardsByPrice} from "../utils/filter.js";
 import {MenuItem} from "../const.js";
 
@@ -22,8 +22,8 @@ export default class Board {
     this._siteMenuModel = siteMenuModel;
     this._catalogContainer = catalogContainer;
     this._renderedCardsCount = CARD_COUNT_PER_STEP;
-    this._currentSortType = SortType.DEFAULT;
-    this._currentOrderType = OrderType.DEFAULT;
+    this._currentSortByCategoryType = SortByCategoryType.DEFAULT;
+    this._currentSortByPriorityType = SortByPriorityType.DEFAULT;
     this._cardPresenter = {};
 
     this._catalogComponent = new CatalogBoardView();
@@ -32,8 +32,8 @@ export default class Board {
 
     this._filterPresenter = new FilterPresenter(this._catalogContainer, this._filterModel, this._cardsModel);
 
-    this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
-    this._handleOrderTypeChange = this._handleOrderTypeChange.bind(this);
+    this._handleSortByCategoryChange = this._handleSortByCategoryChange.bind(this);
+    this._handleSortByPriorityChange = this._handleSortByPriorityChange.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
     this._handleMenuModel = this._handleMenuModel.bind(this);
     // this._handleModeChange = this._handleModeChange.bind(this);
@@ -51,7 +51,7 @@ export default class Board {
   }
 
   destroy() {
-    this._clearBoard({resetRenderedCardsCount: true, resetSortType: true});
+    this._clearBoard({resetRenderedCardsCount: true, resetSortByCategoryType: true});
 
     remove(this._catalogListComponent);
     remove(this._catalogComponent);
@@ -61,49 +61,46 @@ export default class Board {
   }
 
   _getCards() {
-    const filterType = this._filterModel.getFilter();
+    const filter = this._filterModel.getFilter();
     const cards = this._cardsModel.getCards();
 
-    let filteredCards = null;
+    let filteredCards = cards.slice(0)
+        .filter((card) => filteredCardsByType(card.type, filter.type))
+        .filter((card) => filteredCardsByType(card.stringAmount, filter.stringAmount))
+        .filter((card) => filteredCardsByPrice(card.price, filter.price));
 
-    filteredCards = cards.slice(0);
-    filteredCards = filteredCards
-        .filter((card) => filteredCardsByType(card.type, filterType.type))
-        .filter((card) => filteredCardsByType(card.stringAmount, filterType.stringAmount))
-        .filter((card) => filteredCardsByPrice(card.price, filterType.price));
-
-    switch (this._currentSortType) {
-      case SortType.DEFAULT:
-        if (this._currentOrderType === OrderType.UP) {
-          this._currentSortType = SortType.PRICE;
+    switch (this._currentSortByCategoryType) {
+      case SortByCategoryType.DEFAULT:
+        if (this._currentSortByPriorityType === SortByPriorityType.UP) {
+          this._currentSortByCategoryType = SortByCategoryType.PRICE;
           return filteredCards.sort(sortPopularityUp);
         }
-        if (this._currentOrderType === OrderType.DOWN) {
-          this._currentSortType = SortType.PRICE;
+        if (this._currentSortByPriorityType === SortByPriorityType.DOWN) {
+          this._currentSortByCategoryType = SortByCategoryType.PRICE;
           return filteredCards.sort(sortPopularityDown);
         }
         break;
-      case SortType.PRICE:
-        if (this._currentOrderType === OrderType.DEFAULT) {
-          this._currentOrderType = OrderType.UP;
+      case SortByCategoryType.PRICE:
+        if (this._currentSortByPriorityType === SortByPriorityType.DEFAULT) {
+          this._currentSortByPriorityType = SortByPriorityType.UP;
           return filteredCards.sort(sortPriceUp);
         }
-        if (this._currentOrderType === OrderType.UP) {
+        if (this._currentSortByPriorityType === SortByPriorityType.UP) {
           return filteredCards.sort(sortPriceUp);
         }
-        if (this._currentOrderType === OrderType.DOWN) {
+        if (this._currentSortByPriorityType === SortByPriorityType.DOWN) {
           return filteredCards.sort(sortPriceDown);
         }
         break;
-      case SortType.POPULARITY:
-        if (this._currentOrderType === OrderType.DEFAULT) {
-          this._currentOrderType = OrderType.UP;
+      case SortByCategoryType.POPULARITY:
+        if (this._currentSortByPriorityType === SortByPriorityType.DEFAULT) {
+          this._currentSortByPriorityType = SortByPriorityType.UP;
           return filteredCards.sort(sortPopularityUp);
         }
-        if (this._currentOrderType === OrderType.UP) {
+        if (this._currentSortByPriorityType === SortByPriorityType.UP) {
           return filteredCards.sort(sortPopularityUp);
         }
-        if (this._currentOrderType === OrderType.DOWN) {
+        if (this._currentSortByPriorityType === SortByPriorityType.DOWN) {
           return filteredCards.sort(sortPopularityDown);
         }
         break;
@@ -112,23 +109,23 @@ export default class Board {
     return filteredCards;
   }
 
-  _handleSortTypeChange(sortType) {
-    if (this._currentSortType === sortType) {
+  _handleSortByCategoryChange(sortByCategory) {
+    if (this._currentSortByCategoryType === sortByCategory) {
       return;
     }
 
-    this._currentSortType = sortType;
+    this._currentSortByCategoryType = sortByCategory;
 
     this._clearBoard({resetRenderedCardsCount: true});
     this._renderBoard();
   }
 
-  _handleOrderTypeChange(orderType) {
-    if (this._currentOrderType === orderType) {
+  _handleSortByPriorityChange(sortByPriority) {
+    if (this._currentSortByPriorityType === sortByPriority) {
       return;
     }
 
-    this._currentOrderType = orderType;
+    this._currentSortByPriorityType = sortByPriority;
 
     this._clearBoard({resetRenderedCardsCount: true});
     this._renderBoard();
@@ -167,9 +164,9 @@ export default class Board {
       this._catalogSortComponent = null;
     }
 
-    this._catalogSortComponent = new CatalogSortView(this._currentSortType, this._currentOrderType);
-    this._catalogSortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
-    this._catalogSortComponent.setOrderTypeChangeHandler(this._handleOrderTypeChange);
+    this._catalogSortComponent = new CatalogSortView(this._currentSortByCategoryType, this._currentSortByPriorityType);
+    this._catalogSortComponent.setSortByCategoryChangeHandler(this._handleSortByCategoryChange);
+    this._catalogSortComponent.setSortByPriorityChangeHandler(this._handleSortByPriorityChange);
 
     render(this._catalogComponent, this._catalogSortComponent, RenderPosition.AFTERBEGIN);
   }
@@ -188,7 +185,7 @@ export default class Board {
     render(this._catalogComponent, this._catalogPaginationComponent, RenderPosition.BEFOREEND);
   }
 
-  _clearBoard({resetRenderedCardsCount = false, resetSortType = false} = {}) {
+  _clearBoard({resetRenderedCardsCount = false, resetSortByCategoryType = false} = {}) {
     const cardCount = this._getCards().length;
 
     Object
@@ -196,9 +193,7 @@ export default class Board {
         .forEach((presenter) => presenter.destroy());
     this._cardPresenter = {};
 
-
-    // this._filterPresenter.destroy();
-
+    this._filterPresenter.destroy();
     remove(this._catalogSortComponent);
 
     if (resetRenderedCardsCount) {
@@ -207,9 +202,9 @@ export default class Board {
       this._renderedCardsCount = Math.min(cardCount, this._renderedCardsCount);
     }
 
-    if (resetSortType) {
-      this._currentSortType = SortType.DEFAULT;
-      this._currentOrderType = OrderType.DEFAULT;
+    if (resetSortByCategoryType) {
+      this._currentSortByCategoryType = SortByCategoryType.DEFAULT;
+      this._currentSortByPriorityType = SortByPriorityType.DEFAULT;
     }
   }
 

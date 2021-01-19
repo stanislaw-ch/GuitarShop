@@ -1,61 +1,54 @@
 import AbstractView from "./abstract.js";
-import {FilterType, FilterTypeS, StringsAmount} from "../const.js";
+import {FilterType, FilterStringAmount, StringsAmountByType} from "../const.js";
 import {filteredCardsByType} from "../utils/filter.js";
 
-const createFiltersElement = (currentFilterType, cards) => {
-  let filteredGuitars = {};
+const createFiltersElement = (currentFilter, cards) => {
+  let filteredGuitarsByType = {};
   let stringAmountAvailableList = [];
-  if (currentFilterType.type.length === 0) {
-    filteredGuitars = cards
-        .filter((item) => filteredCardsByType(item.type, currentFilterType.type));
 
-    stringAmountAvailableList = Array.from(new Set(filteredGuitars
+  if (currentFilter.type.length === 0) {
+    filteredGuitarsByType = cards
+        .filter((item) => filteredCardsByType(item.type, currentFilter.type));
+
+    stringAmountAvailableList = Array.from(new Set(filteredGuitarsByType
         .map((item) => item.stringAmount)));
   }
 
-  filteredGuitars = currentFilterType.type;
-  const keysGuitar = Object.keys(FilterType);
-  const keysStrings = Object.keys(FilterTypeS);
-  let typeGuitarKey = [];
-  let typeGuitarValue = [];
-  let typeStringsValue = [];
+  filteredGuitarsByType = currentFilter.type;
 
-  keysGuitar.filter((key) => (currentFilterType.type.forEach((type) => {
+  const guitarKeys = Object.keys(FilterType);
+  const stringKeys = Object.keys(FilterStringAmount);
+
+  let typeGuitarKeys = [];
+  let typeGuitarValues = [];
+  let typeStringsValues = [];
+
+  guitarKeys.filter((key) => (currentFilter.type.forEach((type) => {
     if (type.includes(FilterType[key])) {
-      // let arr = [];
-      // arr.push(FilterType[key]);
-      // typeGuitar[key] = arr;
-      return typeGuitarKey.push(key);
+      return typeGuitarKeys.push(key);
     } else {
       return false;
     }
   })));
 
-  keysGuitar.filter((key) => (currentFilterType.type.forEach((type) => {
+  guitarKeys.filter((key) => (currentFilter.type.forEach((type) => {
     if (type.includes(FilterType[key])) {
-      // let arr = [];
-      // arr.push(FilterType[key]);
-      // typeGuitar[key] = arr;
-      return typeGuitarValue.push(FilterType[key]);
+      return typeGuitarValues.push(FilterType[key]);
     } else {
       return false;
     }
   })));
 
-  keysStrings.filter((key) => (currentFilterType.stringAmount.forEach((type) => {
-    if (type.includes(FilterTypeS[key])) {
-      // let arr = [];
-      // arr.push(FilterType[key]);
-      // typeGuitar[key] = arr;
-      return typeStringsValue.push(FilterTypeS[key]);
+  stringKeys.filter((key) => (currentFilter.stringAmount.forEach((type) => {
+    if (type.includes(FilterStringAmount[key])) {
+      return typeStringsValues.push(FilterStringAmount[key]);
     } else {
       return false;
     }
   })));
 
-  console.log(typeStringsValue);
-  typeGuitarKey.forEach((item) => {
-    stringAmountAvailableList.push(...StringsAmount[item]);
+  typeGuitarKeys.forEach((item) => {
+    stringAmountAvailableList.push(...StringsAmountByType[item]);
     return stringAmountAvailableList;
   });
   stringAmountAvailableList = Array.from(new Set(stringAmountAvailableList));
@@ -67,7 +60,7 @@ const createFiltersElement = (currentFilterType, cards) => {
   return (`<div class="catalog__filters-column">
   <h2>Фильтр</h2>
   <form class="catalog__filters-form" action="#" method="GET">
-      <fieldset>
+      <fieldset class="catalog__filters-price-change">
         <h3>Цена, ₽</h3>
         <div class="catalog__filters-price-wrapper">
           <input
@@ -90,7 +83,7 @@ const createFiltersElement = (currentFilterType, cards) => {
               >
         </div>
       </fieldset>
-      <fieldset>
+      <fieldset class="catalog__filters-type-guitar">
         <h3>Тип гитар</h3>
         <div class="catalog__filters-type-wrapper">
           <div class="catalog__filters-type-content-wrapper">
@@ -100,7 +93,7 @@ const createFiltersElement = (currentFilterType, cards) => {
                 name="filters-form-type"
                 id="filters-form-type-value-1"
                 data-filter-type-guitar="${FilterType.ACOUSTIC}"
-                ${isStringsAvailable(typeGuitarValue, FilterType.ACOUSTIC) ? `checked` : ``}
+                ${isStringsAvailable(typeGuitarValues, FilterType.ACOUSTIC) ? `checked` : ``}
                 >
             <label for="filters-form-type-value-1">Акустические гитары</label>
           </div>
@@ -111,7 +104,7 @@ const createFiltersElement = (currentFilterType, cards) => {
                 name="filters-form-type"
                 id="filters-form-type-value-2"
                 data-filter-type-guitar="${FilterType.ELECTRO}"
-                ${isStringsAvailable(typeGuitarValue, FilterType.ELECTRO) ? `checked` : ``}
+                ${isStringsAvailable(typeGuitarValues, FilterType.ELECTRO) ? `checked` : ``}
                 >
             <label for="filters-form-type-value-2">Электрогитары</label>
           </div>
@@ -122,130 +115,129 @@ const createFiltersElement = (currentFilterType, cards) => {
                 name="filters-form-type"
                 id="filters-form-type-value-3"
                 data-filter-type-guitar="${FilterType.UKULELE}"
-                ${isStringsAvailable(typeGuitarValue, FilterType.UKULELE) ? `checked` : ``}
+                ${isStringsAvailable(typeGuitarValues, FilterType.UKULELE) ? `checked` : ``}
                 >
             <label for="filters-form-type-value-3">Укулеле</label>
           </div>
         </div>
       </fieldset>
-      <fieldset>
-  <h3>Количество струн</h3>
-  <div class="catalog__filters-amount-wrapper">
-    <label>
-      <input
-          class="visually-hidden"
-          type="checkbox"
-          name="filters-form-amount"
-          id="4"
-          data-filter-type-strings="${FilterTypeS.FOUR}"
-          ${isStringsAvailable(typeStringsValue, FilterTypeS.FOUR) ? `checked` : ``}
-          ${isStringsAvailable(stringAmountAvailableList, FilterTypeS.FOUR) ? `` : `disabled`}
-          >
-      <span>4</span>
-    </label>
-    <label>
-      <input
-          class="visually-hidden"
-          type="checkbox"
-          name="filters-form-amount"
-          id="6"
-          data-filter-type-strings="${FilterTypeS.SIX}"
-          ${isStringsAvailable(typeStringsValue, FilterTypeS.SIX) ? `checked` : ``}
-          ${isStringsAvailable(stringAmountAvailableList, FilterTypeS.SIX) ? `` : `disabled`}
-          >
-      <span>6</span>
-    </label>
-    <label>
-      <input
-          class="visually-hidden"
-          type="checkbox"
-          name="filters-form-amount"
-          id="7"
-          data-filter-type-strings="${FilterTypeS.SEVEN}"
-          ${isStringsAvailable(typeStringsValue, FilterTypeS.SEVEN) ? `checked` : ``}
-          ${isStringsAvailable(stringAmountAvailableList, FilterTypeS.SEVEN) ? `` : `disabled`}
-          >
-      <span>7</span>
-    </label>
-    <label>
-      <input
-          class="visually-hidden"
-          type="checkbox"
-          name="filters-form-amount"
-          id="12"
-          data-filter-type-strings="${FilterTypeS.TWELVE}"
-          ${isStringsAvailable(typeStringsValue, FilterTypeS.TWELVE) ? `checked` : ``}
-          ${isStringsAvailable(stringAmountAvailableList, FilterTypeS.TWELVE) ? `` : `disabled`}
-          >
-      <span>12</span>
-    </label>
-  </div>
-</fieldset>
-
+      <fieldset class="catalog__filters-string-amount">
+        <h3>Количество струн</h3>
+        <div class="catalog__filters-amount-wrapper">
+          <label>
+            <input
+                class="visually-hidden"
+                type="checkbox"
+                name="filters-form-amount"
+                id="4"
+                data-filter-amount-strings="${FilterStringAmount.FOUR}"
+                ${isStringsAvailable(typeStringsValues, FilterStringAmount.FOUR) ? `checked` : ``}
+                ${isStringsAvailable(stringAmountAvailableList, FilterStringAmount.FOUR) ? `` : `disabled`}
+                >
+            <span>4</span>
+          </label>
+          <label>
+            <input
+                class="visually-hidden"
+                type="checkbox"
+                name="filters-form-amount"
+                id="6"
+                data-filter-amount-strings="${FilterStringAmount.SIX}"
+                ${isStringsAvailable(typeStringsValues, FilterStringAmount.SIX) ? `checked` : ``}
+                ${isStringsAvailable(stringAmountAvailableList, FilterStringAmount.SIX) ? `` : `disabled`}
+                >
+            <span>6</span>
+          </label>
+          <label>
+            <input
+                class="visually-hidden"
+                type="checkbox"
+                name="filters-form-amount"
+                id="7"
+                data-filter-amount-strings="${FilterStringAmount.SEVEN}"
+                ${isStringsAvailable(typeStringsValues, FilterStringAmount.SEVEN) ? `checked` : ``}
+                ${isStringsAvailable(stringAmountAvailableList, FilterStringAmount.SEVEN) ? `` : `disabled`}
+                >
+            <span>7</span>
+          </label>
+          <label>
+            <input
+                class="visually-hidden"
+                type="checkbox"
+                name="filters-form-amount"
+                id="12"
+                data-filter-amount-strings="${FilterStringAmount.TWELVE}"
+                ${isStringsAvailable(typeStringsValues, FilterStringAmount.TWELVE) ? `checked` : ``}
+                ${isStringsAvailable(stringAmountAvailableList, FilterStringAmount.TWELVE) ? `` : `disabled`}
+                >
+            <span>12</span>
+          </label>
+        </div>
+      </fieldset>
     </form></div>`);
 };
 
 export default class Filters extends AbstractView {
-  constructor(currentFilterType, cards) {
+  constructor(currentFilter, cards) {
     super();
-    this._currentFilterType = currentFilterType;
+    this._currentFilter = currentFilter;
     this._cards = cards;
 
     this._filterPriceChangeHandler = this._filterPriceChangeHandler.bind(this);
-    this._filterTypeChangeHandler = this._filterTypeChangeHandler.bind(this);
-    this._filterStringChangeHandler = this._filterStringChangeHandler.bind(this);
+    this._filterGuitarTypeChangeHandler = this._filterGuitarTypeChangeHandler.bind(this);
+    this._filterStringAmountChangeHandler = this._filterStringAmountChangeHandler.bind(this);
 
   }
 
   getTemplate() {
-    return createFiltersElement(this._currentFilterType, this._cards);
+    return createFiltersElement(this._currentFilter, this._cards);
   }
 
-  _filterTypeChangeHandler(evt) {
+  _filterGuitarTypeChangeHandler(evt) {
     evt.preventDefault();
-    let optionsTypeGuitarArray = [];
+    let optionsGuitarTypeArray = [];
 
     document.querySelectorAll(`input[type='checkbox']`)
-        .forEach((checkbox) => checkbox.checked === true && !checkbox.dataset.filterTypeStrings ? optionsTypeGuitarArray
+        .forEach((checkbox) => checkbox.checked === true && !checkbox.dataset.filterAmountStrings ? optionsGuitarTypeArray
             .push(checkbox.dataset.filterTypeGuitar) : null);
 
-    this._callback.filterTypeChange(optionsTypeGuitarArray);
+    this._callback.filterTypeChange(optionsGuitarTypeArray);
   }
 
-  _filterStringChangeHandler(evt) {
+  _filterStringAmountChangeHandler(evt) {
     evt.preventDefault();
-    let optionsTypeStringArray = [];
+    let optionsStringAmountArray = [];
 
     document.querySelectorAll(`input[type='checkbox']`)
-        .forEach((checkbox) => checkbox.checked === true && !checkbox.dataset.filterTypeGuitar ? optionsTypeStringArray
-            .push(checkbox.dataset.filterTypeStrings) : null);
+        .forEach((checkbox) => checkbox.checked === true && !checkbox.dataset.filterTypeGuitar ? optionsStringAmountArray
+            .push(checkbox.dataset.filterAmountStrings) : null);
 
-    this._callback.filterStringChange(optionsTypeStringArray);
+    this._callback.filterStringChange(optionsStringAmountArray);
   }
 
   _filterPriceChangeHandler(evt) {
     evt.preventDefault();
-    let optionsPriceArray = [];
+    let optionsPriceChangeArray = [];
 
     document.querySelectorAll(`input[type='number']`)
-        .forEach((checkbox) => optionsPriceArray
+        .forEach((checkbox) => optionsPriceChangeArray
             .push(checkbox.value));
 
-    this._callback.filterPriceChange(optionsPriceArray);
+    this._callback.filterPriceChange(optionsPriceChangeArray);
   }
 
   setFilterTypeChangeHandler(callback) {
     this._callback.filterTypeChange = callback;
-    this.getElement().addEventListener(`change`, this._filterTypeChangeHandler);
+    this.getElement().querySelector(`.catalog__filters-type-guitar`).addEventListener(`change`, this._filterGuitarTypeChangeHandler);
   }
 
   setFilterStringChangeHandler(callback) {
     this._callback.filterStringChange = callback;
-    this.getElement().addEventListener(`change`, this._filterStringChangeHandler);
+    this.getElement().querySelector(`.catalog__filters-string-amount`).addEventListener(`change`, this._filterStringAmountChangeHandler);
   }
 
   setFilterPriceChangeHandler(callback) {
     this._callback.filterPriceChange = callback;
-    this.getElement().addEventListener(`input`, this._filterPriceChangeHandler);
+    this.getElement().querySelector(`.catalog__filters-price-change`).addEventListener(`input`, this._filterPriceChangeHandler);
   }
 }
