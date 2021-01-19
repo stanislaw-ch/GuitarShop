@@ -27,7 +27,7 @@ export default class Filter {
     this._currentFilter = this._filterModel.getFilter();
     this._cards = this._cardsModel.getCards();
 
-    const prevFilterComponent = this._filterComponent;
+    this._prevFilterComponent = this._filterComponent;
 
     this._filterComponent = new FilterView(this._currentFilter, this._cards);
     this._filterComponent.setFilterTypeChangeHandler(this._handleFilterTypeChange);
@@ -35,10 +35,10 @@ export default class Filter {
     this._filterComponent.setFilterPriceChangeHandler(this._handleFilterPriceChange);
 
 
-    if (prevFilterComponent === null) {
+    // if (this._prevFilterComponent === null) {
       render(this._filterContainer, this._filterComponent, RenderPosition.AFTERBEGIN);
-      return;
-    }
+    //   return;
+    // }
 
     // this._cardsModel.addObserver(this._handleModelEvent);
     // this._filterModel.addObserver(this._handleModelEvent);
@@ -59,23 +59,32 @@ export default class Filter {
   // }
 
   _handleFilterTypeChange(filterGuitarType) {
-    // if (filterGuitarType.length === 0) {
-    //   return;
-    // }
+    if (this._currentFilter.stringAmount.length === filterGuitarType.length && this._currentFilter.stringAmount
+        .every((value, index) => value === filterGuitarType[index]) && this._prevFilterComponent === 0) {
+      return;
+    }
+
+    this.destroy();
     this._filterModel.setFilter(filterGuitarType, `type`);
   }
 
   _handleFilterStringChange(filterStringType) {
-    // if (filterStringType.length === 0) {
-    //   return;
-    // }
+    if (this._currentFilter.stringAmount.length === filterStringType.length && this._currentFilter.stringAmount
+        .every((value, index) => value === filterStringType[index]) && this._prevFilterComponent === 0) {
+      return;
+    }
+
+    this.destroy();
     this._filterModel.setFilter(filterStringType, `stringAmount`);
   }
 
   _handleFilterPriceChange(filterPriceType) {
-    // if (filterStringType.length === 0) {
-    //   return;
-    // }
+    if (this._currentFilter.price.length === filterPriceType.length && this._currentFilter.price
+        .every((value, index) => value === filterPriceType[index])) {
+      return;
+    }
+
+    this.destroy();
     this._filterModel.setFilter(filterPriceType, `price`);
   }
 

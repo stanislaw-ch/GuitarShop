@@ -424,7 +424,7 @@ class Filter extends _utils_observer_js__WEBPACK_IMPORTED_MODULE_0__["default"] 
     this._activeFilter = {
       type: [],
       stringAmount: [],
-      price: []
+      price: [`1000`, `30000`]
     };
   }
 
@@ -878,6 +878,9 @@ class Board {
         .forEach((presenter) => presenter.destroy());
     this._cardPresenter = {};
 
+
+    // this._filterPresenter.destroy();
+
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["remove"])(this._catalogSortComponent);
 
     if (resetRenderedCardsCount) {
@@ -960,7 +963,7 @@ class Filter {
     this._currentFilter = this._filterModel.getFilter();
     this._cards = this._cardsModel.getCards();
 
-    const prevFilterComponent = this._filterComponent;
+    this._prevFilterComponent = this._filterComponent;
 
     this._filterComponent = new _view_filters_js__WEBPACK_IMPORTED_MODULE_0__["default"](this._currentFilter, this._cards);
     this._filterComponent.setFilterTypeChangeHandler(this._handleFilterTypeChange);
@@ -968,10 +971,10 @@ class Filter {
     this._filterComponent.setFilterPriceChangeHandler(this._handleFilterPriceChange);
 
 
-    if (prevFilterComponent === null) {
+    // if (this._prevFilterComponent === null) {
       Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_1__["render"])(this._filterContainer, this._filterComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_1__["RenderPosition"].AFTERBEGIN);
-      return;
-    }
+    //   return;
+    // }
 
     // this._cardsModel.addObserver(this._handleModelEvent);
     // this._filterModel.addObserver(this._handleModelEvent);
@@ -992,23 +995,32 @@ class Filter {
   // }
 
   _handleFilterTypeChange(filterGuitarType) {
-    // if (filterGuitarType.length === 0) {
-    //   return;
-    // }
+    if (this._currentFilter.stringAmount.length === filterGuitarType.length && this._currentFilter.stringAmount
+        .every((value, index) => value === filterGuitarType[index]) && this._prevFilterComponent === 0) {
+      return;
+    }
+
+    this.destroy();
     this._filterModel.setFilter(filterGuitarType, `type`);
   }
 
   _handleFilterStringChange(filterStringType) {
-    // if (filterStringType.length === 0) {
-    //   return;
-    // }
+    if (this._currentFilter.stringAmount.length === filterStringType.length && this._currentFilter.stringAmount
+        .every((value, index) => value === filterStringType[index]) && this._prevFilterComponent === 0) {
+      return;
+    }
+
+    this.destroy();
     this._filterModel.setFilter(filterStringType, `stringAmount`);
   }
 
   _handleFilterPriceChange(filterPriceType) {
-    // if (filterStringType.length === 0) {
-    //   return;
-    // }
+    if (this._currentFilter.price.length === filterPriceType.length && this._currentFilter.price
+        .every((value, index) => value === filterPriceType[index])) {
+      return;
+    }
+
+    this.destroy();
     this._filterModel.setFilter(filterPriceType, `price`);
   }
 
@@ -1951,29 +1963,54 @@ const createFiltersElement = (currentFilterType, cards) => {
 
     stringAmountAvailableList = Array.from(new Set(filteredGuitars
         .map((item) => item.stringAmount)));
-
   }
+
   filteredGuitars = currentFilterType.type;
-  const keys = Object.keys(_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"]);
-  let typeGuitar = [];
-  keys.filter((key) => (currentFilterType.type.forEach((type) => {
+  const keysGuitar = Object.keys(_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"]);
+  const keysStrings = Object.keys(_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"]);
+  let typeGuitarKey = [];
+  let typeGuitarValue = [];
+  let typeStringsValue = [];
+
+  keysGuitar.filter((key) => (currentFilterType.type.forEach((type) => {
     if (type.includes(_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"][key])) {
       // let arr = [];
       // arr.push(FilterType[key]);
       // typeGuitar[key] = arr;
-      return typeGuitar.push(key);
+      return typeGuitarKey.push(key);
     } else {
       return false;
     }
   })));
 
-  typeGuitar.forEach((item) => {
+  keysGuitar.filter((key) => (currentFilterType.type.forEach((type) => {
+    if (type.includes(_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"][key])) {
+      // let arr = [];
+      // arr.push(FilterType[key]);
+      // typeGuitar[key] = arr;
+      return typeGuitarValue.push(_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"][key]);
+    } else {
+      return false;
+    }
+  })));
+
+  keysStrings.filter((key) => (currentFilterType.stringAmount.forEach((type) => {
+    if (type.includes(_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"][key])) {
+      // let arr = [];
+      // arr.push(FilterType[key]);
+      // typeGuitar[key] = arr;
+      return typeStringsValue.push(_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"][key]);
+    } else {
+      return false;
+    }
+  })));
+
+  console.log(typeStringsValue);
+  typeGuitarKey.forEach((item) => {
     stringAmountAvailableList.push(..._const_js__WEBPACK_IMPORTED_MODULE_1__["StringsAmount"][item]);
     return stringAmountAvailableList;
   });
   stringAmountAvailableList = Array.from(new Set(stringAmountAvailableList));
-
-  console.log(stringAmountAvailableList);
 
   const isStringsAvailable = (availableList, stringsCount) => {
     return availableList.includes(stringsCount);
@@ -2015,6 +2052,7 @@ const createFiltersElement = (currentFilterType, cards) => {
                 name="filters-form-type"
                 id="filters-form-type-value-1"
                 data-filter-type-guitar="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ACOUSTIC}"
+                ${isStringsAvailable(typeGuitarValue, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ACOUSTIC) ? `checked` : ``}
                 >
             <label for="filters-form-type-value-1">Акустические гитары</label>
           </div>
@@ -2025,6 +2063,7 @@ const createFiltersElement = (currentFilterType, cards) => {
                 name="filters-form-type"
                 id="filters-form-type-value-2"
                 data-filter-type-guitar="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ELECTRO}"
+                ${isStringsAvailable(typeGuitarValue, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ELECTRO) ? `checked` : ``}
                 >
             <label for="filters-form-type-value-2">Электрогитары</label>
           </div>
@@ -2035,6 +2074,7 @@ const createFiltersElement = (currentFilterType, cards) => {
                 name="filters-form-type"
                 id="filters-form-type-value-3"
                 data-filter-type-guitar="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].UKULELE}"
+                ${isStringsAvailable(typeGuitarValue, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].UKULELE) ? `checked` : ``}
                 >
             <label for="filters-form-type-value-3">Укулеле</label>
           </div>
@@ -2050,6 +2090,7 @@ const createFiltersElement = (currentFilterType, cards) => {
           name="filters-form-amount"
           id="4"
           data-filter-type-strings="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].FOUR}"
+          ${isStringsAvailable(typeStringsValue, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].FOUR) ? `checked` : ``}
           ${isStringsAvailable(stringAmountAvailableList, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].FOUR) ? `` : `disabled`}
           >
       <span>4</span>
@@ -2061,6 +2102,7 @@ const createFiltersElement = (currentFilterType, cards) => {
           name="filters-form-amount"
           id="6"
           data-filter-type-strings="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].SIX}"
+          ${isStringsAvailable(typeStringsValue, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].SIX) ? `checked` : ``}
           ${isStringsAvailable(stringAmountAvailableList, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].SIX) ? `` : `disabled`}
           >
       <span>6</span>
@@ -2072,6 +2114,7 @@ const createFiltersElement = (currentFilterType, cards) => {
           name="filters-form-amount"
           id="7"
           data-filter-type-strings="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].SEVEN}"
+          ${isStringsAvailable(typeStringsValue, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].SEVEN) ? `checked` : ``}
           ${isStringsAvailable(stringAmountAvailableList, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].SEVEN) ? `` : `disabled`}
           >
       <span>7</span>
@@ -2083,6 +2126,7 @@ const createFiltersElement = (currentFilterType, cards) => {
           name="filters-form-amount"
           id="12"
           data-filter-type-strings="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].TWELVE}"
+          ${isStringsAvailable(typeStringsValue, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].TWELVE) ? `checked` : ``}
           ${isStringsAvailable(stringAmountAvailableList, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].TWELVE) ? `` : `disabled`}
           >
       <span>12</span>

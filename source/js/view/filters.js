@@ -11,29 +11,54 @@ const createFiltersElement = (currentFilterType, cards) => {
 
     stringAmountAvailableList = Array.from(new Set(filteredGuitars
         .map((item) => item.stringAmount)));
-
   }
+
   filteredGuitars = currentFilterType.type;
-  const keys = Object.keys(FilterType);
-  let typeGuitar = [];
-  keys.filter((key) => (currentFilterType.type.forEach((type) => {
+  const keysGuitar = Object.keys(FilterType);
+  const keysStrings = Object.keys(FilterTypeS);
+  let typeGuitarKey = [];
+  let typeGuitarValue = [];
+  let typeStringsValue = [];
+
+  keysGuitar.filter((key) => (currentFilterType.type.forEach((type) => {
     if (type.includes(FilterType[key])) {
       // let arr = [];
       // arr.push(FilterType[key]);
       // typeGuitar[key] = arr;
-      return typeGuitar.push(key);
+      return typeGuitarKey.push(key);
     } else {
       return false;
     }
   })));
 
-  typeGuitar.forEach((item) => {
+  keysGuitar.filter((key) => (currentFilterType.type.forEach((type) => {
+    if (type.includes(FilterType[key])) {
+      // let arr = [];
+      // arr.push(FilterType[key]);
+      // typeGuitar[key] = arr;
+      return typeGuitarValue.push(FilterType[key]);
+    } else {
+      return false;
+    }
+  })));
+
+  keysStrings.filter((key) => (currentFilterType.stringAmount.forEach((type) => {
+    if (type.includes(FilterTypeS[key])) {
+      // let arr = [];
+      // arr.push(FilterType[key]);
+      // typeGuitar[key] = arr;
+      return typeStringsValue.push(FilterTypeS[key]);
+    } else {
+      return false;
+    }
+  })));
+
+  console.log(typeStringsValue);
+  typeGuitarKey.forEach((item) => {
     stringAmountAvailableList.push(...StringsAmount[item]);
     return stringAmountAvailableList;
   });
   stringAmountAvailableList = Array.from(new Set(stringAmountAvailableList));
-
-  console.log(stringAmountAvailableList);
 
   const isStringsAvailable = (availableList, stringsCount) => {
     return availableList.includes(stringsCount);
@@ -75,6 +100,7 @@ const createFiltersElement = (currentFilterType, cards) => {
                 name="filters-form-type"
                 id="filters-form-type-value-1"
                 data-filter-type-guitar="${FilterType.ACOUSTIC}"
+                ${isStringsAvailable(typeGuitarValue, FilterType.ACOUSTIC) ? `checked` : ``}
                 >
             <label for="filters-form-type-value-1">Акустические гитары</label>
           </div>
@@ -85,6 +111,7 @@ const createFiltersElement = (currentFilterType, cards) => {
                 name="filters-form-type"
                 id="filters-form-type-value-2"
                 data-filter-type-guitar="${FilterType.ELECTRO}"
+                ${isStringsAvailable(typeGuitarValue, FilterType.ELECTRO) ? `checked` : ``}
                 >
             <label for="filters-form-type-value-2">Электрогитары</label>
           </div>
@@ -95,6 +122,7 @@ const createFiltersElement = (currentFilterType, cards) => {
                 name="filters-form-type"
                 id="filters-form-type-value-3"
                 data-filter-type-guitar="${FilterType.UKULELE}"
+                ${isStringsAvailable(typeGuitarValue, FilterType.UKULELE) ? `checked` : ``}
                 >
             <label for="filters-form-type-value-3">Укулеле</label>
           </div>
@@ -110,6 +138,7 @@ const createFiltersElement = (currentFilterType, cards) => {
           name="filters-form-amount"
           id="4"
           data-filter-type-strings="${FilterTypeS.FOUR}"
+          ${isStringsAvailable(typeStringsValue, FilterTypeS.FOUR) ? `checked` : ``}
           ${isStringsAvailable(stringAmountAvailableList, FilterTypeS.FOUR) ? `` : `disabled`}
           >
       <span>4</span>
@@ -121,6 +150,7 @@ const createFiltersElement = (currentFilterType, cards) => {
           name="filters-form-amount"
           id="6"
           data-filter-type-strings="${FilterTypeS.SIX}"
+          ${isStringsAvailable(typeStringsValue, FilterTypeS.SIX) ? `checked` : ``}
           ${isStringsAvailable(stringAmountAvailableList, FilterTypeS.SIX) ? `` : `disabled`}
           >
       <span>6</span>
@@ -132,6 +162,7 @@ const createFiltersElement = (currentFilterType, cards) => {
           name="filters-form-amount"
           id="7"
           data-filter-type-strings="${FilterTypeS.SEVEN}"
+          ${isStringsAvailable(typeStringsValue, FilterTypeS.SEVEN) ? `checked` : ``}
           ${isStringsAvailable(stringAmountAvailableList, FilterTypeS.SEVEN) ? `` : `disabled`}
           >
       <span>7</span>
@@ -143,6 +174,7 @@ const createFiltersElement = (currentFilterType, cards) => {
           name="filters-form-amount"
           id="12"
           data-filter-type-strings="${FilterTypeS.TWELVE}"
+          ${isStringsAvailable(typeStringsValue, FilterTypeS.TWELVE) ? `checked` : ``}
           ${isStringsAvailable(stringAmountAvailableList, FilterTypeS.TWELVE) ? `` : `disabled`}
           >
       <span>12</span>

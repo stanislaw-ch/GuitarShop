@@ -7,7 +7,7 @@ export default class Filter extends Observer {
     this._activeFilter = {
       type: [],
       stringAmount: [],
-      price: []
+      price: [`1000`, `30000`]
     };
   }
 

@@ -196,6 +196,9 @@ export default class Board {
         .forEach((presenter) => presenter.destroy());
     this._cardPresenter = {};
 
+
+    // this._filterPresenter.destroy();
+
     remove(this._catalogSortComponent);
 
     if (resetRenderedCardsCount) {
