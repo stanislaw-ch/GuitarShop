@@ -90,32 +90,28 @@
 /*!****************************!*\
   !*** ./source/js/const.js ***!
   \****************************/
-/*! exports provided: SortType, OrderType, FilterType, FilterTypeS, MenuItem, StringsAmount */
+/*! exports provided: SortByCategoryType, SortByPriorityType, FilterType, FilterStringAmount, StringsAmountByType, MenuItem */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SortType", function() { return SortType; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OrderType", function() { return OrderType; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SortByCategoryType", function() { return SortByCategoryType; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SortByPriorityType", function() { return SortByPriorityType; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FilterType", function() { return FilterType; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FilterTypeS", function() { return FilterTypeS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FilterStringAmount", function() { return FilterStringAmount; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "StringsAmountByType", function() { return StringsAmountByType; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MenuItem", function() { return MenuItem; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "StringsAmount", function() { return StringsAmount; });
-const SortType = {
+const SortByCategoryType = {
   DEFAULT: `default`,
   PRICE: `price`,
   POPULARITY: `popularity`
 };
 
-const OrderType = {
+const SortByPriorityType = {
   DEFAULT: `default`,
   UP: `up`,
   DOWN: `down`
 };
-
-// export const FilterType = {
-//   type: [``]
-// };
 
 const FilterType = {
   ELECTRO: `электрогитара`,
@@ -123,29 +119,22 @@ const FilterType = {
   UKULELE: `укулеле`
 };
 
-const FilterTypeS = {
+const FilterStringAmount = {
   FOUR: `4`,
   SIX: `6`,
   SEVEN: `7`,
   TWELVE: `12`,
 };
 
-// export const FilterType = {
-//   ALL: `all`,
-//   ELECTRO: `электрогитара`,
-//   ACOUSTIC: `акустическая гитара`,
-//   UKULELE: `укулеле`
-// };
+const StringsAmountByType = {
+  ELECTRO: [`4`, `6`, `7`],
+  ACOUSTIC: [`6`, `7`, `12`],
+  UKULELE: [`4`]
+};
 
 const MenuItem = {
   CARDS: `CARDS`,
   BASKET: `BASKET`
-};
-
-const StringsAmount = {
-  ELECTRO: [`4`, `6`, `7`],
-  ACOUSTIC: [`6`, `7`, `12`],
-  UKULELE: [`4`]
 };
 
 
@@ -704,8 +693,8 @@ class Board {
     this._siteMenuModel = siteMenuModel;
     this._catalogContainer = catalogContainer;
     this._renderedCardsCount = CARD_COUNT_PER_STEP;
-    this._currentSortType = _const_js__WEBPACK_IMPORTED_MODULE_9__["SortType"].DEFAULT;
-    this._currentOrderType = _const_js__WEBPACK_IMPORTED_MODULE_9__["OrderType"].DEFAULT;
+    this._currentSortByCategoryType = _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByCategoryType"].DEFAULT;
+    this._currentSortByPriorityType = _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByPriorityType"].DEFAULT;
     this._cardPresenter = {};
 
     this._catalogComponent = new _view_catalog_board_js__WEBPACK_IMPORTED_MODULE_0__["default"]();
@@ -714,8 +703,8 @@ class Board {
 
     this._filterPresenter = new _presenter_filter_js__WEBPACK_IMPORTED_MODULE_6__["default"](this._catalogContainer, this._filterModel, this._cardsModel);
 
-    this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
-    this._handleOrderTypeChange = this._handleOrderTypeChange.bind(this);
+    this._handleSortByCategoryChange = this._handleSortByCategoryChange.bind(this);
+    this._handleSortByPriorityChange = this._handleSortByPriorityChange.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
     this._handleMenuModel = this._handleMenuModel.bind(this);
     // this._handleModeChange = this._handleModeChange.bind(this);
@@ -733,7 +722,7 @@ class Board {
   }
 
   destroy() {
-    this._clearBoard({resetRenderedCardsCount: true, resetSortType: true});
+    this._clearBoard({resetRenderedCardsCount: true, resetSortByCategoryType: true});
 
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["remove"])(this._catalogListComponent);
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["remove"])(this._catalogComponent);
@@ -743,49 +732,46 @@ class Board {
   }
 
   _getCards() {
-    const filterType = this._filterModel.getFilter();
+    const filter = this._filterModel.getFilter();
     const cards = this._cardsModel.getCards();
 
-    let filteredCards = null;
+    let filteredCards = cards.slice(0)
+        .filter((card) => Object(_utils_filter_js__WEBPACK_IMPORTED_MODULE_10__["filteredCardsByType"])(card.type, filter.type))
+        .filter((card) => Object(_utils_filter_js__WEBPACK_IMPORTED_MODULE_10__["filteredCardsByType"])(card.stringAmount, filter.stringAmount))
+        .filter((card) => Object(_utils_filter_js__WEBPACK_IMPORTED_MODULE_10__["filteredCardsByPrice"])(card.price, filter.price));
 
-    filteredCards = cards.slice(0);
-    filteredCards = filteredCards
-        .filter((card) => Object(_utils_filter_js__WEBPACK_IMPORTED_MODULE_10__["filteredCardsByType"])(card.type, filterType.type))
-        .filter((card) => Object(_utils_filter_js__WEBPACK_IMPORTED_MODULE_10__["filteredCardsByType"])(card.stringAmount, filterType.stringAmount))
-        .filter((card) => Object(_utils_filter_js__WEBPACK_IMPORTED_MODULE_10__["filteredCardsByPrice"])(card.price, filterType.price));
-
-    switch (this._currentSortType) {
-      case _const_js__WEBPACK_IMPORTED_MODULE_9__["SortType"].DEFAULT:
-        if (this._currentOrderType === _const_js__WEBPACK_IMPORTED_MODULE_9__["OrderType"].UP) {
-          this._currentSortType = _const_js__WEBPACK_IMPORTED_MODULE_9__["SortType"].PRICE;
+    switch (this._currentSortByCategoryType) {
+      case _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByCategoryType"].DEFAULT:
+        if (this._currentSortByPriorityType === _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByPriorityType"].UP) {
+          this._currentSortByCategoryType = _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByCategoryType"].PRICE;
           return filteredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_8__["sortPopularityUp"]);
         }
-        if (this._currentOrderType === _const_js__WEBPACK_IMPORTED_MODULE_9__["OrderType"].DOWN) {
-          this._currentSortType = _const_js__WEBPACK_IMPORTED_MODULE_9__["SortType"].PRICE;
+        if (this._currentSortByPriorityType === _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByPriorityType"].DOWN) {
+          this._currentSortByCategoryType = _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByCategoryType"].PRICE;
           return filteredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_8__["sortPopularityDown"]);
         }
         break;
-      case _const_js__WEBPACK_IMPORTED_MODULE_9__["SortType"].PRICE:
-        if (this._currentOrderType === _const_js__WEBPACK_IMPORTED_MODULE_9__["OrderType"].DEFAULT) {
-          this._currentOrderType = _const_js__WEBPACK_IMPORTED_MODULE_9__["OrderType"].UP;
+      case _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByCategoryType"].PRICE:
+        if (this._currentSortByPriorityType === _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByPriorityType"].DEFAULT) {
+          this._currentSortByPriorityType = _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByPriorityType"].UP;
           return filteredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_8__["sortPriceUp"]);
         }
-        if (this._currentOrderType === _const_js__WEBPACK_IMPORTED_MODULE_9__["OrderType"].UP) {
+        if (this._currentSortByPriorityType === _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByPriorityType"].UP) {
           return filteredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_8__["sortPriceUp"]);
         }
-        if (this._currentOrderType === _const_js__WEBPACK_IMPORTED_MODULE_9__["OrderType"].DOWN) {
+        if (this._currentSortByPriorityType === _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByPriorityType"].DOWN) {
           return filteredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_8__["sortPriceDown"]);
         }
         break;
-      case _const_js__WEBPACK_IMPORTED_MODULE_9__["SortType"].POPULARITY:
-        if (this._currentOrderType === _const_js__WEBPACK_IMPORTED_MODULE_9__["OrderType"].DEFAULT) {
-          this._currentOrderType = _const_js__WEBPACK_IMPORTED_MODULE_9__["OrderType"].UP;
+      case _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByCategoryType"].POPULARITY:
+        if (this._currentSortByPriorityType === _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByPriorityType"].DEFAULT) {
+          this._currentSortByPriorityType = _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByPriorityType"].UP;
           return filteredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_8__["sortPopularityUp"]);
         }
-        if (this._currentOrderType === _const_js__WEBPACK_IMPORTED_MODULE_9__["OrderType"].UP) {
+        if (this._currentSortByPriorityType === _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByPriorityType"].UP) {
           return filteredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_8__["sortPopularityUp"]);
         }
-        if (this._currentOrderType === _const_js__WEBPACK_IMPORTED_MODULE_9__["OrderType"].DOWN) {
+        if (this._currentSortByPriorityType === _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByPriorityType"].DOWN) {
           return filteredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_8__["sortPopularityDown"]);
         }
         break;
@@ -794,23 +780,23 @@ class Board {
     return filteredCards;
   }
 
-  _handleSortTypeChange(sortType) {
-    if (this._currentSortType === sortType) {
+  _handleSortByCategoryChange(sortByCategory) {
+    if (this._currentSortByCategoryType === sortByCategory) {
       return;
     }
 
-    this._currentSortType = sortType;
+    this._currentSortByCategoryType = sortByCategory;
 
     this._clearBoard({resetRenderedCardsCount: true});
     this._renderBoard();
   }
 
-  _handleOrderTypeChange(orderType) {
-    if (this._currentOrderType === orderType) {
+  _handleSortByPriorityChange(sortByPriority) {
+    if (this._currentSortByPriorityType === sortByPriority) {
       return;
     }
 
-    this._currentOrderType = orderType;
+    this._currentSortByPriorityType = sortByPriority;
 
     this._clearBoard({resetRenderedCardsCount: true});
     this._renderBoard();
@@ -849,9 +835,9 @@ class Board {
       this._catalogSortComponent = null;
     }
 
-    this._catalogSortComponent = new _view_catalog_sort_js__WEBPACK_IMPORTED_MODULE_1__["default"](this._currentSortType, this._currentOrderType);
-    this._catalogSortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
-    this._catalogSortComponent.setOrderTypeChangeHandler(this._handleOrderTypeChange);
+    this._catalogSortComponent = new _view_catalog_sort_js__WEBPACK_IMPORTED_MODULE_1__["default"](this._currentSortByCategoryType, this._currentSortByPriorityType);
+    this._catalogSortComponent.setSortByCategoryChangeHandler(this._handleSortByCategoryChange);
+    this._catalogSortComponent.setSortByPriorityChangeHandler(this._handleSortByPriorityChange);
 
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["render"])(this._catalogComponent, this._catalogSortComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_7__["RenderPosition"].AFTERBEGIN);
   }
@@ -870,7 +856,7 @@ class Board {
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["render"])(this._catalogComponent, this._catalogPaginationComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_7__["RenderPosition"].BEFOREEND);
   }
 
-  _clearBoard({resetRenderedCardsCount = false, resetSortType = false} = {}) {
+  _clearBoard({resetRenderedCardsCount = false, resetSortByCategoryType = false} = {}) {
     const cardCount = this._getCards().length;
 
     Object
@@ -878,9 +864,7 @@ class Board {
         .forEach((presenter) => presenter.destroy());
     this._cardPresenter = {};
 
-
-    // this._filterPresenter.destroy();
-
+    this._filterPresenter.destroy();
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["remove"])(this._catalogSortComponent);
 
     if (resetRenderedCardsCount) {
@@ -889,9 +873,9 @@ class Board {
       this._renderedCardsCount = Math.min(cardCount, this._renderedCardsCount);
     }
 
-    if (resetSortType) {
-      this._currentSortType = _const_js__WEBPACK_IMPORTED_MODULE_9__["SortType"].DEFAULT;
-      this._currentOrderType = _const_js__WEBPACK_IMPORTED_MODULE_9__["OrderType"].DEFAULT;
+    if (resetSortByCategoryType) {
+      this._currentSortByCategoryType = _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByCategoryType"].DEFAULT;
+      this._currentSortByPriorityType = _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByPriorityType"].DEFAULT;
     }
   }
 
@@ -936,8 +920,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/render.js */ "./source/js/utils/render.js");
 
 
-// import {filter} from "../utils/filter.js";
-// import {FilterType} from "../const.js";
 
 class Filter {
   constructor(filterContainer, filterModel, cardsModel) {
@@ -945,21 +927,14 @@ class Filter {
     this._filterModel = filterModel;
     this._cardsModel = cardsModel;
 
-    this._currentFilter = {
-      type: [],
-      stringAmount: [],
-      price: []
-    };
     this._filterComponent = null;
 
-    // this._handleModelEvent = this._handleModelEvent.bind(this);
     this._handleFilterTypeChange = this._handleFilterTypeChange.bind(this);
     this._handleFilterStringChange = this._handleFilterStringChange.bind(this);
     this._handleFilterPriceChange = this._handleFilterPriceChange.bind(this);
   }
 
   init() {
-    console.log(`init`);
     this._currentFilter = this._filterModel.getFilter();
     this._cards = this._cardsModel.getCards();
 
@@ -970,61 +945,37 @@ class Filter {
     this._filterComponent.setFilterStringChangeHandler(this._handleFilterStringChange);
     this._filterComponent.setFilterPriceChangeHandler(this._handleFilterPriceChange);
 
-
-    // if (this._prevFilterComponent === null) {
-      Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_1__["render"])(this._filterContainer, this._filterComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_1__["RenderPosition"].AFTERBEGIN);
-    //   return;
-    // }
-
-    // this._cardsModel.addObserver(this._handleModelEvent);
-    // this._filterModel.addObserver(this._handleModelEvent);
+    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_1__["render"])(this._filterContainer, this._filterComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_1__["RenderPosition"].AFTERBEGIN);
   }
 
   destroy() {
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_1__["remove"])(this._filterComponent);
 
     this._filterComponent = null;
-
-    // this._cardsModel.removeObserver(this._handleModelEvent);
-    // this._filterModel.removeObserver(this._handleModelEvent);
   }
 
-  // _handleModelEvent() {
-  //   console.log(`init`);
-  //   this.init();
-  // }
-
   _handleFilterTypeChange(filterGuitarType) {
-    if (this._currentFilter.stringAmount.length === filterGuitarType.length && this._currentFilter.stringAmount
-        .every((value, index) => value === filterGuitarType[index]) && this._prevFilterComponent === 0) {
+    if (this._prevFilterComponent === 0) {
       return;
     }
 
-    this.destroy();
     this._filterModel.setFilter(filterGuitarType, `type`);
   }
 
   _handleFilterStringChange(filterStringType) {
-    if (this._currentFilter.stringAmount.length === filterStringType.length && this._currentFilter.stringAmount
-        .every((value, index) => value === filterStringType[index]) && this._prevFilterComponent === 0) {
+    if (this._prevFilterComponent === 0) {
       return;
     }
 
-    this.destroy();
     this._filterModel.setFilter(filterStringType, `stringAmount`);
   }
 
   _handleFilterPriceChange(filterPriceType) {
-    if (this._currentFilter.price.length === filterPriceType.length && this._currentFilter.price
-        .every((value, index) => value === filterPriceType[index])) {
+    if (this._prevFilterComponent === 0) {
       return;
     }
 
-    this.destroy();
     this._filterModel.setFilter(filterPriceType, `price`);
-  }
-
-  _getFilters() {
   }
 }
 
@@ -1862,75 +1813,75 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const createCatalogSortElement = (currentSortType, currentOrderType) => {
+const createCatalogSortElement = (currentSortByCategoryType, currentSortByPriorityType) => {
   return (
     `<div class="catalog__sort-wrapper">
       <span>Сортировать:</span>
       <ul class="catalog__sort sort">
-        <li class="sort__item ${currentSortType === _const_js__WEBPACK_IMPORTED_MODULE_1__["SortType"].PRICE ? `sort__item--active` : ``}">
+        <li class="sort__item ${currentSortByCategoryType === _const_js__WEBPACK_IMPORTED_MODULE_1__["SortByCategoryType"].PRICE ? `sort__item--active` : ``}">
           <a
             href="#"
-            data-sort-type-category="${_const_js__WEBPACK_IMPORTED_MODULE_1__["SortType"].PRICE}">по цене
+            data-sort-by-category="${_const_js__WEBPACK_IMPORTED_MODULE_1__["SortByCategoryType"].PRICE}">по цене
           </a>
         </li>
-        <li class="sort__item ${currentSortType === _const_js__WEBPACK_IMPORTED_MODULE_1__["SortType"].POPULARITY ? `sort__item--active` : ``}">
+        <li class="sort__item ${currentSortByCategoryType === _const_js__WEBPACK_IMPORTED_MODULE_1__["SortByCategoryType"].POPULARITY ? `sort__item--active` : ``}">
           <a
             href="#"
-            data-sort-type-category="${_const_js__WEBPACK_IMPORTED_MODULE_1__["SortType"].POPULARITY}">по популярности
+            data-sort-by-category="${_const_js__WEBPACK_IMPORTED_MODULE_1__["SortByCategoryType"].POPULARITY}">по популярности
           </a>
         </li>
       </ul>
       <div class="catalog__sort-buttons">
         <button
-          class="sort-button sort-button--up ${currentOrderType === _const_js__WEBPACK_IMPORTED_MODULE_1__["OrderType"].UP ? `sort-button--active` : ``}"
+          class="sort-button sort-button--up ${currentSortByPriorityType === _const_js__WEBPACK_IMPORTED_MODULE_1__["SortByPriorityType"].UP ? `sort-button--active` : ``}"
           type="button"
-          data-sort-type-priority="${_const_js__WEBPACK_IMPORTED_MODULE_1__["OrderType"].UP}">
+          data-sort-by-priority="${_const_js__WEBPACK_IMPORTED_MODULE_1__["SortByPriorityType"].UP}">
         </button>
         <button
-          class="sort-button sort-button--down ${currentOrderType === _const_js__WEBPACK_IMPORTED_MODULE_1__["OrderType"].DOWN ? `sort-button--active` : ``}"
+          class="sort-button sort-button--down ${currentSortByPriorityType === _const_js__WEBPACK_IMPORTED_MODULE_1__["SortByPriorityType"].DOWN ? `sort-button--active` : ``}"
           type="button"
-          data-sort-type-priority="${_const_js__WEBPACK_IMPORTED_MODULE_1__["OrderType"].DOWN}">
+          data-sort-by-priority="${_const_js__WEBPACK_IMPORTED_MODULE_1__["SortByPriorityType"].DOWN}">
         </button>
       </div>
     </div>`
   );
 };
 class CatalogSort extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
-  constructor(currentSortType, currentOrderType) {
+  constructor(sortByCategory, sortByPriority) {
     super();
-    this._currentSortType = currentSortType;
-    this._currentOrderType = currentOrderType;
-    this._sortTypeChangeHandler = this._sortTypeChangeHandler.bind(this);
-    this._orderTypeChangeHandler = this._orderTypeChangeHandler.bind(this);
+    this._currentSortByCategory = sortByCategory;
+    this._currentSortByPriority = sortByPriority;
+    this._sortByCategoryChangeHandler = this._sortByCategoryChangeHandler.bind(this);
+    this._sortByPriorityChangeHandler = this._sortByPriorityChangeHandler.bind(this);
   }
 
   getTemplate() {
-    return createCatalogSortElement(this._currentSortType, this._currentOrderType);
+    return createCatalogSortElement(this._currentSortByCategory, this._currentSortByPriority);
   }
 
-  _sortTypeChangeHandler(evt) {
+  _sortByCategoryChangeHandler(evt) {
     evt.preventDefault();
     if (evt.target.tagName === `A`) {
       evt.preventDefault();
-      this._callback.sortTypeChange(evt.target.dataset.sortTypeCategory);
+      this._callback.sortByCategoryChange(evt.target.dataset.sortByCategory);
     }
   }
 
-  _orderTypeChangeHandler(evt) {
+  _sortByPriorityChangeHandler(evt) {
     if (evt.target.tagName === `BUTTON`) {
       evt.preventDefault();
-      this._callback.orderTypeChange(evt.target.dataset.sortTypePriority);
+      this._callback.sortByPriorityChange(evt.target.dataset.sortByPriority);
     }
   }
 
-  setSortTypeChangeHandler(callback) {
-    this._callback.sortTypeChange = callback;
-    this.getElement().addEventListener(`click`, this._sortTypeChangeHandler);
+  setSortByCategoryChangeHandler(callback) {
+    this._callback.sortByCategoryChange = callback;
+    this.getElement().addEventListener(`click`, this._sortByCategoryChangeHandler);
   }
 
-  setOrderTypeChangeHandler(callback) {
-    this._callback.orderTypeChange = callback;
-    this.getElement().addEventListener(`click`, this._orderTypeChangeHandler);
+  setSortByPriorityChangeHandler(callback) {
+    this._callback.sortByPriorityChange = callback;
+    this.getElement().addEventListener(`click`, this._sortByPriorityChangeHandler);
   }
 }
 
@@ -1954,60 +1905,53 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const createFiltersElement = (currentFilterType, cards) => {
-  let filteredGuitars = {};
+const createFiltersElement = (currentFilter, cards) => {
+  let filteredGuitarsByType = {};
   let stringAmountAvailableList = [];
-  if (currentFilterType.type.length === 0) {
-    filteredGuitars = cards
-        .filter((item) => Object(_utils_filter_js__WEBPACK_IMPORTED_MODULE_2__["filteredCardsByType"])(item.type, currentFilterType.type));
 
-    stringAmountAvailableList = Array.from(new Set(filteredGuitars
+  if (currentFilter.type.length === 0) {
+    filteredGuitarsByType = cards
+        .filter((item) => Object(_utils_filter_js__WEBPACK_IMPORTED_MODULE_2__["filteredCardsByType"])(item.type, currentFilter.type));
+
+    stringAmountAvailableList = Array.from(new Set(filteredGuitarsByType
         .map((item) => item.stringAmount)));
   }
 
-  filteredGuitars = currentFilterType.type;
-  const keysGuitar = Object.keys(_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"]);
-  const keysStrings = Object.keys(_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"]);
-  let typeGuitarKey = [];
-  let typeGuitarValue = [];
-  let typeStringsValue = [];
+  filteredGuitarsByType = currentFilter.type;
 
-  keysGuitar.filter((key) => (currentFilterType.type.forEach((type) => {
+  const guitarKeys = Object.keys(_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"]);
+  const stringKeys = Object.keys(_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterStringAmount"]);
+
+  let typeGuitarKeys = [];
+  let typeGuitarValues = [];
+  let typeStringsValues = [];
+
+  guitarKeys.filter((key) => (currentFilter.type.forEach((type) => {
     if (type.includes(_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"][key])) {
-      // let arr = [];
-      // arr.push(FilterType[key]);
-      // typeGuitar[key] = arr;
-      return typeGuitarKey.push(key);
+      return typeGuitarKeys.push(key);
     } else {
       return false;
     }
   })));
 
-  keysGuitar.filter((key) => (currentFilterType.type.forEach((type) => {
+  guitarKeys.filter((key) => (currentFilter.type.forEach((type) => {
     if (type.includes(_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"][key])) {
-      // let arr = [];
-      // arr.push(FilterType[key]);
-      // typeGuitar[key] = arr;
-      return typeGuitarValue.push(_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"][key]);
+      return typeGuitarValues.push(_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"][key]);
     } else {
       return false;
     }
   })));
 
-  keysStrings.filter((key) => (currentFilterType.stringAmount.forEach((type) => {
-    if (type.includes(_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"][key])) {
-      // let arr = [];
-      // arr.push(FilterType[key]);
-      // typeGuitar[key] = arr;
-      return typeStringsValue.push(_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"][key]);
+  stringKeys.filter((key) => (currentFilter.stringAmount.forEach((type) => {
+    if (type.includes(_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterStringAmount"][key])) {
+      return typeStringsValues.push(_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterStringAmount"][key]);
     } else {
       return false;
     }
   })));
 
-  console.log(typeStringsValue);
-  typeGuitarKey.forEach((item) => {
-    stringAmountAvailableList.push(..._const_js__WEBPACK_IMPORTED_MODULE_1__["StringsAmount"][item]);
+  typeGuitarKeys.forEach((item) => {
+    stringAmountAvailableList.push(..._const_js__WEBPACK_IMPORTED_MODULE_1__["StringsAmountByType"][item]);
     return stringAmountAvailableList;
   });
   stringAmountAvailableList = Array.from(new Set(stringAmountAvailableList));
@@ -2019,7 +1963,7 @@ const createFiltersElement = (currentFilterType, cards) => {
   return (`<div class="catalog__filters-column">
   <h2>Фильтр</h2>
   <form class="catalog__filters-form" action="#" method="GET">
-      <fieldset>
+      <fieldset class="catalog__filters-price-change">
         <h3>Цена, ₽</h3>
         <div class="catalog__filters-price-wrapper">
           <input
@@ -2042,7 +1986,7 @@ const createFiltersElement = (currentFilterType, cards) => {
               >
         </div>
       </fieldset>
-      <fieldset>
+      <fieldset class="catalog__filters-type-guitar">
         <h3>Тип гитар</h3>
         <div class="catalog__filters-type-wrapper">
           <div class="catalog__filters-type-content-wrapper">
@@ -2052,7 +1996,7 @@ const createFiltersElement = (currentFilterType, cards) => {
                 name="filters-form-type"
                 id="filters-form-type-value-1"
                 data-filter-type-guitar="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ACOUSTIC}"
-                ${isStringsAvailable(typeGuitarValue, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ACOUSTIC) ? `checked` : ``}
+                ${isStringsAvailable(typeGuitarValues, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ACOUSTIC) ? `checked` : ``}
                 >
             <label for="filters-form-type-value-1">Акустические гитары</label>
           </div>
@@ -2063,7 +2007,7 @@ const createFiltersElement = (currentFilterType, cards) => {
                 name="filters-form-type"
                 id="filters-form-type-value-2"
                 data-filter-type-guitar="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ELECTRO}"
-                ${isStringsAvailable(typeGuitarValue, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ELECTRO) ? `checked` : ``}
+                ${isStringsAvailable(typeGuitarValues, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ELECTRO) ? `checked` : ``}
                 >
             <label for="filters-form-type-value-2">Электрогитары</label>
           </div>
@@ -2074,131 +2018,130 @@ const createFiltersElement = (currentFilterType, cards) => {
                 name="filters-form-type"
                 id="filters-form-type-value-3"
                 data-filter-type-guitar="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].UKULELE}"
-                ${isStringsAvailable(typeGuitarValue, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].UKULELE) ? `checked` : ``}
+                ${isStringsAvailable(typeGuitarValues, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].UKULELE) ? `checked` : ``}
                 >
             <label for="filters-form-type-value-3">Укулеле</label>
           </div>
         </div>
       </fieldset>
-      <fieldset>
-  <h3>Количество струн</h3>
-  <div class="catalog__filters-amount-wrapper">
-    <label>
-      <input
-          class="visually-hidden"
-          type="checkbox"
-          name="filters-form-amount"
-          id="4"
-          data-filter-type-strings="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].FOUR}"
-          ${isStringsAvailable(typeStringsValue, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].FOUR) ? `checked` : ``}
-          ${isStringsAvailable(stringAmountAvailableList, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].FOUR) ? `` : `disabled`}
-          >
-      <span>4</span>
-    </label>
-    <label>
-      <input
-          class="visually-hidden"
-          type="checkbox"
-          name="filters-form-amount"
-          id="6"
-          data-filter-type-strings="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].SIX}"
-          ${isStringsAvailable(typeStringsValue, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].SIX) ? `checked` : ``}
-          ${isStringsAvailable(stringAmountAvailableList, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].SIX) ? `` : `disabled`}
-          >
-      <span>6</span>
-    </label>
-    <label>
-      <input
-          class="visually-hidden"
-          type="checkbox"
-          name="filters-form-amount"
-          id="7"
-          data-filter-type-strings="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].SEVEN}"
-          ${isStringsAvailable(typeStringsValue, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].SEVEN) ? `checked` : ``}
-          ${isStringsAvailable(stringAmountAvailableList, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].SEVEN) ? `` : `disabled`}
-          >
-      <span>7</span>
-    </label>
-    <label>
-      <input
-          class="visually-hidden"
-          type="checkbox"
-          name="filters-form-amount"
-          id="12"
-          data-filter-type-strings="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].TWELVE}"
-          ${isStringsAvailable(typeStringsValue, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].TWELVE) ? `checked` : ``}
-          ${isStringsAvailable(stringAmountAvailableList, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterTypeS"].TWELVE) ? `` : `disabled`}
-          >
-      <span>12</span>
-    </label>
-  </div>
-</fieldset>
-
+      <fieldset class="catalog__filters-string-amount">
+        <h3>Количество струн</h3>
+        <div class="catalog__filters-amount-wrapper">
+          <label>
+            <input
+                class="visually-hidden"
+                type="checkbox"
+                name="filters-form-amount"
+                id="4"
+                data-filter-amount-strings="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterStringAmount"].FOUR}"
+                ${isStringsAvailable(typeStringsValues, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterStringAmount"].FOUR) ? `checked` : ``}
+                ${isStringsAvailable(stringAmountAvailableList, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterStringAmount"].FOUR) ? `` : `disabled`}
+                >
+            <span>4</span>
+          </label>
+          <label>
+            <input
+                class="visually-hidden"
+                type="checkbox"
+                name="filters-form-amount"
+                id="6"
+                data-filter-amount-strings="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterStringAmount"].SIX}"
+                ${isStringsAvailable(typeStringsValues, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterStringAmount"].SIX) ? `checked` : ``}
+                ${isStringsAvailable(stringAmountAvailableList, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterStringAmount"].SIX) ? `` : `disabled`}
+                >
+            <span>6</span>
+          </label>
+          <label>
+            <input
+                class="visually-hidden"
+                type="checkbox"
+                name="filters-form-amount"
+                id="7"
+                data-filter-amount-strings="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterStringAmount"].SEVEN}"
+                ${isStringsAvailable(typeStringsValues, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterStringAmount"].SEVEN) ? `checked` : ``}
+                ${isStringsAvailable(stringAmountAvailableList, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterStringAmount"].SEVEN) ? `` : `disabled`}
+                >
+            <span>7</span>
+          </label>
+          <label>
+            <input
+                class="visually-hidden"
+                type="checkbox"
+                name="filters-form-amount"
+                id="12"
+                data-filter-amount-strings="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterStringAmount"].TWELVE}"
+                ${isStringsAvailable(typeStringsValues, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterStringAmount"].TWELVE) ? `checked` : ``}
+                ${isStringsAvailable(stringAmountAvailableList, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterStringAmount"].TWELVE) ? `` : `disabled`}
+                >
+            <span>12</span>
+          </label>
+        </div>
+      </fieldset>
     </form></div>`);
 };
 
 class Filters extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
-  constructor(currentFilterType, cards) {
+  constructor(currentFilter, cards) {
     super();
-    this._currentFilterType = currentFilterType;
+    this._currentFilter = currentFilter;
     this._cards = cards;
 
     this._filterPriceChangeHandler = this._filterPriceChangeHandler.bind(this);
-    this._filterTypeChangeHandler = this._filterTypeChangeHandler.bind(this);
-    this._filterStringChangeHandler = this._filterStringChangeHandler.bind(this);
+    this._filterGuitarTypeChangeHandler = this._filterGuitarTypeChangeHandler.bind(this);
+    this._filterStringAmountChangeHandler = this._filterStringAmountChangeHandler.bind(this);
 
   }
 
   getTemplate() {
-    return createFiltersElement(this._currentFilterType, this._cards);
+    return createFiltersElement(this._currentFilter, this._cards);
   }
 
-  _filterTypeChangeHandler(evt) {
+  _filterGuitarTypeChangeHandler(evt) {
     evt.preventDefault();
-    let optionsTypeGuitarArray = [];
+    let optionsGuitarTypeArray = [];
 
     document.querySelectorAll(`input[type='checkbox']`)
-        .forEach((checkbox) => checkbox.checked === true && !checkbox.dataset.filterTypeStrings ? optionsTypeGuitarArray
+        .forEach((checkbox) => checkbox.checked === true && !checkbox.dataset.filterAmountStrings ? optionsGuitarTypeArray
             .push(checkbox.dataset.filterTypeGuitar) : null);
 
-    this._callback.filterTypeChange(optionsTypeGuitarArray);
+    this._callback.filterTypeChange(optionsGuitarTypeArray);
   }
 
-  _filterStringChangeHandler(evt) {
+  _filterStringAmountChangeHandler(evt) {
     evt.preventDefault();
-    let optionsTypeStringArray = [];
+    let optionsStringAmountArray = [];
 
     document.querySelectorAll(`input[type='checkbox']`)
-        .forEach((checkbox) => checkbox.checked === true && !checkbox.dataset.filterTypeGuitar ? optionsTypeStringArray
-            .push(checkbox.dataset.filterTypeStrings) : null);
+        .forEach((checkbox) => checkbox.checked === true && !checkbox.dataset.filterTypeGuitar ? optionsStringAmountArray
+            .push(checkbox.dataset.filterAmountStrings) : null);
 
-    this._callback.filterStringChange(optionsTypeStringArray);
+    this._callback.filterStringChange(optionsStringAmountArray);
   }
 
   _filterPriceChangeHandler(evt) {
     evt.preventDefault();
-    let optionsPriceArray = [];
+    let optionsPriceChangeArray = [];
 
     document.querySelectorAll(`input[type='number']`)
-        .forEach((checkbox) => optionsPriceArray
+        .forEach((checkbox) => optionsPriceChangeArray
             .push(checkbox.value));
 
-    this._callback.filterPriceChange(optionsPriceArray);
+    this._callback.filterPriceChange(optionsPriceChangeArray);
   }
 
   setFilterTypeChangeHandler(callback) {
     this._callback.filterTypeChange = callback;
-    this.getElement().addEventListener(`change`, this._filterTypeChangeHandler);
+    this.getElement().querySelector(`.catalog__filters-type-guitar`).addEventListener(`change`, this._filterGuitarTypeChangeHandler);
   }
 
   setFilterStringChangeHandler(callback) {
     this._callback.filterStringChange = callback;
-    this.getElement().addEventListener(`change`, this._filterStringChangeHandler);
+    this.getElement().querySelector(`.catalog__filters-string-amount`).addEventListener(`change`, this._filterStringAmountChangeHandler);
   }
 
   setFilterPriceChangeHandler(callback) {
     this._callback.filterPriceChange = callback;
-    this.getElement().addEventListener(`input`, this._filterPriceChangeHandler);
+    this.getElement().querySelector(`.catalog__filters-price-change`).addEventListener(`input`, this._filterPriceChangeHandler);
   }
 }
 
