@@ -4,7 +4,7 @@ import {MenuItem} from "../const.js";
 export default class SiteMenu extends Observer {
   constructor() {
     super();
-    this._activeItem = MenuItem.CARDS;
+    this._activeItem = MenuItem.CATALOG;
   }
 
   setMenuItem(itemType) {

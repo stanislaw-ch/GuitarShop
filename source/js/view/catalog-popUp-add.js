@@ -1,7 +1,7 @@
 import AbstractView from "./abstract.js";
 
-const createCatalogPopUpAddElement = (card) => {
-  const {image, name, identiferNumber, stringAmount, price} = card;
+const createCatalogPopUpAddElement = (data) => {
+  const {image, name, identiferNumber, stringAmount, price} = data;
   return `<section class="modal">
     <div class="modal__popup">
       <h2 class="modal__title">Добавить товар в корзину</h2>
@@ -28,9 +28,9 @@ const createCatalogPopUpAddElement = (card) => {
 };
 
 export default class CatalogPopUpAdd extends AbstractView {
-  constructor(card) {
+  constructor(data) {
     super();
-    this._data = card;
+    this._data = data;
 
     this._addClickHandler = this._addClickHandler.bind(this);
     this._closeClickHandler = this._closeClickHandler.bind(this);
@@ -42,7 +42,7 @@ export default class CatalogPopUpAdd extends AbstractView {
 
   _addClickHandler(evt) {
     evt.preventDefault();
-    this._callback.addClick();
+    this._callback.addClick(this._data);
   }
 
   _closeClickHandler(evt) {

@@ -1,8 +1,8 @@
 import AbstractView from "./abstract.js";
 
-const createCatalogPopUpDeleteElement = (card) => {
-  const {image, name, identiferNumber, stringAmount, price} = card;
-  return `<section class="modal modal--delete-from-basket-hidden ">
+const createBasketPopUpDeleteElement = (data) => {
+  const {image, name, identiferNumber, stringAmount, price} = data;
+  return `<section class="modal">
   <div class="modal__popup">
     <h2 class="modal__title">Удалить этот товар?</h2>
 
@@ -31,9 +31,9 @@ const createCatalogPopUpDeleteElement = (card) => {
 };
 
 export default class CatalogPopUpDelete extends AbstractView {
-  constructor(card) {
+  constructor(data) {
     super();
-    this._data = card;
+    this._data = data;
 
     this._deleteClickHandler = this._deleteClickHandler.bind(this);
     this._closeClickHandler = this._closeClickHandler.bind(this);
@@ -41,7 +41,7 @@ export default class CatalogPopUpDelete extends AbstractView {
   }
 
   getTemplate() {
-    return createCatalogPopUpDeleteElement(this._data);
+    return createBasketPopUpDeleteElement(this._data);
   }
 
   _deleteClickHandler(evt) {
@@ -59,7 +59,7 @@ export default class CatalogPopUpDelete extends AbstractView {
     this._callback.toShoppingClick();
   }
 
-  setAddClickHandler(callback) {
+  setDeleteClickHandler(callback) {
     this._callback.deleteClick = callback;
     this.getElement().querySelector(`.modal__button`).addEventListener(`click`, this._deleteClickHandler);
   }

@@ -1,32 +1,11 @@
-import {FilterType} from "../const";
-
-export const filter = {
-  [FilterType.ALL]: (cards) => cards.filter((card) => card),
-  [FilterType.ACOUSTIC]: (cards) => cards.filter((card) => card.type === FilterType.ACOUSTIC),
-  [FilterType.ELECTRO]: (cards) => cards.filter((card) => card.type === FilterType.ELECTRO),
-  [FilterType.UKULELE]: (cards) => cards.filter((card) => card.type === FilterType.UKULELE),
-};
-
-// export const filteredCardsByKey = (targetArray, filters) => {
-//   const filterKeys = Object.keys(filters);
-//   return targetArray.filter((eachObj) => {
-//     return filterKeys.every((eachKey) => {
-//       if (!filters[eachKey].length) {
-//         return true;
-//       }
-//       return filters[eachKey].includes(eachObj[eachKey]);
-//     });
-//   });
-// };
-
-export const filteredCardsByType = (card, filters) => {
+export const filteredGoodsByType = (good, filters) => {
   if (!filters.length) {
     return true;
   }
-  return filters.includes(card);
+  return filters.includes(good);
 };
 
-export const filteredCardsByPrice = (card, filters) => {
+export const filteredGoodsByPrice = (good, filters) => {
   const keys = [`min`, `max`];
   let PriceRange = {};
 
@@ -36,5 +15,5 @@ export const filteredCardsByPrice = (card, filters) => {
     return true;
   }
 
-  return Number(card) <= PriceRange.max && Number(card) >= PriceRange.min;
+  return Number(good) <= PriceRange.max && Number(good) >= PriceRange.min;
 };

@@ -1,21 +1,38 @@
 import SiteMenuView from "../view/site-menu.js";
-import {render, RenderPosition} from "../utils/render.js";
+import {render, RenderPosition, remove} from "../utils/render.js";
 
 export default class SiteMenu {
-  constructor(siteMenuContainer, siteMenuModel) {
+  constructor(siteMenuContainer, siteMenuModel, basketModel) {
     this._siteMenuContainer = siteMenuContainer;
     this._siteMenuModel = siteMenuModel;
-    this._currentFilter = null;
-
-    this._siteMenuComponent = new SiteMenuView();
+    this._basketModel = basketModel;
 
     this._handleSiteMenuChange = this._handleSiteMenuChange.bind(this);
+    this._handleModelEvent = this._handleModelEvent.bind(this);
   }
 
   init() {
+    this._siteMenuComponent = new SiteMenuView(this._basketModel.getBasket().length);
     render(this._siteMenuContainer, this._siteMenuComponent, RenderPosition.AFTERBEGIN);
 
     this._siteMenuComponent.setMenuClickHandler(this._handleSiteMenuChange);
+
+    this._siteMenuModel.addObserver(this._handleModelEvent);
+    this._basketModel.addObserver(this._handleModelEvent);
+  }
+
+  destroy() {
+    remove(this._siteMenuComponent);
+
+    this._siteMenuComponent = null;
+
+    this._siteMenuModel.removeObserver(this._handleModelEvent);
+    this._basketModel.removeObserver(this._handleModelEvent);
+  }
+
+  _handleModelEvent() {
+    this.destroy();
+    this.init();
   }
 
   _handleSiteMenuChange(menuItem) {
@@ -25,27 +42,14 @@ export default class SiteMenu {
       return;
     }
 
-    this._siteMenuComponent.getElement()
-        .querySelector(`[data-menu-type="${this._currentMenuItem}"]`)
-        .parentElement.classList.remove(`site-list__item--active`);
+    // this._siteMenuComponent.getElement()
+    //     .querySelector(`[data-menu-type="${this._currentMenuItem}"]`)
+    //     .parentElement.classList.remove(`site-list__item--active`);
 
-    this._siteMenuComponent.getElement()
-        .querySelector(`[data-menu-type="${menuItem}"]`)
-        .parentElement.classList.add(`site-list__item--active`);
+    // this._siteMenuComponent.getElement()
+    //     .querySelector(`[data-menu-type="${menuItem}"]`)
+    //     .parentElement.classList.add(`site-list__item--active`);
 
     this._siteMenuModel.setMenuItem(menuItem);
   }
-
-  // destroy() {
-  //   remove(this._siteMenuComponent);
-
-  //   this._siteMenuComponent = null;
-
-  //   this._cardsModel.removeObserver(this._handleModelEvent);
-  //   this._siteMenuModel.removeObserver(this._handleModelEvent);
-  // }
-
-  // _handleModelEvent() {
-  //   this.init();
-  // }
 }

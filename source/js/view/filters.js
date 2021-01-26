@@ -1,14 +1,14 @@
 import AbstractView from "./abstract.js";
 import {FilterType, FilterStringAmount, StringsAmountByType} from "../const.js";
-import {filteredCardsByType} from "../utils/filter.js";
+import {filteredGoodsByType} from "../utils/filter.js";
 
-const createFiltersElement = (currentFilter, cards) => {
+const createFiltersElement = (currentFilter, goods) => {
   let filteredGuitarsByType = {};
   let stringAmountAvailableList = [];
 
   if (currentFilter.type.length === 0) {
-    filteredGuitarsByType = cards
-        .filter((item) => filteredCardsByType(item.type, currentFilter.type));
+    filteredGuitarsByType = goods
+        .filter((item) => filteredGoodsByType(item.type, currentFilter.type));
 
     stringAmountAvailableList = Array.from(new Set(filteredGuitarsByType
         .map((item) => item.stringAmount)));
@@ -178,10 +178,10 @@ const createFiltersElement = (currentFilter, cards) => {
 };
 
 export default class Filters extends AbstractView {
-  constructor(currentFilter, cards) {
+  constructor(currentFilter, goods) {
     super();
     this._currentFilter = currentFilter;
-    this._cards = cards;
+    this._goods = goods;
 
     this._filterPriceChangeHandler = this._filterPriceChangeHandler.bind(this);
     this._filterGuitarTypeChangeHandler = this._filterGuitarTypeChangeHandler.bind(this);
@@ -190,7 +190,7 @@ export default class Filters extends AbstractView {
   }
 
   getTemplate() {
-    return createFiltersElement(this._currentFilter, this._cards);
+    return createFiltersElement(this._currentFilter, this._goods);
   }
 
   _filterGuitarTypeChangeHandler(evt) {

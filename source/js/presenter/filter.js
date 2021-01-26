@@ -2,10 +2,10 @@ import FilterView from "../view/filters.js";
 import {render, RenderPosition, remove} from "../utils/render.js";
 
 export default class Filter {
-  constructor(filterContainer, filterModel, cardsModel) {
+  constructor(filterContainer, filterModel, goodsModel) {
     this._filterContainer = filterContainer;
     this._filterModel = filterModel;
-    this._cardsModel = cardsModel;
+    this._goodsModel = goodsModel;
 
     this._filterComponent = null;
 
@@ -16,11 +16,11 @@ export default class Filter {
 
   init() {
     this._currentFilter = this._filterModel.getFilter();
-    this._cards = this._cardsModel.getCards();
+    this._goods = this._goodsModel.getGoods();
 
     this._prevFilterComponent = this._filterComponent;
 
-    this._filterComponent = new FilterView(this._currentFilter, this._cards);
+    this._filterComponent = new FilterView(this._currentFilter, this._goods);
     this._filterComponent.setFilterTypeChangeHandler(this._handleFilterTypeChange);
     this._filterComponent.setFilterStringChangeHandler(this._handleFilterStringChange);
     this._filterComponent.setFilterPriceChangeHandler(this._handleFilterPriceChange);

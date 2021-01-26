@@ -1,6 +1,6 @@
-// .order__discount {
-
-// }
+.order__discount {
+  position: relative;
+}
 
 .order__discount-wrapper {
   display: flex;
@@ -21,6 +21,18 @@
 .order__discount-promo {
   display: flex;
   margin-top: 20px;
+}
+
+.order__discount-promo--error {
+  &::before {
+    position: absolute;
+    z-index: 2;
+    content: "Промокод не действителен";
+    top: 45px;
+    left: 0;
+    color: red;
+    font-size: 12px;
+  }
 }
 
 .order__discount-promo input {

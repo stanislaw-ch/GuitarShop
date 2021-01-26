@@ -90,7 +90,7 @@
 /*!****************************!*\
   !*** ./source/js/const.js ***!
   \****************************/
-/*! exports provided: SortByCategoryType, SortByPriorityType, FilterType, FilterStringAmount, StringsAmountByType, MenuItem */
+/*! exports provided: SortByCategoryType, SortByPriorityType, FilterType, FilterStringAmount, StringsAmountByType, MenuItem, BreadcrumbsItem, BreadcrumbsTitle, UserAction, UpdateType, DiscountType */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -101,6 +101,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FilterStringAmount", function() { return FilterStringAmount; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "StringsAmountByType", function() { return StringsAmountByType; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MenuItem", function() { return MenuItem; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BreadcrumbsItem", function() { return BreadcrumbsItem; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BreadcrumbsTitle", function() { return BreadcrumbsTitle; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UserAction", function() { return UserAction; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UpdateType", function() { return UpdateType; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DiscountType", function() { return DiscountType; });
 const SortByCategoryType = {
   DEFAULT: `default`,
   PRICE: `price`,
@@ -137,6 +142,35 @@ const MenuItem = {
   BASKET: `BASKET`
 };
 
+const BreadcrumbsItem = {
+  CARDS: `Каталог`,
+  BASKET: `Корзина`
+};
+
+const BreadcrumbsTitle = {
+  CARDS: `Каталог гитар`,
+  BASKET: `Корзина`
+};
+
+const UserAction = {
+  UPDATE_POINT: `UPDATE_POINT`,
+  ADD_POINT: `ADD_POINT`,
+  DELETE_POINT: `DELETE_POINT`
+};
+
+const UpdateType = {
+  MINOR: `MINOR`,
+  MAJOR: `MAJOR`,
+  INIT: `INIT`
+};
+
+const DiscountType = {
+  DEFAULT: `DEFAULT`,
+  GITARAHIT: `GITARAHIT`,
+  SUPERGITARA: `SUPERGITARA`,
+  GITARA2020: `GITARA2020`
+};
+
 
 /***/ }),
 
@@ -149,16 +183,18 @@ const MenuItem = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _view_breadcrumbs_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./view/breadcrumbs.js */ "./source/js/view/breadcrumbs.js");
-/* harmony import */ var _view_catalog_section_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./view/catalog-section.js */ "./source/js/view/catalog-section.js");
-/* harmony import */ var _view_catalog_section_wrapper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./view/catalog-section-wrapper.js */ "./source/js/view/catalog-section-wrapper.js");
-/* harmony import */ var _presenter_site_menu_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./presenter/site-menu.js */ "./source/js/presenter/site-menu.js");
-/* harmony import */ var _presenter_catalog_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./presenter/catalog.js */ "./source/js/presenter/catalog.js");
+/* harmony import */ var _view_catalog_section_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./view/catalog-section.js */ "./source/js/view/catalog-section.js");
+/* harmony import */ var _view_catalog_section_wrapper_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./view/catalog-section-wrapper.js */ "./source/js/view/catalog-section-wrapper.js");
+/* harmony import */ var _presenter_site_menu_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./presenter/site-menu.js */ "./source/js/presenter/site-menu.js");
+/* harmony import */ var _presenter_catalog_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./presenter/catalog.js */ "./source/js/presenter/catalog.js");
+/* harmony import */ var _presenter_breadcrumbs_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./presenter/breadcrumbs.js */ "./source/js/presenter/breadcrumbs.js");
 /* harmony import */ var _model_cards_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./model/cards.js */ "./source/js/model/cards.js");
 /* harmony import */ var _model_filter_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./model/filter.js */ "./source/js/model/filter.js");
 /* harmony import */ var _model_site_menu_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./model/site-menu.js */ "./source/js/model/site-menu.js");
-/* harmony import */ var _mock_json_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./mock/json.js */ "./source/js/mock/json.js");
-/* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./utils/render.js */ "./source/js/utils/render.js");
+/* harmony import */ var _model_basket_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./model/basket.js */ "./source/js/model/basket.js");
+/* harmony import */ var _mock_json_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./mock/json.js */ "./source/js/mock/json.js");
+/* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./utils/render.js */ "./source/js/utils/render.js");
+
 
 
 
@@ -172,25 +208,27 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const cardsModel = new _model_cards_js__WEBPACK_IMPORTED_MODULE_5__["default"]();
-cardsModel.setCards(_mock_json_js__WEBPACK_IMPORTED_MODULE_8__["default"]);
+cardsModel.setCards(_mock_json_js__WEBPACK_IMPORTED_MODULE_9__["default"]);
 
 const filterModel = new _model_filter_js__WEBPACK_IMPORTED_MODULE_6__["default"]();
 const siteMenuModel = new _model_site_menu_js__WEBPACK_IMPORTED_MODULE_7__["default"]();
-const siteCatalogSectionComponent = new _view_catalog_section_js__WEBPACK_IMPORTED_MODULE_1__["default"]();
-const siteCatalogSectionWrapperComponent = new _view_catalog_section_wrapper_js__WEBPACK_IMPORTED_MODULE_2__["default"]();
+const basketModel = new _model_basket_js__WEBPACK_IMPORTED_MODULE_8__["default"]();
+const siteCatalogSectionComponent = new _view_catalog_section_js__WEBPACK_IMPORTED_MODULE_0__["default"]();
+const siteCatalogSectionWrapperComponent = new _view_catalog_section_wrapper_js__WEBPACK_IMPORTED_MODULE_1__["default"]();
 
 const siteHeaderElement = document.querySelector(`.page-header`);
 const siteMainElement = document.querySelector(`.page-main`);
 const siteMainContainerElement = siteMainElement.querySelector(`.container`);
 
-Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_9__["render"])(siteMainContainerElement, new _view_breadcrumbs_js__WEBPACK_IMPORTED_MODULE_0__["default"](), _utils_render_js__WEBPACK_IMPORTED_MODULE_9__["RenderPosition"].BEFOREEND);
-Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_9__["render"])(siteMainContainerElement, siteCatalogSectionComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_9__["RenderPosition"].BEFOREEND);
-Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_9__["render"])(siteCatalogSectionComponent, siteCatalogSectionWrapperComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_9__["RenderPosition"].BEFOREEND);
+Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_10__["render"])(siteMainContainerElement, siteCatalogSectionComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_10__["RenderPosition"].BEFOREEND);
+Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_10__["render"])(siteCatalogSectionComponent, siteCatalogSectionWrapperComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_10__["RenderPosition"].BEFOREEND);
 
-const catalogPresenter = new _presenter_catalog_js__WEBPACK_IMPORTED_MODULE_4__["default"](siteCatalogSectionWrapperComponent, cardsModel, filterModel, siteMenuModel);
-const siteMenuPresenter = new _presenter_site_menu_js__WEBPACK_IMPORTED_MODULE_3__["default"](siteHeaderElement, siteMenuModel);
+const siteMenuPresenter = new _presenter_site_menu_js__WEBPACK_IMPORTED_MODULE_2__["default"](siteHeaderElement, siteMenuModel, basketModel);
+const breadcrumbsPresenter = new _presenter_breadcrumbs_js__WEBPACK_IMPORTED_MODULE_4__["default"](siteMainContainerElement, siteMenuModel);
+const catalogPresenter = new _presenter_catalog_js__WEBPACK_IMPORTED_MODULE_3__["default"](siteCatalogSectionWrapperComponent, cardsModel, filterModel, siteMenuModel, basketModel);
 
 siteMenuPresenter.init();
+breadcrumbsPresenter.init();
 catalogPresenter.init();
 
 
@@ -317,6 +355,104 @@ __webpack_require__.r(__webpack_exports__);
     starsCount: `5`
   },
 ]);
+
+
+/***/ }),
+
+/***/ "./source/js/model/basket.js":
+/*!***********************************!*\
+  !*** ./source/js/model/basket.js ***!
+  \***********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Basket; });
+/* harmony import */ var _utils_observer_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/observer.js */ "./source/js/utils/observer.js");
+
+
+
+class Basket extends _utils_observer_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  constructor() {
+    super();
+    this._cardsInBasket = [];
+  }
+
+  setBasket(updateType, update) {
+    this._cardsInBasket = update;
+    this._notify(updateType);
+  }
+
+  getBasket() {
+    return this._cardsInBasket;
+  }
+
+  updateBasket(updateType, update) {
+    console.log(update);
+    const index = this._cardsInBasket.findIndex((task) => task.identiferNumber === update.identiferNumber);
+
+    if (index === -1) {
+      throw new Error(`Can't update unexisting task`);
+    }
+
+    this._cardsInBasket = [
+      ...this._cardsInBasket.slice(0, index),
+      update,
+      ...this._cardsInBasket.slice(index + 1)
+    ];
+    this._notify(updateType, update);
+  }
+
+  addCard(updateType, update) {
+    // console.log(this._cardsInBasket.length);
+    // const index = this._cardsInBasket.findIndex((task) => task.identiferNumber === update.identiferNumber);
+    // console.log(index);
+
+    // if (index === -1 && this._cardsInBasket.length === 0) {
+      this._cardsInBasket = [
+        update,
+        ...this._cardsInBasket
+      ];
+    // }
+
+    // this._cardsInBasket = [
+    //   ...this._cardsInBasket.slice(0, index),
+    //   update,
+    //   ...this._cardsInBasket.slice(index + 1)
+    // ];
+
+console.log(this._cardsInBasket);
+
+    this._notify(updateType, update);
+    // this.setBasket(this._cardsInBasket);
+  }
+
+  // addCard(updateType, update) {
+  //   this._cardsInBasket = [
+  //     update,
+  //     ...this._cardsInBasket
+  //   ];
+
+  //   this._notify(updateType, update);
+  //   this.setBasket(this._cardsInBasket);
+  // }
+
+  deleteCard(updateType, update) {
+    const index = this._cardsInBasket.findIndex((task) => task.identiferNumber === update.identiferNumber);
+
+    if (index === -1) {
+      throw new Error(`Can't delete unexisting task`);
+    }
+
+    this._cardsInBasket = [
+      ...this._cardsInBasket.slice(0, index),
+      ...this._cardsInBasket.slice(index + 1)
+    ];
+
+    this._notify(updateType);
+  }
+}
 
 
 /***/ }),
@@ -465,6 +601,130 @@ class SiteMenu extends _utils_observer_js__WEBPACK_IMPORTED_MODULE_0__["default"
 
 /***/ }),
 
+/***/ "./source/js/presenter/basket-card.js":
+/*!********************************************!*\
+  !*** ./source/js/presenter/basket-card.js ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return BasketCard; });
+/* harmony import */ var _view_basket_item_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../view/basket-item.js */ "./source/js/view/basket-item.js");
+/* harmony import */ var _view_basket_popUp_delete_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../view/basket-popUp-delete.js */ "./source/js/view/basket-popUp-delete.js");
+/* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/render.js */ "./source/js/utils/render.js");
+/* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../const.js */ "./source/js/const.js");
+
+
+
+
+
+class BasketCard {
+  constructor(basketContainer, basketModel, changeData) {
+    this._basketContainer = basketContainer;
+    this._basketModel = basketModel;
+    this._changeData = changeData;
+
+    this._basketPopUpContainer = document.querySelector(`body`);
+
+    this._handleQuantityIncClick = this._handleQuantityIncClick.bind(this);
+    this._handleQuantityDecClick = this._handleQuantityDecClick.bind(this);
+    this._handleDeleteClick = this._handleDeleteClick.bind(this);
+
+    this._handleDeletePopUpClick = this._handleDeletePopUpClick.bind(this);
+    this._handleToShoppingPopUpClick = this._handleToShoppingPopUpClick.bind(this);
+    this._handleCloseClick = this._handleCloseClick.bind(this);
+    this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
+  }
+
+  init(basketCard) {
+    this._basketCard = basketCard;
+
+    this._basketItemComponent = new _view_basket_item_js__WEBPACK_IMPORTED_MODULE_0__["default"](this._basketCard);
+
+    const basketListComponent = this._basketContainer.querySelector(`.product__list`);
+    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_2__["render"])(basketListComponent, this._basketItemComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_2__["RenderPosition"].BEFOREEND);
+
+    this._basketItemComponent.setQuantityIncHandle(this._handleQuantityIncClick);
+    this._basketItemComponent.setQuantityDecHandle(this._handleQuantityDecClick);
+    this._basketItemComponent.setDeleteClickHandler(this._handleDeleteClick);
+  }
+
+  destroy() {
+    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_2__["remove"])(this._basketItemComponent);
+  }
+
+  _handleQuantityIncClick(update) {
+    this._changeData(
+        _const_js__WEBPACK_IMPORTED_MODULE_3__["UserAction"].UPDATE_POINT,
+        _const_js__WEBPACK_IMPORTED_MODULE_3__["UpdateType"].MINOR,
+        Object.assign({}, this._basketCard, {count: update})
+    );
+  }
+
+  _handleQuantityDecClick(update) {
+    if (update < 1) {
+      this._handleDeleteClick();
+      return;
+    }
+    this._changeData(
+        _const_js__WEBPACK_IMPORTED_MODULE_3__["UserAction"].UPDATE_POINT,
+        _const_js__WEBPACK_IMPORTED_MODULE_3__["UpdateType"].MINOR,
+        Object.assign({}, this._basketCard, {count: update})
+    );
+  }
+
+  _handleDeleteClick() {
+    this._basketPopUpDeleteComponent = new _view_basket_popUp_delete_js__WEBPACK_IMPORTED_MODULE_1__["default"](this._basketCard);
+
+    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_2__["render"])(this._basketPopUpContainer, this._basketPopUpDeleteComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_2__["RenderPosition"].AFTERBEGIN);
+    document.addEventListener(`keydown`, this._escKeyDownHandler);
+
+    this._basketPopUpDeleteComponent.setCloseClickHandler(this._handleCloseClick);
+    this._basketPopUpDeleteComponent.setDeleteClickHandler(this._handleDeletePopUpClick);
+    this._basketPopUpDeleteComponent.setToShoppingClickHandler(this._handleToShoppingPopUpClick);
+
+  }
+
+  _handleDeletePopUpClick() {
+    this._changeData(
+        _const_js__WEBPACK_IMPORTED_MODULE_3__["UserAction"].DELETE_POINT,
+        _const_js__WEBPACK_IMPORTED_MODULE_3__["UpdateType"].MINOR,
+        Object.assign({}, this._basketCard)
+    );
+    this._removeBasketPopUpDeleteComponent();
+  }
+
+  _removeBasketPopUpDeleteComponent() {
+    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_2__["remove"])(this._basketPopUpDeleteComponent);
+    document.removeEventListener(`keydown`, this._escKeyDownHandler);
+  }
+
+  _escKeyDownHandler(evt) {
+    if (evt.key === `Escape` || evt.key === `Esc`) {
+      evt.preventDefault();
+
+      if (this._basketPopUpDeleteComponent !== null) {
+        this._removeBasketPopUpDeleteComponent();
+      }
+    }
+  }
+
+  _handleCloseClick() {
+    if (this._basketPopUpDeleteComponent !== null) {
+      this._basketPopUpDeleteComponent();
+    }
+  }
+
+  _handleToShoppingPopUpClick() {
+    this._removeBasketPopUpDeleteComponent();
+  }
+}
+
+
+/***/ }),
+
 /***/ "./source/js/presenter/basket.js":
 /*!***************************************!*\
   !*** ./source/js/presenter/basket.js ***!
@@ -476,42 +736,182 @@ class SiteMenu extends _utils_observer_js__WEBPACK_IMPORTED_MODULE_0__["default"
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Basket; });
 /* harmony import */ var _view_basket_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../view/basket.js */ "./source/js/view/basket.js");
-/* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/render.js */ "./source/js/utils/render.js");
+/* harmony import */ var _presenter_basket_card_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../presenter/basket-card.js */ "./source/js/presenter/basket-card.js");
+/* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/render.js */ "./source/js/utils/render.js");
+/* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../const.js */ "./source/js/const.js");
+
+
 
 
 
 class Basket {
-  constructor(basketContainer) {
+  constructor(basketContainer, basketModel) {
     this._basketContainer = basketContainer;
-    // this._basketModel = basketModel;
+    this._basketModel = basketModel;
     // this._cardsModel = cardsModel;
+    this._currentDiscountType = _const_js__WEBPACK_IMPORTED_MODULE_3__["DiscountType"].DEFAULT;
+    this._isAvailable = true;
     this._currentFilter = null;
+
+    this._cardPresenter = {};
 
     this._basketComponent = null;
 
-    // this._handleModelEvent = this._handleModelEvent.bind(this);
+
+    this._handleDiscountClick = this._handleDiscountClick.bind(this);
+    this._handleViewAction = this._handleViewAction.bind(this);
+    this._handleModelEvent = this._handleModelEvent.bind(this);
     // this._handleFilterTypeChange = this._handleFilterTypeChange.bind(this);
   }
 
   init() {
-    this._basketComponent = new _view_basket_js__WEBPACK_IMPORTED_MODULE_0__["default"]();
+    console.log(`init`);
+    this._basketComponent = new _view_basket_js__WEBPACK_IMPORTED_MODULE_0__["default"](this._basketModel.getBasket(), this._currentDiscountType, this._isAvailable);
 
-    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_1__["render"])(this._basketContainer, this._basketComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_1__["RenderPosition"].BEFOREEND);
-
+    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_2__["render"])(this._basketContainer, this._basketComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_2__["RenderPosition"].BEFOREEND);
     // this._cardsModel.addObserver(this._handleModelEvent);
-    // this._basketModel.addObserver(this._handleModelEvent);
+    this._renderBasket();
+    this._basketComponent.setDiscountClickHandler(this._handleDiscountClick);
+    this._basketModel.addObserver(this._handleModelEvent);
   }
 
   destroy() {
-    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_1__["remove"])(this._basketComponent);
+    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_2__["remove"])(this._basketComponent);
+
+    // Object
+    //     .values(this._cardPresenter)
+    //     .forEach((presenter) => presenter.destroy());
+    // this._cardPresenter = {};
 
     this._basketComponent = null;
 
     // this._cardsModel.removeObserver(this._handleModelEvent);
-    // this._basketModel.removeObserver(this._handleModelEvent);
+    this._basketModel.removeObserver(this._handleModelEvent);
+  }
+
+  _handleDiscountClick(discountType) {
+    if (this._currentDiscountType === discountType) {
+      // this._basketComponent.getElement().querySelector(`.order__discount-promo`).classList.add(`.order__discount-promo--error`);
+      return;
+    }
+    this._currentDiscountType = discountType;
+    this._isAvailable = false;
+    this.destroy();
+    this.init();
   }
 
   _handleModelEvent() {
+    this.init();
+  }
+
+  _handleViewAction(actionType, updateType, update) {
+    switch (actionType) {
+      case _const_js__WEBPACK_IMPORTED_MODULE_3__["UserAction"].UPDATE_POINT:
+        // this._cardPresenter[update.id].setViewState(CardPresenterViewState.SAVING);
+        console.log(updateType);
+        console.log(update);
+        this._basketModel.updateBasket(updateType, update);
+        break;
+      case _const_js__WEBPACK_IMPORTED_MODULE_3__["UserAction"].ADD_POINT:
+        this._pointNewPresenter.setSaving();
+        this._api.addPoint(update).then((response) => {
+          this._pointsModel.addPoint(updateType, response);
+        })
+            .catch(() => {
+              this._pointNewPresenter.setAborting();
+            });
+        break;
+      case _const_js__WEBPACK_IMPORTED_MODULE_3__["UserAction"].DELETE_POINT:
+        this._basketModel.deleteCard(updateType, update);
+        break;
+    }
+  }
+
+  _handleModelEvent(updateType, update) {
+    switch (updateType) {
+      case _const_js__WEBPACK_IMPORTED_MODULE_3__["UpdateType"].MAJOR:
+        this._tripInfoPresenter.destroy();
+        this._pointItems[pointItem.id].init(dayPoint, pointItem, this._getOffers(), this._getDestination());
+        this._renderTripInfo();
+        break;
+      case _const_js__WEBPACK_IMPORTED_MODULE_3__["UpdateType"].MINOR:
+        this.destroy();
+        // this._basketComponent.getElement().innerHTML = ``;
+        this.init();
+        // this._renderBasket();
+        break;
+      case _const_js__WEBPACK_IMPORTED_MODULE_3__["UpdateType"].INIT:
+        this._isLoading = false;
+        this._newTripBtnComponent.getElement().disabled = false;
+        Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_2__["remove"])(this._loadingComponent);
+        this._renderTripInfo();
+        this._renderTrip();
+        break;
+    }
+  }
+
+  _renderCard(card) {
+    const cardPresenter = new _presenter_basket_card_js__WEBPACK_IMPORTED_MODULE_1__["default"](this._basketContainer, this._basketModel, this._handleViewAction);
+    cardPresenter.init(card);
+    this._cardPresenter[card.id] = cardPresenter;
+  }
+
+  _renderCards(cards) {
+    cards.forEach((card) => this._renderCard(card));
+  }
+
+  _renderBasket() {
+    const cards = this._basketModel.getBasket();
+    this._renderCards(cards);
+    // }
+  }
+}
+
+
+/***/ }),
+
+/***/ "./source/js/presenter/breadcrumbs.js":
+/*!********************************************!*\
+  !*** ./source/js/presenter/breadcrumbs.js ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Breadcrumbs; });
+/* harmony import */ var _view_breadcrumbs_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../view/breadcrumbs.js */ "./source/js/view/breadcrumbs.js");
+/* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/render.js */ "./source/js/utils/render.js");
+
+
+
+class Breadcrumbs {
+  constructor(breadcrumbsContainer, siteMenuModel) {
+    this._breadcrumbsContainer = breadcrumbsContainer;
+    this._siteMenuModel = siteMenuModel;
+
+    this._breadcrumbsComponent = null;
+
+    this._handleModelEvent = this._handleModelEvent.bind(this);
+  }
+
+  init() {
+    this._breadcrumbsComponent = new _view_breadcrumbs_js__WEBPACK_IMPORTED_MODULE_0__["default"](this._siteMenuModel.getMenuItem());
+
+    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_1__["render"])(this._breadcrumbsContainer, this._breadcrumbsComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_1__["RenderPosition"].AFTERBEGIN);
+
+    this._siteMenuModel.addObserver(this._handleModelEvent);
+  }
+
+  destroy() {
+    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_1__["remove"])(this._breadcrumbsComponent);
+
+    this._breadcrumbsComponent = null;
+    this._siteMenuModel.removeObserver(this._handleModelEvent);
+  }
+
+  _handleModelEvent() {
+    this.destroy();
     this.init();
   }
 }
@@ -534,6 +934,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _view_catalog_popUp_success_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../view/catalog-popUp-success.js */ "./source/js/view/catalog-popUp-success.js");
 /* harmony import */ var _view_site_menu_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../view/site-menu.js */ "./source/js/view/site-menu.js");
 /* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/render.js */ "./source/js/utils/render.js");
+/* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../const.js */ "./source/js/const.js");
+
 
 
 
@@ -541,14 +943,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class Card {
-  constructor(catalogListContainer, siteMenuModel) {
-    this._catalogListContainer = catalogListContainer;
+  constructor(siteMenuModel, basketModel, changeData) {
+    this._changeData = changeData;
     this._catalogPopUpContainer = document.querySelector(`body`);
     this._siteMenuModel = siteMenuModel;
+    this._basketModel = basketModel;
 
     this._catalogItemComponent = null;
     this._catalogPopUpAddComponent = null;
     this._catalogPopUpSuccessComponent = null;
+
 
     this._siteMenuComponent = new _view_site_menu_js__WEBPACK_IMPORTED_MODULE_3__["default"]();
 
@@ -560,15 +964,15 @@ class Card {
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
   }
 
-  init(catalogCard) {
+  init(catalogListContainer, catalogCard) {
     this._catalogCard = catalogCard;
     this._cardBasket = {};
 
     this._catalogItemComponent = new _view_catalog_item_js__WEBPACK_IMPORTED_MODULE_0__["default"](catalogCard);
+    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_4__["render"])(catalogListContainer, this._catalogItemComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_4__["RenderPosition"].BEFOREEND);
 
     this._catalogItemComponent.setAddClickHandler(this._handleAddToBasketClick);
 
-    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_4__["render"])(this._catalogListContainer, this._catalogItemComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_4__["RenderPosition"].BEFOREEND);
   }
 
   destroy() {
@@ -617,7 +1021,7 @@ class Card {
     document.addEventListener(`keydown`, this._escKeyDownHandler);
   }
 
-  _handleAddToBasketPopUpClick() {
+  _handleAddToBasketPopUpClick(point) {
     this._removePopUpAddComponent();
     this._catalogPopUpSuccessComponent = new _view_catalog_popUp_success_js__WEBPACK_IMPORTED_MODULE_2__["default"]();
 
@@ -629,12 +1033,35 @@ class Card {
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_4__["render"])(this._catalogPopUpContainer, this._catalogPopUpSuccessComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_4__["RenderPosition"].AFTERBEGIN);
     document.addEventListener(`keydown`, this._escKeyDownHandler);
 
-    this._cardBasket = new Array(Object.assign({}, this._catalogCard));
-    // console.log(this._cardBasket);
+    this._cards = this._basketModel.getBasket();
+
+    const index = this._cards.findIndex((task) => task.identiferNumber === this._catalogCard.identiferNumber);
+
+    if (index === -1 && this._cards.length === 0) {
+      this._basketModel.addCard(_const_js__WEBPACK_IMPORTED_MODULE_5__["UpdateType"].MINOR, Object.assign({}, point, {count: 1}));
+      return;
+    }
+
+    let count = this._cards[index].count;
+    count++;
+
+    this._changeData(
+        _const_js__WEBPACK_IMPORTED_MODULE_5__["UserAction"].UPDATE_POINT,
+        _const_js__WEBPACK_IMPORTED_MODULE_5__["UpdateType"].MINOR,
+        Object.assign({}, this._catalogCard, {count})
+    );
   }
 
   _handleAddToBasketPopUpSuccessClick(menuItem) {
     this._currentMenuItem = this._siteMenuModel.getMenuItem();
+
+    this._siteMenuComponent.getElement()
+        .querySelector(`[data-menu-type="${this._currentMenuItem}"]`)
+        .parentElement.classList.remove(`site-list__item--active`);
+
+    this._siteMenuComponent.getElement()
+        .querySelector(`[data-menu-type="${menuItem}"]`)
+        .parentElement.classList.add(`site-list__item--active`);
 
     this._siteMenuModel.setMenuItem(menuItem);
     this._removePopUpSuccessComponent();
@@ -687,26 +1114,28 @@ __webpack_require__.r(__webpack_exports__);
 const CARD_COUNT_PER_STEP = 9;
 
 class Board {
-  constructor(catalogContainer, cardsModel, filterModel, siteMenuModel) {
+  constructor(catalogContainer, cardsModel, filterModel, siteMenuModel, basketModel) {
     this._cardsModel = cardsModel;
     this._filterModel = filterModel;
     this._siteMenuModel = siteMenuModel;
+    this._basketModel = basketModel;
     this._catalogContainer = catalogContainer;
     this._renderedCardsCount = CARD_COUNT_PER_STEP;
     this._currentSortByCategoryType = _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByCategoryType"].DEFAULT;
     this._currentSortByPriorityType = _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByPriorityType"].DEFAULT;
-    this._cardPresenter = {};
-
+    this._cards = {};
     this._catalogComponent = new _view_catalog_board_js__WEBPACK_IMPORTED_MODULE_0__["default"]();
     this._catalogListComponent = new _view_catalog_list_js__WEBPACK_IMPORTED_MODULE_2__["default"]();
     this._catalogPaginationComponent = new _view_catalog_pagination_js__WEBPACK_IMPORTED_MODULE_3__["default"]();
 
     this._filterPresenter = new _presenter_filter_js__WEBPACK_IMPORTED_MODULE_6__["default"](this._catalogContainer, this._filterModel, this._cardsModel);
+    this._cardPresenter = new _presenter_card_js__WEBPACK_IMPORTED_MODULE_4__["default"](this._siteMenuModel, this._handleViewAction);
 
     this._handleSortByCategoryChange = this._handleSortByCategoryChange.bind(this);
     this._handleSortByPriorityChange = this._handleSortByPriorityChange.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
     this._handleMenuModel = this._handleMenuModel.bind(this);
+    this._handleViewAction = this._handleViewAction.bind(this);
     // this._handleModeChange = this._handleModeChange.bind(this);
     this._siteMenuModel.addObserver(this._handleMenuModel);
   }
@@ -802,6 +1231,32 @@ class Board {
     this._renderBoard();
   }
 
+  _handleViewAction(actionType, update) {
+    switch (actionType) {
+      case _const_js__WEBPACK_IMPORTED_MODULE_9__["UserAction"].UPDATE_POINT:
+        this._basketModel.updateBasket(update);
+        break;
+      case _const_js__WEBPACK_IMPORTED_MODULE_9__["UserAction"].ADD_POINT:
+        this._cardPresenter.setSaving();
+        // this._api.addPoint(update).then((response) => {
+        //   this._pointsModel.addPoint(updateType, response);
+        // })
+        // .catch(() => {
+        //   this._pointNewPresenter.setAborting();
+        // });
+        break;
+      // case UserAction.DELETE_POINT:
+      //   this._pointItems[update.id].setViewState(PointPresenterViewState.DELETING);
+      //   this._api.deletePoint(update).then(() => {
+      //     this._pointsModel.deletePoint(updateType, update);
+      //   })
+      //   .catch(() => {
+      //     this._pointItems[update.id].setViewState(PointPresenterViewState.ABORTING);
+      //   });
+      //   break;
+    }
+  }
+
   _handleModelEvent() {
     this._clearBoard({resetRenderedCardsCount: true});
     this._renderBoard();
@@ -811,19 +1266,15 @@ class Board {
   _handleMenuModel(menuItem) {
     switch (menuItem) {
       case _const_js__WEBPACK_IMPORTED_MODULE_9__["MenuItem"].CARDS:
-
-        this.destroy();
         this.init();
         this._basketPresenter.destroy();
         break;
       case _const_js__WEBPACK_IMPORTED_MODULE_9__["MenuItem"].BASKET:
         this.destroy();
-        this._filterPresenter.destroy();
-
         const siteMainElement = document.querySelector(`.page-main`);
         const siteMainContainerElement = siteMainElement.querySelector(`.container`);
 
-        this._basketPresenter = new _presenter_basket_js__WEBPACK_IMPORTED_MODULE_5__["default"](siteMainContainerElement);
+        this._basketPresenter = new _presenter_basket_js__WEBPACK_IMPORTED_MODULE_5__["default"](siteMainContainerElement, this._basketModel);
 
         this._basketPresenter.init();
         break;
@@ -843,9 +1294,9 @@ class Board {
   }
 
   _renderCard(card) {
-    const cardPresenter = new _presenter_card_js__WEBPACK_IMPORTED_MODULE_4__["default"](this._catalogListComponent, this._siteMenuModel);
-    cardPresenter.init(card);
-    this._cardPresenter[card.id] = cardPresenter;
+    const cardPresenter = new _presenter_card_js__WEBPACK_IMPORTED_MODULE_4__["default"](this._siteMenuModel, this._basketModel, this._handleViewAction);
+    cardPresenter.init(this._catalogListComponent, card);
+    this._cards[card.id] = cardPresenter;
   }
 
   _renderCards(cards) {
@@ -860,9 +1311,9 @@ class Board {
     const cardCount = this._getCards().length;
 
     Object
-        .values(this._cardPresenter)
+        .values(this._cards)
         .forEach((presenter) => presenter.destroy());
-    this._cardPresenter = {};
+    this._cards = {};
 
     this._filterPresenter.destroy();
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["remove"])(this._catalogSortComponent);
@@ -998,20 +1449,37 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class SiteMenu {
-  constructor(siteMenuContainer, siteMenuModel) {
+  constructor(siteMenuContainer, siteMenuModel, basketModel) {
     this._siteMenuContainer = siteMenuContainer;
     this._siteMenuModel = siteMenuModel;
-    this._currentFilter = null;
-
-    this._siteMenuComponent = new _view_site_menu_js__WEBPACK_IMPORTED_MODULE_0__["default"]();
+    this._basketModel = basketModel;
 
     this._handleSiteMenuChange = this._handleSiteMenuChange.bind(this);
+    this._handleModelEvent = this._handleModelEvent.bind(this);
   }
 
   init() {
+    this._siteMenuComponent = new _view_site_menu_js__WEBPACK_IMPORTED_MODULE_0__["default"](this._basketModel.getBasket().length);
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_1__["render"])(this._siteMenuContainer, this._siteMenuComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_1__["RenderPosition"].AFTERBEGIN);
 
     this._siteMenuComponent.setMenuClickHandler(this._handleSiteMenuChange);
+
+    this._siteMenuModel.addObserver(this._handleModelEvent);
+    this._basketModel.addObserver(this._handleModelEvent);
+  }
+
+  destroy() {
+    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_1__["remove"])(this._siteMenuComponent);
+
+    this._siteMenuComponent = null;
+
+    this._siteMenuModel.removeObserver(this._handleModelEvent);
+    this._basketModel.removeObserver(this._handleModelEvent);
+  }
+
+  _handleModelEvent() {
+    this.destroy();
+    this.init();
   }
 
   _handleSiteMenuChange(menuItem) {
@@ -1021,29 +1489,16 @@ class SiteMenu {
       return;
     }
 
-    this._siteMenuComponent.getElement()
-        .querySelector(`[data-menu-type="${this._currentMenuItem}"]`)
-        .parentElement.classList.remove(`site-list__item--active`);
+    // this._siteMenuComponent.getElement()
+    //     .querySelector(`[data-menu-type="${this._currentMenuItem}"]`)
+    //     .parentElement.classList.remove(`site-list__item--active`);
 
-    this._siteMenuComponent.getElement()
-        .querySelector(`[data-menu-type="${menuItem}"]`)
-        .parentElement.classList.add(`site-list__item--active`);
+    // this._siteMenuComponent.getElement()
+    //     .querySelector(`[data-menu-type="${menuItem}"]`)
+    //     .parentElement.classList.add(`site-list__item--active`);
 
     this._siteMenuModel.setMenuItem(menuItem);
   }
-
-  // destroy() {
-  //   remove(this._siteMenuComponent);
-
-  //   this._siteMenuComponent = null;
-
-  //   this._cardsModel.removeObserver(this._handleModelEvent);
-  //   this._siteMenuModel.removeObserver(this._handleModelEvent);
-  // }
-
-  // _handleModelEvent() {
-  //   this.init();
-  // }
 }
 
 
@@ -1300,6 +1755,197 @@ class Abstract {
 
 /***/ }),
 
+/***/ "./source/js/view/basket-item.js":
+/*!***************************************!*\
+  !*** ./source/js/view/basket-item.js ***!
+  \***************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return BasketItem; });
+/* harmony import */ var _smart_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./smart.js */ "./source/js/view/smart.js");
+
+
+const createBasketItemElement = (card) => {
+  const {image, stringAmount, name, price, count} = card;
+
+  return `<li class="product__item">
+          <div class="product__image-container">
+            <img src="${image}" width="80" height="202" alt="Изображение товара">
+          </div>
+          <ul class="product__deckription-list">
+            <li class="product__name">Электрогитара ${name}</li>
+            <li class="product__identifer-number">Артикул: ${count}</li>
+            <li class="product__type">Электрогитара, ${stringAmount} струнная </li>
+          </ul>
+          <div class="product__price">${price} ₽</div>
+          <div class="product__quantity">
+            <button class="product__quantity-button" id="dec-button" type="button">-</button>
+            <input id="product-quantity" type="text" value="${count}" name="product-quantity">
+            <button class="product__quantity-button" id="inc-button" type="button">+</button>
+          </div>
+          <div class="product__price-total">${price * count} ₽</div>
+          <button class="product__delete" type="button">
+            <span class="visually-hidden">Удалить товар</span>
+          </button>
+        </li>`;
+};
+
+class BasketItem extends _smart_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  constructor(card) {
+    super();
+    this._data = card;
+
+    this._handleQuantityIncClick = this._handleQuantityIncClick.bind(this);
+    this._handleQuantityDecClick = this._handleQuantityDecClick.bind(this);
+    this._deleteClickHandler = this._deleteClickHandler.bind(this);
+
+    this._currentValueCount = this._data.count;
+
+    this.restoreHandlers();
+  }
+
+  getTemplate() {
+    return createBasketItemElement(this._data);
+  }
+
+  restoreHandlers() {
+    this.setQuantityIncHandle();
+    this.setQuantityDecHandle();
+  }
+
+  _handleQuantityIncClick(evt) {
+    evt.preventDefault();
+    this._currentValueCount = Number(this.getElement().querySelector(`input[name=product-quantity]`).value);
+    this._currentValueCount++;
+
+    this._callback.quantityIncClick(this._currentValueCount);
+  }
+
+  _handleQuantityDecClick() {
+    this._currentValueCount = Number(this.getElement().querySelector(`input[name=product-quantity]`).value);
+    this._currentValueCount--;
+
+    this._callback.quantityDecClick(this._currentValueCount);
+  }
+
+  _deleteClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.deleteClick();
+  }
+
+  setQuantityIncHandle(callback) {
+    this._callback.quantityIncClick = callback;
+    this.getElement().querySelector(`#inc-button`).addEventListener(`click`, this._handleQuantityIncClick);
+  }
+
+  setQuantityDecHandle(callback) {
+    this._callback.quantityDecClick = callback;
+    this.getElement().querySelector(`#dec-button`).addEventListener(`click`, this._handleQuantityDecClick);
+  }
+
+  setDeleteClickHandler(callback) {
+    this._callback.deleteClick = callback;
+    this.getElement().querySelector(`.product__delete`).addEventListener(`click`, this._deleteClickHandler);
+  }
+}
+
+
+/***/ }),
+
+/***/ "./source/js/view/basket-popUp-delete.js":
+/*!***********************************************!*\
+  !*** ./source/js/view/basket-popUp-delete.js ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CatalogPopUpDelete; });
+/* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./source/js/view/abstract.js");
+
+
+const createBasketPopUpDeleteElement = (card) => {
+  const {image, name, identiferNumber, stringAmount, price} = card;
+  return `<section class="modal">
+  <div class="modal__popup">
+    <h2 class="modal__title">Удалить этот товар?</h2>
+
+    <div class="modal__content">
+      <div class="modal__image-container">
+        <img src="${image}" width="80" height="202" alt="Изображение товара">
+      </div>
+      <div class="modal__content-container">
+        <ul class="modal__deckription-list">
+          <li class="modal__name">Гитара ${name}</li>
+          <li class="modal__identifer-number">Артикул: ${identiferNumber}</li>
+          <li class="modal__type">Электрогитара, ${stringAmount} струнная </li>
+        </ul>
+        <div class="modal__price">Цена: ${price} ₽</div>
+      </div>
+      <div class="modal__buttons-wrapper modal__buttons-wrapper--basket">
+        <button class="modal__button">Удалить товар</button>
+        <button class="modal__button modal__button--to-shoping">Продолжить покупки</button>
+      </div>
+      <button class="modal__close" type="button">
+        <span class="visually-hidden">Закрыть</span>
+      </button>
+    </div>
+  </div>
+</section>`;
+};
+
+class CatalogPopUpDelete extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  constructor(card) {
+    super();
+    this._data = card;
+
+    this._deleteClickHandler = this._deleteClickHandler.bind(this);
+    this._closeClickHandler = this._closeClickHandler.bind(this);
+    this._toShoppingClickHandler = this._toShoppingClickHandler.bind(this);
+  }
+
+  getTemplate() {
+    return createBasketPopUpDeleteElement(this._data);
+  }
+
+  _deleteClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.deleteClick();
+  }
+
+  _closeClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.closeClick();
+  }
+
+  _toShoppingClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.toShoppingClick();
+  }
+
+  setDeleteClickHandler(callback) {
+    this._callback.deleteClick = callback;
+    this.getElement().querySelector(`.modal__button`).addEventListener(`click`, this._deleteClickHandler);
+  }
+
+  setCloseClickHandler(callback) {
+    this._callback.closeClick = callback;
+    this.getElement().querySelector(`.modal__close`).addEventListener(`click`, this._closeClickHandler);
+  }
+
+  setToShoppingClickHandler(callback) {
+    this._callback.toShoppingClick = callback;
+    this.getElement().querySelector(`.modal__button--to-shoping`).addEventListener(`click`, this._toShoppingClickHandler);
+  }
+}
+
+
+/***/ }),
+
 /***/ "./source/js/view/basket.js":
 /*!**********************************!*\
   !*** ./source/js/view/basket.js ***!
@@ -1311,53 +1957,66 @@ class Abstract {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Basket; });
 /* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./source/js/view/abstract.js");
+/* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../const.js */ "./source/js/const.js");
 
 
-const createBasketElement = () => {
+
+const createBasketElement = (cards, discountType, isAvailable) => {
+  console.log(discountType);
+  console.log(isAvailable);
+  let totalPrice = 0;
+
+  const DISCOUNT = {
+    GITARAHIT: 0.9,
+    SUPERGITARA: 700,
+    GITARA2020: 3500
+  };
+
+  const getTotalPrice = () => {
+    if (cards.length !== 0) {
+      let cardPrice = [];
+
+      cards.forEach((card) => {
+        return cardPrice.push(card.price * card.count);
+      });
+
+      totalPrice = cardPrice.reduce((acc, price) => acc + price);
+    }
+    return totalPrice;
+  };
+
+  const getDiscountPrice = () => {
+    switch (discountType) {
+      case _const_js__WEBPACK_IMPORTED_MODULE_1__["DiscountType"].DEFAULT:
+        getTotalPrice();
+        break;
+      case _const_js__WEBPACK_IMPORTED_MODULE_1__["DiscountType"].GITARAHIT:
+        getTotalPrice();
+        return totalPrice * DISCOUNT.GITARAHIT;
+      case _const_js__WEBPACK_IMPORTED_MODULE_1__["DiscountType"].SUPERGITARA:
+        getTotalPrice();
+        return totalPrice - DISCOUNT.SUPERGITARA;
+      case _const_js__WEBPACK_IMPORTED_MODULE_1__["DiscountType"].GITARA2020:
+        getTotalPrice();
+        return (DISCOUNT.GITARA2020) <= totalPrice * 0.7 ? totalPrice - DISCOUNT.GITARA2020 : totalPrice * 0.7;
+    }
+    return totalPrice;
+  };
+  // if (cards.length !== 0) {
+  //   let cardPrice = [];
+
+  //   cards.forEach((card) => {
+  //     return cardPrice.push(card.price * card.count);
+  //   });
+
+  //   totalPrice = cardPrice.reduce((acc, price) => acc + price);
+  // }
+
   return `<section class="shoppingbag">
   <div class="shoppingbag__content">
     <div class="shoppingbag__product product">
       <ul class="product__list">
-        <li class="product__item">
-          <div class="product__image-container">
-            <img src="img/gitar-electric_1.png" width="80" height="202" alt="Изображение товара">
-          </div>
-          <ul class="product__deckription-list">
-            <li class="product__name">Электрогитара Честер bass</li>
-            <li class="product__identifer-number">Артикул: SO757575</li>
-            <li class="product__type">Электрогитара, 6 струнная </li>
-          </ul>
-          <div class="product__price">17 500 ₽</div>
-          <div class="product__quantity">
-            <button class="product__quantity-button" type="button">-</button>
-            <input id="product-quantity" type="text" value="1" name="product-quantity">
-            <button class="product__quantity-button" type="button">+</button>
-          </div>
-          <div class="product__price-total">17 500 ₽</div>
-          <button class="product__delete" type="button">
-            <span class="visually-hidden">Удалить товар</span>
-          </button>
-        </li>
-        <li class="product__item">
-          <div class="product__image-container">
-            <img src="img/gitar-electric_1.png" width="80" height="202" alt="Изображение товара">
-          </div>
-          <ul class="product__deckription-list">
-            <li class="product__name">Электрогитара Честер bass</li>
-            <li class="product__identifer-number">Артикул: SO757575</li>
-            <li class="product__type">Электрогитара, 6 струнная </li>
-          </ul>
-          <div class="product__price">17 500 ₽</div>
-          <div class="product__quantity">
-            <button class="product__quantity-button" type="button">-</button>
-            <input id="product-quantity" type="text" value="2" name="product-quantity">
-            <button class="product__quantity-button" type="button">+</button>
-          </div>
-          <div class="product__price-total">17 500 ₽</div>
-          <button class="product__delete" type="button">
-            <span class="visually-hidden">Удалить товар</span>
-          </button>
-        </li>
+
       </ul>
     </div>
     <div class="shoppingbag__order order">
@@ -1366,13 +2025,13 @@ const createBasketElement = () => {
           <span class="order__discount-title">Промокод на скидку</span>
           <span class="order__discount-subtitle">Введите свой промокод, если он у вас есть.</span>
         </div>
-        <div class="order__discount-promo">
+        <div class="order__discount-promo ${!isAvailable ? `order__discount-promo--error` : ``}">
           <input type="text" name="order-discount-promo" id="order-discount-promo" placeholder="GITARAHIT" value="GITARAHIT">
           <button type="button">Применить купон</button>
         </div>
       </div>
       <div class="order__to-order">
-        <span>Всего: 47 000 ₽</span>
+        <span>Всего: ${getDiscountPrice()} ₽</span>
         <button type="button">Оформить заказ</button>
       </div>
     </div>
@@ -1381,12 +2040,32 @@ const createBasketElement = () => {
 };
 
 class Basket extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
-  constructor() {
+  constructor(cards, discountType, isAvailable) {
     super();
+    this._cards = cards;
+    this._discountType = discountType;
+    this._isAvailable = isAvailable;
+
+
+    this._discountClickHandler = this._discountClickHandler.bind(this);
   }
 
   getTemplate() {
-    return createBasketElement();
+    return createBasketElement(this._cards, this._discountType, this._isAvailable);
+  }
+
+  _discountClickHandler(evt) {
+    evt.preventDefault();
+    const discountType = this.getElement().querySelector(`input[name=order-discount-promo]`).value;
+
+    // this.getElement().querySelector(`.order__discount-promo`).classList.add(`.order__discount-promo--error`);
+    // console.log(DiscountType.GITARAHIT, discountType);
+    this._callback.discountClick(discountType);
+  }
+
+  setDiscountClickHandler(callback) {
+    this._callback.discountClick = callback;
+    this.getElement().querySelector(`.order__discount-promo button`).addEventListener(`click`, this._discountClickHandler);
   }
 }
 
@@ -1404,22 +2083,43 @@ class Basket extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Breadcrumbs; });
 /* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./source/js/view/abstract.js");
+/* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../const.js */ "./source/js/const.js");
 
 
-const createBreadcrumbsTemplate = () => {
-  return `<ul class="breadcrumbs">
+
+const createBreadcrumbsTemplate = (siteMenuItem) => {
+  const breadcrumbsElement = (element) => {
+    let title = ``;
+    switch (siteMenuItem) {
+      case _const_js__WEBPACK_IMPORTED_MODULE_1__["MenuItem"].CARDS:
+        title = element.CARDS;
+        return title;
+      case _const_js__WEBPACK_IMPORTED_MODULE_1__["MenuItem"].BASKET:
+        title = element.BASKET;
+        return title;
+    }
+    return title;
+  };
+
+  return `<div><h2 class="page-main__title">${breadcrumbsElement(_const_js__WEBPACK_IMPORTED_MODULE_1__["BreadcrumbsTitle"])}</h2>
+  <ul class="breadcrumbs">
     <li class="breadcrumbs__item">
       <a href="#" class="breadcrumbs__link">Главная</a>
     </li>
     <li class="breadcrumbs__item breadcrumbs__item--current">
-      <a href="#" class="breadcrumbs__link">Каталог</a>
+      <a href="#" class="breadcrumbs__link">${breadcrumbsElement(_const_js__WEBPACK_IMPORTED_MODULE_1__["BreadcrumbsItem"])}</a>
     </li>
-  </ul>`;
+  </ul></div>`;
 };
 
 class Breadcrumbs extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  constructor(siteMenuModel) {
+    super();
+    this._siteMenuModel = siteMenuModel;
+  }
+
   getTemplate() {
-    return createBreadcrumbsTemplate();
+    return createBreadcrumbsTemplate(this._siteMenuModel);
   }
 }
 
@@ -1643,7 +2343,7 @@ class CatalogPopUpAdd extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default
 
   _addClickHandler(evt) {
     evt.preventDefault();
-    this._callback.addClick();
+    this._callback.addClick(this._data);
   }
 
   _closeClickHandler(evt) {
@@ -2163,7 +2863,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const createSiteMenuTemplate = () => {
+const createSiteMenuTemplate = (basketModel) => {
   return `<nav class="main-nav">
     <div class="container">
       <div class="main-nav__wrapper">
@@ -2213,7 +2913,7 @@ const createSiteMenuTemplate = () => {
               </svg>
               <!-- <img src="img/icon_basket.svg" width="16" height="18" alt="Корзина"> -->
             </a>
-            <span class="" data-title="2"></span>
+            <span class="" data-title="${basketModel === 0 ? `` : basketModel}"></span>
           </li>
         </ul>
       </div>
@@ -2222,36 +2922,87 @@ const createSiteMenuTemplate = () => {
 };
 
 class SiteMenu extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
-  constructor() {
+  constructor(basketModel) {
     super();
-    // console.log(currentMenuType);
-    // this._currentMenuType = currentMenuType;
+
+    this._basketModel = basketModel;
     this._menuClickHandler = this._menuClickHandler.bind(this);
   }
 
   getTemplate() {
-    return createSiteMenuTemplate(this._currentMenuType);
+    return createSiteMenuTemplate(this._basketModel);
   }
 
   _menuClickHandler(evt) {
-    // if (evt.target.tagName === `SVG`) {
     evt.preventDefault();
     this._callback.menuClick(evt.target.dataset.menuType);
-    // }
   }
 
   setMenuClickHandler(callback) {
     this._callback.menuClick = callback;
     this.getElement().addEventListener(`click`, this._menuClickHandler);
   }
+}
 
-  // setMenuItem(menuItem) {
-  //   const item = this.getElement().querySelector(`[value=${menuItem}]`);
 
-  //   if (item !== null) {
-  //     item.checked = true;
-  //   }
-  // }
+/***/ }),
+
+/***/ "./source/js/view/smart.js":
+/*!*********************************!*\
+  !*** ./source/js/view/smart.js ***!
+  \*********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Smart; });
+/* harmony import */ var _abstract__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract */ "./source/js/view/abstract.js");
+
+
+class Smart extends _abstract__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  constructor() {
+    super();
+    this._data = {};
+  }
+
+  updateData(update, justDataUpdating) {
+    console.log(`update`);
+    if (!update) {
+      return;
+    }
+
+    this._data = Object.assign(
+        {},
+        this._data,
+        update
+    );
+
+    console.log(this._data);
+
+    if (justDataUpdating) {
+      return;
+    }
+
+    this.updateElement();
+  }
+
+  updateElement() {
+    const prevElement = this.getElement();
+
+    const parent = prevElement.parentElement;
+    this.removeElement();
+
+    const newElement = this.getElement();
+
+    parent.replaceChild(newElement, prevElement);
+
+    this.restoreHandlers();
+  }
+
+  restoreHandlers() {
+    throw new Error(`Abstract method not implemented: resetHandlers`);
+  }
 }
 
 

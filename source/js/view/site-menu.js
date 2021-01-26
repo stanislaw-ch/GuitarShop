@@ -1,7 +1,7 @@
 import AbstractView from "./abstract.js";
 import {MenuItem} from "../const.js";
 
-const createSiteMenuTemplate = () => {
+const createSiteMenuTemplate = (basketModel) => {
   return `<nav class="main-nav">
     <div class="container">
       <div class="main-nav__wrapper">
@@ -12,7 +12,7 @@ const createSiteMenuTemplate = () => {
         </a>
         <ul class="main-nav__list site-list">
           <li class="site-list__item">
-            <a href="#" data-menu-type="${MenuItem.CARDS}">Каталог</a>
+            <a href="#" data-menu-type="${MenuItem.CATALOG}">Каталог</a>
           </li>
           <li class="site-list__item">
             <a href="#">Где купить?</a>
@@ -51,7 +51,7 @@ const createSiteMenuTemplate = () => {
               </svg>
               <!-- <img src="img/icon_basket.svg" width="16" height="18" alt="Корзина"> -->
             </a>
-            <span class="" data-title="2"></span>
+            <span class="" data-title="${basketModel === 0 ? `` : basketModel}"></span>
           </li>
         </ul>
       </div>
@@ -60,34 +60,24 @@ const createSiteMenuTemplate = () => {
 };
 
 export default class SiteMenu extends AbstractView {
-  constructor() {
+  constructor(basketModel) {
     super();
-    // console.log(currentMenuType);
-    // this._currentMenuType = currentMenuType;
+
+    this._basketModel = basketModel;
     this._menuClickHandler = this._menuClickHandler.bind(this);
   }
 
   getTemplate() {
-    return createSiteMenuTemplate(this._currentMenuType);
+    return createSiteMenuTemplate(this._basketModel);
   }
 
   _menuClickHandler(evt) {
-    // if (evt.target.tagName === `SVG`) {
     evt.preventDefault();
     this._callback.menuClick(evt.target.dataset.menuType);
-    // }
   }
 
   setMenuClickHandler(callback) {
     this._callback.menuClick = callback;
     this.getElement().addEventListener(`click`, this._menuClickHandler);
   }
-
-  // setMenuItem(menuItem) {
-  //   const item = this.getElement().querySelector(`[value=${menuItem}]`);
-
-  //   if (item !== null) {
-  //     item.checked = true;
-  //   }
-  // }
 }

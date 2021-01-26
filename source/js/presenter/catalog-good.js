@@ -3,16 +3,19 @@ import CatalogPopUpAddView from "../view/catalog-popUp-add.js";
 import CatalogPopUpSuccessView from "../view/catalog-popUp-success.js";
 import SiteMenuView from "../view/site-menu.js";
 import {render, RenderPosition, remove} from "../utils/render.js";
+import {UserAction, UpdateType} from "../const.js";
 
-export default class Card {
-  constructor(catalogListContainer, siteMenuModel) {
-    this._catalogListContainer = catalogListContainer;
+export default class CatalogGood {
+  constructor(siteMenuModel, basketModel, changeData) {
+    this._changeData = changeData;
     this._catalogPopUpContainer = document.querySelector(`body`);
     this._siteMenuModel = siteMenuModel;
+    this._basketModel = basketModel;
 
     this._catalogItemComponent = null;
     this._catalogPopUpAddComponent = null;
     this._catalogPopUpSuccessComponent = null;
+
 
     this._siteMenuComponent = new SiteMenuView();
 
@@ -24,15 +27,15 @@ export default class Card {
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
   }
 
-  init(catalogCard) {
+  init(catalogListContainer, catalogCard) {
     this._catalogCard = catalogCard;
-    this._cardBasket = {};
+    // this._goodBasket = {};
 
     this._catalogItemComponent = new CatalogItemView(catalogCard);
+    render(catalogListContainer, this._catalogItemComponent, RenderPosition.BEFOREEND);
 
     this._catalogItemComponent.setAddClickHandler(this._handleAddToBasketClick);
 
-    render(this._catalogListContainer, this._catalogItemComponent, RenderPosition.BEFOREEND);
   }
 
   destroy() {
@@ -81,7 +84,7 @@ export default class Card {
     document.addEventListener(`keydown`, this._escKeyDownHandler);
   }
 
-  _handleAddToBasketPopUpClick() {
+  _handleAddToBasketPopUpClick(data) {
     this._removePopUpAddComponent();
     this._catalogPopUpSuccessComponent = new CatalogPopUpSuccessView();
 
@@ -93,12 +96,33 @@ export default class Card {
     render(this._catalogPopUpContainer, this._catalogPopUpSuccessComponent, RenderPosition.AFTERBEGIN);
     document.addEventListener(`keydown`, this._escKeyDownHandler);
 
-    this._cardBasket = new Array(Object.assign({}, this._catalogCard));
-    // console.log(this._cardBasket);
+    this._goods = this._basketModel.getBasket();
+
+    const index = this._goods.findIndex((good) => good.identiferNumber === data.identiferNumber);
+
+    if (index === -1 || this._goods.length === 0) {
+      this._basketModel.addGood(UpdateType.MINOR, Object.assign({}, data, {count: 1}));
+      return;
+    }
+    let count = this._goods[index].count;
+    count++;
+
+    this._changeData(
+        UserAction.UPDATE_POINT,
+        Object.assign({}, data, {count})
+    );
   }
 
   _handleAddToBasketPopUpSuccessClick(menuItem) {
     this._currentMenuItem = this._siteMenuModel.getMenuItem();
+
+    this._siteMenuComponent.getElement()
+        .querySelector(`[data-menu-type="${this._currentMenuItem}"]`)
+        .parentElement.classList.remove(`site-list__item--active`);
+
+    this._siteMenuComponent.getElement()
+        .querySelector(`[data-menu-type="${menuItem}"]`)
+        .parentElement.classList.add(`site-list__item--active`);
 
     this._siteMenuModel.setMenuItem(menuItem);
     this._removePopUpSuccessComponent();

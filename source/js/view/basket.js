@@ -1,50 +1,61 @@
 import AbstractView from "./abstract.js";
+import {DiscountType} from "../const.js";
 
-const createBasketElement = () => {
+const createBasketElement = (goods, discountType, isAvailable) => {
+  let totalPrice = 0;
+
+  const DISCOUNT = {
+    GITARAHIT_10_PERCENT: 0.9,
+    SUPERGITARA: 700,
+    GITARA2020: 3500,
+    GITARA2020_30_PERCENT: 0.7,
+  };
+
+  const getTotalPrice = () => {
+    if (goods.length !== 0) {
+      let goodPrice = [];
+
+      goods.forEach((good) => {
+        return goodPrice.push(good.price * good.count);
+      });
+
+      totalPrice = goodPrice.reduce((acc, price) => acc + price);
+    }
+    return totalPrice;
+  };
+
+  const getDiscountPrice = () => {
+    switch (discountType) {
+      case DiscountType.DEFAULT:
+        getTotalPrice();
+        break;
+      case DiscountType.GITARAHIT:
+        getTotalPrice();
+        if (totalPrice > 0) {
+          return totalPrice * DISCOUNT.GITARAHIT_10_PERCENT;
+        }
+        break;
+      case DiscountType.SUPERGITARA:
+        getTotalPrice();
+        if (totalPrice > 0) {
+          return totalPrice - DISCOUNT.SUPERGITARA;
+        }
+        break;
+      case DiscountType.GITARA2020:
+        getTotalPrice();
+        if (totalPrice > 0) {
+          return (DISCOUNT.GITARA2020) <= totalPrice * DISCOUNT.GITARA2020_30_PERCENT ? totalPrice - DISCOUNT.GITARA2020 : totalPrice * DISCOUNT.GITARA2020_30_PERCENT;
+        }
+        break;
+    }
+    return totalPrice;
+  };
+
   return `<section class="shoppingbag">
   <div class="shoppingbag__content">
     <div class="shoppingbag__product product">
       <ul class="product__list">
-        <li class="product__item">
-          <div class="product__image-container">
-            <img src="img/gitar-electric_1.png" width="80" height="202" alt="Изображение товара">
-          </div>
-          <ul class="product__deckription-list">
-            <li class="product__name">Электрогитара Честер bass</li>
-            <li class="product__identifer-number">Артикул: SO757575</li>
-            <li class="product__type">Электрогитара, 6 струнная </li>
-          </ul>
-          <div class="product__price">17 500 ₽</div>
-          <div class="product__quantity">
-            <button class="product__quantity-button" type="button">-</button>
-            <input id="product-quantity" type="text" value="1" name="product-quantity">
-            <button class="product__quantity-button" type="button">+</button>
-          </div>
-          <div class="product__price-total">17 500 ₽</div>
-          <button class="product__delete" type="button">
-            <span class="visually-hidden">Удалить товар</span>
-          </button>
-        </li>
-        <li class="product__item">
-          <div class="product__image-container">
-            <img src="img/gitar-electric_1.png" width="80" height="202" alt="Изображение товара">
-          </div>
-          <ul class="product__deckription-list">
-            <li class="product__name">Электрогитара Честер bass</li>
-            <li class="product__identifer-number">Артикул: SO757575</li>
-            <li class="product__type">Электрогитара, 6 струнная </li>
-          </ul>
-          <div class="product__price">17 500 ₽</div>
-          <div class="product__quantity">
-            <button class="product__quantity-button" type="button">-</button>
-            <input id="product-quantity" type="text" value="2" name="product-quantity">
-            <button class="product__quantity-button" type="button">+</button>
-          </div>
-          <div class="product__price-total">17 500 ₽</div>
-          <button class="product__delete" type="button">
-            <span class="visually-hidden">Удалить товар</span>
-          </button>
-        </li>
+
       </ul>
     </div>
     <div class="shoppingbag__order order">
@@ -53,13 +64,13 @@ const createBasketElement = () => {
           <span class="order__discount-title">Промокод на скидку</span>
           <span class="order__discount-subtitle">Введите свой промокод, если он у вас есть.</span>
         </div>
-        <div class="order__discount-promo">
-          <input type="text" name="order-discount-promo" id="order-discount-promo" placeholder="GITARAHIT" value="GITARAHIT">
+        <div class="order__discount-promo ${!isAvailable ? `order__discount-promo--error` : ``}">
+          <input type="text" name="order-discount-promo" id="order-discount-promo" placeholder="" value="">
           <button type="button">Применить купон</button>
         </div>
       </div>
       <div class="order__to-order">
-        <span>Всего: 47 000 ₽</span>
+        <span>Всего: ${getDiscountPrice()} ₽</span>
         <button type="button">Оформить заказ</button>
       </div>
     </div>
@@ -68,11 +79,29 @@ const createBasketElement = () => {
 };
 
 export default class Basket extends AbstractView {
-  constructor() {
+  constructor(goods, discountType, isAvailable) {
     super();
+    this._goods = goods;
+    this._discountType = discountType;
+    this._isAvailable = isAvailable;
+
+
+    this._discountClickHandler = this._discountClickHandler.bind(this);
   }
 
   getTemplate() {
-    return createBasketElement();
+    return createBasketElement(this._goods, this._discountType, this._isAvailable);
+  }
+
+  _discountClickHandler(evt) {
+    evt.preventDefault();
+    const discountType = this.getElement().querySelector(`input[name=order-discount-promo]`).value;
+
+    this._callback.discountClick(discountType);
+  }
+
+  setDiscountClickHandler(callback) {
+    this._callback.discountClick = callback;
+    this.getElement().querySelector(`.order__discount-promo button`).addEventListener(`click`, this._discountClickHandler);
   }
 }
