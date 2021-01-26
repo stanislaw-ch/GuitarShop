@@ -13,7 +13,7 @@ import {SortByCategoryType, SortByPriorityType} from "../const.js";
 import {filteredGoodsByType, filteredGoodsByPrice} from "../utils/filter.js";
 import {MenuItem, UserAction} from "../const.js";
 
-const GOOD_COUNT_PER_STEP = 9;
+const GOOD_COUNT_PER_STEP = 3;
 
 export default class Board {
   constructor(catalogContainer, goodsModel, filterModel, siteMenuModel, basketModel) {
@@ -22,13 +22,13 @@ export default class Board {
     this._siteMenuModel = siteMenuModel;
     this._basketModel = basketModel;
     this._catalogContainer = catalogContainer;
-    this._renderedCardsCount = GOOD_COUNT_PER_STEP;
+    this._renderedGoodsCount = GOOD_COUNT_PER_STEP;
+
     this._currentSortByCategoryType = SortByCategoryType.DEFAULT;
     this._currentSortByPriorityType = SortByPriorityType.DEFAULT;
     this._goods = {};
     this._catalogComponent = new CatalogBoardView();
     this._catalogListComponent = new CatalogListView();
-    this._catalogPaginationComponent = new CatalogPaginationView();
 
     this._filterPresenter = new FilterPresenter(this._catalogContainer, this._filterModel, this._goodsModel);
     this._goodPresenter = new CatalogGoodPresenter(this._siteMenuModel, this._handleViewAction);
@@ -38,6 +38,8 @@ export default class Board {
     this._handleModelEvent = this._handleModelEvent.bind(this);
     this._handleMenuModel = this._handleMenuModel.bind(this);
     this._handleViewAction = this._handleViewAction.bind(this);
+    this._handlePaginationNextClick = this._handlePaginationNextClick.bind(this);
+    this._handlePaginationPreviousClick = this._handlePaginationPreviousClick.bind(this);
     // this._handleModeChange = this._handleModeChange.bind(this);
     this._siteMenuModel.addObserver(this._handleMenuModel);
   }
@@ -183,6 +185,78 @@ export default class Board {
     }
   }
 
+  _handlePaginationNextClick() {
+    const goodsCount = this._getGoods().length;
+
+    const newRenderedGoodCount = Math.min(goodsCount, this._renderedGoodsCount + GOOD_COUNT_PER_STEP);
+    const goods = this._getGoods().slice(this._renderedGoodsCount, newRenderedGoodCount);
+
+    Object
+        .values(this._goods)
+        .forEach((presenter) => presenter.destroy());
+    this._goods = {};
+
+    this._renderGoods(goods);
+
+    if (this._renderedGoodsCount < newRenderedGoodCount) {
+      this._catalogPaginationComponent.getElement()
+          .querySelector(`.pagination__item--button-previous`)
+          .classList.remove(`pagination__item--hide`);
+    }
+
+    this._renderedGoodsCount = newRenderedGoodCount;
+
+    if (this._renderedGoodsCount > goodsCount) {
+      remove(this._catalogPaginationComponent);
+    }
+
+    if (this._renderedGoodsCount >= goodsCount) {
+      this._catalogPaginationComponent.getElement()
+          .querySelector(`.pagination__item--button-next`)
+          .classList.add(`pagination__item--hide`);
+    }
+  }
+
+  _handlePaginationPreviousClick() {
+    const goodsCount = this._getGoods().length;
+    const modulo = this._renderedGoodsCount % GOOD_COUNT_PER_STEP;
+    let newRenderedGoodCount = 0;
+
+    if (modulo !== 0) {
+      newRenderedGoodCount = Math.min(goodsCount, this._renderedGoodsCount - GOOD_COUNT_PER_STEP - modulo);
+      this._renderedGoodsCount = this._renderedGoodsCount - modulo;
+    } else {
+      newRenderedGoodCount = Math.min(goodsCount, this._renderedGoodsCount - GOOD_COUNT_PER_STEP);
+    }
+
+    const goods = this._getGoods().slice(newRenderedGoodCount, this._renderedGoodsCount);
+
+    Object
+        .values(this._goods)
+        .forEach((presenter) => presenter.destroy());
+    this._goods = {};
+
+    this._renderGoods(goods);
+
+    this._renderedGoodsCount = newRenderedGoodCount;
+
+    if (this._renderedGoodsCount > goodsCount) {
+      remove(this._catalogPaginationComponent);
+    }
+
+    if (this._renderedGoodsCount === 0) {
+      this._catalogPaginationComponent.getElement()
+          .querySelector(`.pagination__item--button-previous`)
+          .classList.add(`pagination__item--hide`);
+    }
+
+    if (this._renderedGoodsCount < goodsCount) {
+      this._catalogPaginationComponent.getElement()
+          .querySelector(`.pagination__item--button-next`)
+          .classList.remove(`pagination__item--hide`);
+    }
+  }
+
   _renderSort() {
     if (this._catalogSortComponent !== null) {
       this._catalogSortComponent = null;
@@ -206,6 +280,10 @@ export default class Board {
   }
 
   _renderPagination() {
+    this._catalogPaginationComponent = new CatalogPaginationView();
+    this._catalogPaginationComponent.setNextClickHandler(this._handlePaginationNextClick);
+    this._catalogPaginationComponent.setPreviousClickHandler(this._handlePaginationPreviousClick);
+
     render(this._catalogComponent, this._catalogPaginationComponent, RenderPosition.BEFOREEND);
   }
 
@@ -236,6 +314,7 @@ export default class Board {
     const goods = this._getGoods();
     const goodCount = goods.length;
 
+    this._paginationStepCount = Math.floor(goodCount / GOOD_COUNT_PER_STEP);
     // if (goodCount === 0) {
     //   this._renderNoCards();
     //   return;
@@ -246,12 +325,10 @@ export default class Board {
     }
 
     this._renderSort();
-    this._renderGoods(goods.slice(0, Math.min(goodCount, this._renderedCardsCount)));
+    this._renderGoods(goods.slice(0, Math.min(goodCount, this._renderedGoodsCount)));
 
-    // if (cardCount > this._renderedCardsCount) {
-    this._renderPagination();
-
-
-    // }
+    if (goodCount > this._renderedGoodsCount) {
+      this._renderPagination();
+    }
   }
 }

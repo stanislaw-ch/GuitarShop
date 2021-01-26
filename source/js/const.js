@@ -30,7 +30,7 @@ export const StringsAmountByType = {
 };
 
 export const MenuItem = {
-  CATALOG: `CARDS`,
+  CATALOG: `CATALOG`,
   BASKET: `BASKET`
 };
 

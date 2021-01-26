@@ -109,4 +109,15 @@ export default [
     image: `img/gitar-electric_2.png`,
     starsCount: `5`
   },
+  {
+    id: 10,
+    identiferNumber: `TK244556`,
+    name: `СURT Clasic`,
+    type: `электрогитара`,
+    reviewAmount: `20`,
+    stringAmount: `4`,
+    price: `23000`,
+    image: `img/gitar-electric_2.png`,
+    starsCount: `5`
+  },
 ];

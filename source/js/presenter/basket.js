@@ -113,19 +113,19 @@ export default class Basket {
     }
   }
 
-  _renderCard(good) {
+  _renderGood(good) {
     const goodPresenter = new BasketGoodPresenter(this._basketContainer, this._basketModel, this._handleViewAction);
     goodPresenter.init(good);
     this._goodPresenter[good.id] = goodPresenter;
   }
 
-  _renderCards(goods) {
-    goods.forEach((good) => this._renderCard(good));
+  _renderGoods(goods) {
+    goods.forEach((good) => this._renderGood(good));
   }
 
   _renderBasket() {
     const goods = this._basketModel.getBasket();
-    this._renderCards(goods);
+    this._renderGoods(goods);
     // }
   }
 }
