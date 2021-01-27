@@ -138,12 +138,12 @@ const StringsAmountByType = {
 };
 
 const MenuItem = {
-  CARDS: `CARDS`,
+  CATALOG: `CATALOG`,
   BASKET: `BASKET`
 };
 
 const BreadcrumbsItem = {
-  CARDS: `Каталог`,
+  CATALOG: `Каталог`,
   BASKET: `Корзина`
 };
 
@@ -188,7 +188,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _presenter_site_menu_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./presenter/site-menu.js */ "./source/js/presenter/site-menu.js");
 /* harmony import */ var _presenter_catalog_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./presenter/catalog.js */ "./source/js/presenter/catalog.js");
 /* harmony import */ var _presenter_breadcrumbs_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./presenter/breadcrumbs.js */ "./source/js/presenter/breadcrumbs.js");
-/* harmony import */ var _model_cards_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./model/cards.js */ "./source/js/model/cards.js");
+/* harmony import */ var _model_goods_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./model/goods.js */ "./source/js/model/goods.js");
 /* harmony import */ var _model_filter_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./model/filter.js */ "./source/js/model/filter.js");
 /* harmony import */ var _model_site_menu_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./model/site-menu.js */ "./source/js/model/site-menu.js");
 /* harmony import */ var _model_basket_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./model/basket.js */ "./source/js/model/basket.js");
@@ -207,8 +207,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const cardsModel = new _model_cards_js__WEBPACK_IMPORTED_MODULE_5__["default"]();
-cardsModel.setCards(_mock_json_js__WEBPACK_IMPORTED_MODULE_9__["default"]);
+const goodsModel = new _model_goods_js__WEBPACK_IMPORTED_MODULE_5__["default"]();
+goodsModel.setGoods(_mock_json_js__WEBPACK_IMPORTED_MODULE_9__["default"]);
 
 const filterModel = new _model_filter_js__WEBPACK_IMPORTED_MODULE_6__["default"]();
 const siteMenuModel = new _model_site_menu_js__WEBPACK_IMPORTED_MODULE_7__["default"]();
@@ -225,7 +225,7 @@ Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_10__["render"])(siteCatalogSect
 
 const siteMenuPresenter = new _presenter_site_menu_js__WEBPACK_IMPORTED_MODULE_2__["default"](siteHeaderElement, siteMenuModel, basketModel);
 const breadcrumbsPresenter = new _presenter_breadcrumbs_js__WEBPACK_IMPORTED_MODULE_4__["default"](siteMainContainerElement, siteMenuModel);
-const catalogPresenter = new _presenter_catalog_js__WEBPACK_IMPORTED_MODULE_3__["default"](siteCatalogSectionWrapperComponent, cardsModel, filterModel, siteMenuModel, basketModel);
+const catalogPresenter = new _presenter_catalog_js__WEBPACK_IMPORTED_MODULE_3__["default"](siteCatalogSectionWrapperComponent, goodsModel, filterModel, siteMenuModel, basketModel);
 
 siteMenuPresenter.init();
 breadcrumbsPresenter.init();
@@ -354,6 +354,17 @@ __webpack_require__.r(__webpack_exports__);
     image: `img/gitar-electric_2.png`,
     starsCount: `5`
   },
+  {
+    id: 10,
+    identiferNumber: `TK244556`,
+    name: `СURT Clasic`,
+    type: `электрогитара`,
+    reviewAmount: `20`,
+    stringAmount: `4`,
+    price: `23000`,
+    image: `img/gitar-electric_2.png`,
+    starsCount: `5`
+  },
 ]);
 
 
@@ -376,154 +387,57 @@ __webpack_require__.r(__webpack_exports__);
 class Basket extends _utils_observer_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
   constructor() {
     super();
-    this._cardsInBasket = [];
+    this._goodsInBasket = [];
   }
 
   setBasket(updateType, update) {
-    this._cardsInBasket = update;
+    this._goodsInBasket = update;
     this._notify(updateType);
   }
 
   getBasket() {
-    return this._cardsInBasket;
+    return this._goodsInBasket;
   }
 
-  updateBasket(updateType, update) {
-    console.log(update);
-    const index = this._cardsInBasket.findIndex((task) => task.identiferNumber === update.identiferNumber);
+  updateGood(updateType, update) {
+    const index = this._goodsInBasket.findIndex((good) => good.identiferNumber === update.identiferNumber);
 
     if (index === -1) {
       throw new Error(`Can't update unexisting task`);
     }
 
-    this._cardsInBasket = [
-      ...this._cardsInBasket.slice(0, index),
+    this._goodsInBasket = [
+      ...this._goodsInBasket.slice(0, index),
       update,
-      ...this._cardsInBasket.slice(index + 1)
+      ...this._goodsInBasket.slice(index + 1)
     ];
+
     this._notify(updateType, update);
   }
 
-  addCard(updateType, update) {
-    // console.log(this._cardsInBasket.length);
-    // const index = this._cardsInBasket.findIndex((task) => task.identiferNumber === update.identiferNumber);
-    // console.log(index);
-
-    // if (index === -1 && this._cardsInBasket.length === 0) {
-      this._cardsInBasket = [
-        update,
-        ...this._cardsInBasket
-      ];
-    // }
-
-    // this._cardsInBasket = [
-    //   ...this._cardsInBasket.slice(0, index),
-    //   update,
-    //   ...this._cardsInBasket.slice(index + 1)
-    // ];
-
-console.log(this._cardsInBasket);
+  addGood(updateType, update) {
+    this._goodsInBasket = [
+      update,
+      ...this._goodsInBasket
+    ];
 
     this._notify(updateType, update);
-    // this.setBasket(this._cardsInBasket);
   }
 
-  // addCard(updateType, update) {
-  //   this._cardsInBasket = [
-  //     update,
-  //     ...this._cardsInBasket
-  //   ];
-
-  //   this._notify(updateType, update);
-  //   this.setBasket(this._cardsInBasket);
-  // }
-
-  deleteCard(updateType, update) {
-    const index = this._cardsInBasket.findIndex((task) => task.identiferNumber === update.identiferNumber);
+  deleteGood(updateType, update) {
+    const index = this._goodsInBasket.findIndex((good) => good.identiferNumber === update.identiferNumber);
 
     if (index === -1) {
       throw new Error(`Can't delete unexisting task`);
     }
 
-    this._cardsInBasket = [
-      ...this._cardsInBasket.slice(0, index),
-      ...this._cardsInBasket.slice(index + 1)
+    this._goodsInBasket = [
+      ...this._goodsInBasket.slice(0, index),
+      ...this._goodsInBasket.slice(index + 1)
     ];
 
     this._notify(updateType);
   }
-}
-
-
-/***/ }),
-
-/***/ "./source/js/model/cards.js":
-/*!**********************************!*\
-  !*** ./source/js/model/cards.js ***!
-  \**********************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Cards; });
-/* harmony import */ var _utils_observer_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/observer.js */ "./source/js/utils/observer.js");
-
-
-
-class Cards extends _utils_observer_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
-  constructor() {
-    super();
-    this._cards = [];
-  }
-
-  setCards(cards) {
-    this._cards = cards.slice();
-  }
-
-  getCards() {
-    return this._cards;
-  }
-
-  // updateTask(updateType, update) {
-  //   const index = this._cards.findIndex((task) => task.id === update.id);
-
-  //   if (index === -1) {
-  //     throw new Error(`Can't update unexisting task`);
-  //   }
-
-  //   this._cards = [
-  //     ...this._cards.slice(0, index),
-  //     update,
-  //     ...this._cards.slice(index + 1)
-  //   ];
-
-  //   this._notify(updateType, update);
-  // }
-
-  // addTask(updateType, update) {
-  //   this._cards = [
-  //     update,
-  //     ...this._cards
-  //   ];
-
-  //   this._notify(updateType, update);
-  // }
-
-  // deleteTask(updateType, update) {
-  //   const index = this._cards.findIndex((task) => task.id === update.id);
-
-  //   if (index === -1) {
-  //     throw new Error(`Can't delete unexisting task`);
-  //   }
-
-  //   this._cards = [
-  //     ...this._cards.slice(0, index),
-  //     ...this._cards.slice(index + 1)
-  //   ];
-
-  //   this._notify(updateType);
-  // }
 }
 
 
@@ -541,7 +455,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Filter; });
 /* harmony import */ var _utils_observer_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/observer.js */ "./source/js/utils/observer.js");
 
-// import {FilterType} from "../const.js";
 
 class Filter extends _utils_observer_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
   constructor() {
@@ -567,6 +480,38 @@ class Filter extends _utils_observer_js__WEBPACK_IMPORTED_MODULE_0__["default"] 
 
 /***/ }),
 
+/***/ "./source/js/model/goods.js":
+/*!**********************************!*\
+  !*** ./source/js/model/goods.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Goods; });
+/* harmony import */ var _utils_observer_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/observer.js */ "./source/js/utils/observer.js");
+
+
+
+class Goods extends _utils_observer_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  constructor() {
+    super();
+    this._goods = [];
+  }
+
+  setGoods(goods) {
+    this._goods = goods.slice();
+  }
+
+  getGoods() {
+    return this._goods;
+  }
+}
+
+
+/***/ }),
+
 /***/ "./source/js/model/site-menu.js":
 /*!**************************************!*\
   !*** ./source/js/model/site-menu.js ***!
@@ -585,7 +530,7 @@ __webpack_require__.r(__webpack_exports__);
 class SiteMenu extends _utils_observer_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
   constructor() {
     super();
-    this._activeItem = _const_js__WEBPACK_IMPORTED_MODULE_1__["MenuItem"].CARDS;
+    this._activeItem = _const_js__WEBPACK_IMPORTED_MODULE_1__["MenuItem"].CATALOG;
   }
 
   setMenuItem(itemType) {
@@ -601,16 +546,16 @@ class SiteMenu extends _utils_observer_js__WEBPACK_IMPORTED_MODULE_0__["default"
 
 /***/ }),
 
-/***/ "./source/js/presenter/basket-card.js":
+/***/ "./source/js/presenter/basket-good.js":
 /*!********************************************!*\
-  !*** ./source/js/presenter/basket-card.js ***!
+  !*** ./source/js/presenter/basket-good.js ***!
   \********************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return BasketCard; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return BasketGoodElement; });
 /* harmony import */ var _view_basket_item_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../view/basket-item.js */ "./source/js/view/basket-item.js");
 /* harmony import */ var _view_basket_popUp_delete_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../view/basket-popUp-delete.js */ "./source/js/view/basket-popUp-delete.js");
 /* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/render.js */ "./source/js/utils/render.js");
@@ -620,7 +565,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-class BasketCard {
+class BasketGoodElement {
   constructor(basketContainer, basketModel, changeData) {
     this._basketContainer = basketContainer;
     this._basketModel = basketModel;
@@ -736,7 +681,7 @@ class BasketCard {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Basket; });
 /* harmony import */ var _view_basket_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../view/basket.js */ "./source/js/view/basket.js");
-/* harmony import */ var _presenter_basket_card_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../presenter/basket-card.js */ "./source/js/presenter/basket-card.js");
+/* harmony import */ var _presenter_basket_good_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../presenter/basket-good.js */ "./source/js/presenter/basket-good.js");
 /* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/render.js */ "./source/js/utils/render.js");
 /* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../const.js */ "./source/js/const.js");
 
@@ -748,12 +693,11 @@ class Basket {
   constructor(basketContainer, basketModel) {
     this._basketContainer = basketContainer;
     this._basketModel = basketModel;
-    // this._cardsModel = cardsModel;
     this._currentDiscountType = _const_js__WEBPACK_IMPORTED_MODULE_3__["DiscountType"].DEFAULT;
     this._isAvailable = true;
     this._currentFilter = null;
 
-    this._cardPresenter = {};
+    this._goodPresenter = {};
 
     this._basketComponent = null;
 
@@ -765,11 +709,11 @@ class Basket {
   }
 
   init() {
-    console.log(`init`);
+    // console.log(`init`);
     this._basketComponent = new _view_basket_js__WEBPACK_IMPORTED_MODULE_0__["default"](this._basketModel.getBasket(), this._currentDiscountType, this._isAvailable);
 
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_2__["render"])(this._basketContainer, this._basketComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_2__["RenderPosition"].BEFOREEND);
-    // this._cardsModel.addObserver(this._handleModelEvent);
+    // this._goodsModel.addObserver(this._handleModelEvent);
     this._renderBasket();
     this._basketComponent.setDiscountClickHandler(this._handleDiscountClick);
     this._basketModel.addObserver(this._handleModelEvent);
@@ -779,23 +723,28 @@ class Basket {
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_2__["remove"])(this._basketComponent);
 
     // Object
-    //     .values(this._cardPresenter)
+    //     .values(this._goodPresenter)
     //     .forEach((presenter) => presenter.destroy());
-    // this._cardPresenter = {};
+    // this._goodPresenter = {};
 
     this._basketComponent = null;
 
-    // this._cardsModel.removeObserver(this._handleModelEvent);
+    // this._goodsModel.removeObserver(this._handleModelEvent);
     this._basketModel.removeObserver(this._handleModelEvent);
   }
 
   _handleDiscountClick(discountType) {
     if (this._currentDiscountType === discountType) {
-      // this._basketComponent.getElement().querySelector(`.order__discount-promo`).classList.add(`.order__discount-promo--error`);
       return;
     }
+    if (!Object.values(_const_js__WEBPACK_IMPORTED_MODULE_3__["DiscountType"]).includes(discountType)) {
+      this._isAvailable = false;
+    } else {
+      this._isAvailable = true;
+    }
+
     this._currentDiscountType = discountType;
-    this._isAvailable = false;
+
     this.destroy();
     this.init();
   }
@@ -807,10 +756,10 @@ class Basket {
   _handleViewAction(actionType, updateType, update) {
     switch (actionType) {
       case _const_js__WEBPACK_IMPORTED_MODULE_3__["UserAction"].UPDATE_POINT:
-        // this._cardPresenter[update.id].setViewState(CardPresenterViewState.SAVING);
-        console.log(updateType);
-        console.log(update);
-        this._basketModel.updateBasket(updateType, update);
+        // this._goodPresenter[update.id].setViewState(CardPresenterViewState.SAVING);
+        // console.log(updateType);
+        // console.log(update);
+        this._basketModel.updateGood(updateType, update);
         break;
       case _const_js__WEBPACK_IMPORTED_MODULE_3__["UserAction"].ADD_POINT:
         this._pointNewPresenter.setSaving();
@@ -822,7 +771,7 @@ class Basket {
             });
         break;
       case _const_js__WEBPACK_IMPORTED_MODULE_3__["UserAction"].DELETE_POINT:
-        this._basketModel.deleteCard(updateType, update);
+        this._basketModel.deleteGood(updateType, update);
         break;
     }
   }
@@ -831,7 +780,7 @@ class Basket {
     switch (updateType) {
       case _const_js__WEBPACK_IMPORTED_MODULE_3__["UpdateType"].MAJOR:
         this._tripInfoPresenter.destroy();
-        this._pointItems[pointItem.id].init(dayPoint, pointItem, this._getOffers(), this._getDestination());
+        // this._pointItems[pointItem.id].init(dayPoint, pointItem, this._getOffers(), this._getDestination());
         this._renderTripInfo();
         break;
       case _const_js__WEBPACK_IMPORTED_MODULE_3__["UpdateType"].MINOR:
@@ -850,19 +799,19 @@ class Basket {
     }
   }
 
-  _renderCard(card) {
-    const cardPresenter = new _presenter_basket_card_js__WEBPACK_IMPORTED_MODULE_1__["default"](this._basketContainer, this._basketModel, this._handleViewAction);
-    cardPresenter.init(card);
-    this._cardPresenter[card.id] = cardPresenter;
+  _renderGood(good) {
+    const goodPresenter = new _presenter_basket_good_js__WEBPACK_IMPORTED_MODULE_1__["default"](this._basketContainer, this._basketModel, this._handleViewAction);
+    goodPresenter.init(good);
+    this._goodPresenter[good.id] = goodPresenter;
   }
 
-  _renderCards(cards) {
-    cards.forEach((card) => this._renderCard(card));
+  _renderGoods(goods) {
+    goods.forEach((good) => this._renderGood(good));
   }
 
   _renderBasket() {
-    const cards = this._basketModel.getBasket();
-    this._renderCards(cards);
+    const goods = this._basketModel.getBasket();
+    this._renderGoods(goods);
     // }
   }
 }
@@ -919,16 +868,16 @@ class Breadcrumbs {
 
 /***/ }),
 
-/***/ "./source/js/presenter/card.js":
-/*!*************************************!*\
-  !*** ./source/js/presenter/card.js ***!
-  \*************************************/
+/***/ "./source/js/presenter/catalog-good.js":
+/*!*********************************************!*\
+  !*** ./source/js/presenter/catalog-good.js ***!
+  \*********************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Card; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CatalogGood; });
 /* harmony import */ var _view_catalog_item_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../view/catalog-item.js */ "./source/js/view/catalog-item.js");
 /* harmony import */ var _view_catalog_popUp_add_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../view/catalog-popUp-add.js */ "./source/js/view/catalog-popUp-add.js");
 /* harmony import */ var _view_catalog_popUp_success_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../view/catalog-popUp-success.js */ "./source/js/view/catalog-popUp-success.js");
@@ -942,7 +891,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-class Card {
+class CatalogGood {
   constructor(siteMenuModel, basketModel, changeData) {
     this._changeData = changeData;
     this._catalogPopUpContainer = document.querySelector(`body`);
@@ -966,7 +915,7 @@ class Card {
 
   init(catalogListContainer, catalogCard) {
     this._catalogCard = catalogCard;
-    this._cardBasket = {};
+    // this._goodBasket = {};
 
     this._catalogItemComponent = new _view_catalog_item_js__WEBPACK_IMPORTED_MODULE_0__["default"](catalogCard);
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_4__["render"])(catalogListContainer, this._catalogItemComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_4__["RenderPosition"].BEFOREEND);
@@ -1021,7 +970,7 @@ class Card {
     document.addEventListener(`keydown`, this._escKeyDownHandler);
   }
 
-  _handleAddToBasketPopUpClick(point) {
+  _handleAddToBasketPopUpClick(data) {
     this._removePopUpAddComponent();
     this._catalogPopUpSuccessComponent = new _view_catalog_popUp_success_js__WEBPACK_IMPORTED_MODULE_2__["default"]();
 
@@ -1033,22 +982,20 @@ class Card {
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_4__["render"])(this._catalogPopUpContainer, this._catalogPopUpSuccessComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_4__["RenderPosition"].AFTERBEGIN);
     document.addEventListener(`keydown`, this._escKeyDownHandler);
 
-    this._cards = this._basketModel.getBasket();
+    this._goods = this._basketModel.getBasket();
 
-    const index = this._cards.findIndex((task) => task.identiferNumber === this._catalogCard.identiferNumber);
+    const index = this._goods.findIndex((good) => good.identiferNumber === data.identiferNumber);
 
-    if (index === -1 && this._cards.length === 0) {
-      this._basketModel.addCard(_const_js__WEBPACK_IMPORTED_MODULE_5__["UpdateType"].MINOR, Object.assign({}, point, {count: 1}));
+    if (index === -1 || this._goods.length === 0) {
+      this._basketModel.addGood(_const_js__WEBPACK_IMPORTED_MODULE_5__["UpdateType"].MINOR, Object.assign({}, data, {count: 1}));
       return;
     }
-
-    let count = this._cards[index].count;
+    let count = this._goods[index].count;
     count++;
 
     this._changeData(
         _const_js__WEBPACK_IMPORTED_MODULE_5__["UserAction"].UPDATE_POINT,
-        _const_js__WEBPACK_IMPORTED_MODULE_5__["UpdateType"].MINOR,
-        Object.assign({}, this._catalogCard, {count})
+        Object.assign({}, data, {count})
     );
   }
 
@@ -1089,11 +1036,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _view_catalog_sort_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../view/catalog-sort.js */ "./source/js/view/catalog-sort.js");
 /* harmony import */ var _view_catalog_list_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../view/catalog-list.js */ "./source/js/view/catalog-list.js");
 /* harmony import */ var _view_catalog_pagination_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../view/catalog-pagination.js */ "./source/js/view/catalog-pagination.js");
-/* harmony import */ var _presenter_card_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../presenter/card.js */ "./source/js/presenter/card.js");
+/* harmony import */ var _presenter_catalog_good_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../presenter/catalog-good.js */ "./source/js/presenter/catalog-good.js");
 /* harmony import */ var _presenter_basket_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../presenter/basket.js */ "./source/js/presenter/basket.js");
 /* harmony import */ var _presenter_filter_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../presenter/filter.js */ "./source/js/presenter/filter.js");
 /* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../utils/render.js */ "./source/js/utils/render.js");
-/* harmony import */ var _utils_card_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../utils/card.js */ "./source/js/utils/card.js");
+/* harmony import */ var _utils_good_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../utils/good.js */ "./source/js/utils/good.js");
 /* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../const.js */ "./source/js/const.js");
 /* harmony import */ var _utils_filter_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../utils/filter.js */ "./source/js/utils/filter.js");
 
@@ -1111,31 +1058,33 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const CARD_COUNT_PER_STEP = 9;
+const GOOD_COUNT_PER_STEP = 3;
 
 class Board {
-  constructor(catalogContainer, cardsModel, filterModel, siteMenuModel, basketModel) {
-    this._cardsModel = cardsModel;
+  constructor(catalogContainer, goodsModel, filterModel, siteMenuModel, basketModel) {
+    this._goodsModel = goodsModel;
     this._filterModel = filterModel;
     this._siteMenuModel = siteMenuModel;
     this._basketModel = basketModel;
     this._catalogContainer = catalogContainer;
-    this._renderedCardsCount = CARD_COUNT_PER_STEP;
+    this._renderedGoodsCount = GOOD_COUNT_PER_STEP;
+
     this._currentSortByCategoryType = _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByCategoryType"].DEFAULT;
     this._currentSortByPriorityType = _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByPriorityType"].DEFAULT;
-    this._cards = {};
+    this._goods = {};
     this._catalogComponent = new _view_catalog_board_js__WEBPACK_IMPORTED_MODULE_0__["default"]();
     this._catalogListComponent = new _view_catalog_list_js__WEBPACK_IMPORTED_MODULE_2__["default"]();
-    this._catalogPaginationComponent = new _view_catalog_pagination_js__WEBPACK_IMPORTED_MODULE_3__["default"]();
 
-    this._filterPresenter = new _presenter_filter_js__WEBPACK_IMPORTED_MODULE_6__["default"](this._catalogContainer, this._filterModel, this._cardsModel);
-    this._cardPresenter = new _presenter_card_js__WEBPACK_IMPORTED_MODULE_4__["default"](this._siteMenuModel, this._handleViewAction);
+    this._filterPresenter = new _presenter_filter_js__WEBPACK_IMPORTED_MODULE_6__["default"](this._catalogContainer, this._filterModel, this._goodsModel);
+    this._goodPresenter = new _presenter_catalog_good_js__WEBPACK_IMPORTED_MODULE_4__["default"](this._siteMenuModel, this._handleViewAction);
 
     this._handleSortByCategoryChange = this._handleSortByCategoryChange.bind(this);
     this._handleSortByPriorityChange = this._handleSortByPriorityChange.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
     this._handleMenuModel = this._handleMenuModel.bind(this);
     this._handleViewAction = this._handleViewAction.bind(this);
+    this._handlePaginationNextClick = this._handlePaginationNextClick.bind(this);
+    this._handlePaginationPreviousClick = this._handlePaginationPreviousClick.bind(this);
     // this._handleModeChange = this._handleModeChange.bind(this);
     this._siteMenuModel.addObserver(this._handleMenuModel);
   }
@@ -1144,69 +1093,69 @@ class Board {
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["render"])(this._catalogContainer, this._catalogComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_7__["RenderPosition"].BEFOREEND);
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["render"])(this._catalogComponent, this._catalogListComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_7__["RenderPosition"].BEFOREEND);
 
-    this._cardsModel.addObserver(this._handleModelEvent);
+    this._goodsModel.addObserver(this._handleModelEvent);
     this._filterModel.addObserver(this._handleModelEvent);
 
-    this._renderBoard();
+    this._renderCatalog();
   }
 
   destroy() {
-    this._clearBoard({resetRenderedCardsCount: true, resetSortByCategoryType: true});
+    this._clearCatalog({resetRenderedGoodsCount: true, resetSortByCategoryType: true});
 
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["remove"])(this._catalogListComponent);
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["remove"])(this._catalogComponent);
 
-    this._cardsModel.removeObserver(this._handleModelEvent);
+    this._goodsModel.removeObserver(this._handleModelEvent);
     this._filterModel.removeObserver(this._handleModelEvent);
   }
 
-  _getCards() {
+  _getGoods() {
     const filter = this._filterModel.getFilter();
-    const cards = this._cardsModel.getCards();
+    const goods = this._goodsModel.getGoods();
 
-    let filteredCards = cards.slice(0)
-        .filter((card) => Object(_utils_filter_js__WEBPACK_IMPORTED_MODULE_10__["filteredCardsByType"])(card.type, filter.type))
-        .filter((card) => Object(_utils_filter_js__WEBPACK_IMPORTED_MODULE_10__["filteredCardsByType"])(card.stringAmount, filter.stringAmount))
-        .filter((card) => Object(_utils_filter_js__WEBPACK_IMPORTED_MODULE_10__["filteredCardsByPrice"])(card.price, filter.price));
+    let filteredGoods = goods.slice(0)
+        .filter((good) => Object(_utils_filter_js__WEBPACK_IMPORTED_MODULE_10__["filteredGoodsByType"])(good.type, filter.type))
+        .filter((good) => Object(_utils_filter_js__WEBPACK_IMPORTED_MODULE_10__["filteredGoodsByType"])(good.stringAmount, filter.stringAmount))
+        .filter((good) => Object(_utils_filter_js__WEBPACK_IMPORTED_MODULE_10__["filteredGoodsByPrice"])(good.price, filter.price));
 
     switch (this._currentSortByCategoryType) {
       case _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByCategoryType"].DEFAULT:
         if (this._currentSortByPriorityType === _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByPriorityType"].UP) {
           this._currentSortByCategoryType = _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByCategoryType"].PRICE;
-          return filteredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_8__["sortPopularityUp"]);
+          return filteredGoods.sort(_utils_good_js__WEBPACK_IMPORTED_MODULE_8__["sortPopularityUp"]);
         }
         if (this._currentSortByPriorityType === _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByPriorityType"].DOWN) {
           this._currentSortByCategoryType = _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByCategoryType"].PRICE;
-          return filteredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_8__["sortPopularityDown"]);
+          return filteredGoods.sort(_utils_good_js__WEBPACK_IMPORTED_MODULE_8__["sortPopularityDown"]);
         }
         break;
       case _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByCategoryType"].PRICE:
         if (this._currentSortByPriorityType === _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByPriorityType"].DEFAULT) {
           this._currentSortByPriorityType = _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByPriorityType"].UP;
-          return filteredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_8__["sortPriceUp"]);
+          return filteredGoods.sort(_utils_good_js__WEBPACK_IMPORTED_MODULE_8__["sortPriceUp"]);
         }
         if (this._currentSortByPriorityType === _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByPriorityType"].UP) {
-          return filteredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_8__["sortPriceUp"]);
+          return filteredGoods.sort(_utils_good_js__WEBPACK_IMPORTED_MODULE_8__["sortPriceUp"]);
         }
         if (this._currentSortByPriorityType === _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByPriorityType"].DOWN) {
-          return filteredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_8__["sortPriceDown"]);
+          return filteredGoods.sort(_utils_good_js__WEBPACK_IMPORTED_MODULE_8__["sortPriceDown"]);
         }
         break;
       case _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByCategoryType"].POPULARITY:
         if (this._currentSortByPriorityType === _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByPriorityType"].DEFAULT) {
           this._currentSortByPriorityType = _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByPriorityType"].UP;
-          return filteredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_8__["sortPopularityUp"]);
+          return filteredGoods.sort(_utils_good_js__WEBPACK_IMPORTED_MODULE_8__["sortPopularityUp"]);
         }
         if (this._currentSortByPriorityType === _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByPriorityType"].UP) {
-          return filteredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_8__["sortPopularityUp"]);
+          return filteredGoods.sort(_utils_good_js__WEBPACK_IMPORTED_MODULE_8__["sortPopularityUp"]);
         }
         if (this._currentSortByPriorityType === _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByPriorityType"].DOWN) {
-          return filteredCards.sort(_utils_card_js__WEBPACK_IMPORTED_MODULE_8__["sortPopularityDown"]);
+          return filteredGoods.sort(_utils_good_js__WEBPACK_IMPORTED_MODULE_8__["sortPopularityDown"]);
         }
         break;
     }
 
-    return filteredCards;
+    return filteredGoods;
   }
 
   _handleSortByCategoryChange(sortByCategory) {
@@ -1216,8 +1165,8 @@ class Board {
 
     this._currentSortByCategoryType = sortByCategory;
 
-    this._clearBoard({resetRenderedCardsCount: true});
-    this._renderBoard();
+    this._clearCatalog({resetRenderedGoodsCount: true});
+    this._renderCatalog();
   }
 
   _handleSortByPriorityChange(sortByPriority) {
@@ -1227,17 +1176,17 @@ class Board {
 
     this._currentSortByPriorityType = sortByPriority;
 
-    this._clearBoard({resetRenderedCardsCount: true});
-    this._renderBoard();
+    this._clearCatalog({resetRenderedGoodsCount: true});
+    this._renderCatalog();
   }
 
   _handleViewAction(actionType, update) {
     switch (actionType) {
       case _const_js__WEBPACK_IMPORTED_MODULE_9__["UserAction"].UPDATE_POINT:
-        this._basketModel.updateBasket(update);
+        this._basketModel.updateGood(actionType, update);
         break;
       case _const_js__WEBPACK_IMPORTED_MODULE_9__["UserAction"].ADD_POINT:
-        this._cardPresenter.setSaving();
+        this._goodPresenter.setSaving();
         // this._api.addPoint(update).then((response) => {
         //   this._pointsModel.addPoint(updateType, response);
         // })
@@ -1258,14 +1207,14 @@ class Board {
   }
 
   _handleModelEvent() {
-    this._clearBoard({resetRenderedCardsCount: true});
-    this._renderBoard();
+    this._clearCatalog({resetRenderedGoodsCount: true});
+    this._renderCatalog();
   }
 
 
   _handleMenuModel(menuItem) {
     switch (menuItem) {
-      case _const_js__WEBPACK_IMPORTED_MODULE_9__["MenuItem"].CARDS:
+      case _const_js__WEBPACK_IMPORTED_MODULE_9__["MenuItem"].CATALOG:
         this.init();
         this._basketPresenter.destroy();
         break;
@@ -1281,6 +1230,78 @@ class Board {
     }
   }
 
+  _handlePaginationNextClick() {
+    const goodsCount = this._getGoods().length;
+
+    const newRenderedGoodCount = Math.min(goodsCount, this._renderedGoodsCount + GOOD_COUNT_PER_STEP);
+    const goods = this._getGoods().slice(this._renderedGoodsCount, newRenderedGoodCount);
+
+    Object
+        .values(this._goods)
+        .forEach((presenter) => presenter.destroy());
+    this._goods = {};
+
+    this._renderGoods(goods);
+
+    if (this._renderedGoodsCount < newRenderedGoodCount) {
+      this._catalogPaginationComponent.getElement()
+          .querySelector(`.pagination__item--button-previous`)
+          .classList.remove(`pagination__item--hide`);
+    }
+
+    this._renderedGoodsCount = newRenderedGoodCount;
+
+    if (this._renderedGoodsCount > goodsCount) {
+      Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["remove"])(this._catalogPaginationComponent);
+    }
+
+    if (this._renderedGoodsCount >= goodsCount) {
+      this._catalogPaginationComponent.getElement()
+          .querySelector(`.pagination__item--button-next`)
+          .classList.add(`pagination__item--hide`);
+    }
+  }
+
+  _handlePaginationPreviousClick() {
+    const goodsCount = this._getGoods().length;
+    const modulo = this._renderedGoodsCount % GOOD_COUNT_PER_STEP;
+    let newRenderedGoodCount = 0;
+
+    if (modulo !== 0) {
+      newRenderedGoodCount = Math.min(goodsCount, this._renderedGoodsCount - GOOD_COUNT_PER_STEP - modulo);
+      this._renderedGoodsCount = this._renderedGoodsCount - modulo;
+    } else {
+      newRenderedGoodCount = Math.min(goodsCount, this._renderedGoodsCount - GOOD_COUNT_PER_STEP);
+    }
+
+    const goods = this._getGoods().slice(newRenderedGoodCount, this._renderedGoodsCount);
+
+    Object
+        .values(this._goods)
+        .forEach((presenter) => presenter.destroy());
+    this._goods = {};
+
+    this._renderGoods(goods);
+
+    this._renderedGoodsCount = newRenderedGoodCount;
+
+    if (this._renderedGoodsCount > goodsCount) {
+      Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["remove"])(this._catalogPaginationComponent);
+    }
+
+    if (this._renderedGoodsCount === 0) {
+      this._catalogPaginationComponent.getElement()
+          .querySelector(`.pagination__item--button-previous`)
+          .classList.add(`pagination__item--hide`);
+    }
+
+    if (this._renderedGoodsCount < goodsCount) {
+      this._catalogPaginationComponent.getElement()
+          .querySelector(`.pagination__item--button-next`)
+          .classList.remove(`pagination__item--hide`);
+    }
+  }
+
   _renderSort() {
     if (this._catalogSortComponent !== null) {
       this._catalogSortComponent = null;
@@ -1293,35 +1314,39 @@ class Board {
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["render"])(this._catalogComponent, this._catalogSortComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_7__["RenderPosition"].AFTERBEGIN);
   }
 
-  _renderCard(card) {
-    const cardPresenter = new _presenter_card_js__WEBPACK_IMPORTED_MODULE_4__["default"](this._siteMenuModel, this._basketModel, this._handleViewAction);
-    cardPresenter.init(this._catalogListComponent, card);
-    this._cards[card.id] = cardPresenter;
+  _renderGood(good) {
+    const goodPresenter = new _presenter_catalog_good_js__WEBPACK_IMPORTED_MODULE_4__["default"](this._siteMenuModel, this._basketModel, this._handleViewAction);
+    goodPresenter.init(this._catalogListComponent, good);
+    this._goods[good.id] = goodPresenter;
   }
 
-  _renderCards(cards) {
-    cards.forEach((card) => this._renderCard(card));
+  _renderGoods(goods) {
+    goods.forEach((good) => this._renderGood(good));
   }
 
   _renderPagination() {
+    this._catalogPaginationComponent = new _view_catalog_pagination_js__WEBPACK_IMPORTED_MODULE_3__["default"]();
+    this._catalogPaginationComponent.setNextClickHandler(this._handlePaginationNextClick);
+    this._catalogPaginationComponent.setPreviousClickHandler(this._handlePaginationPreviousClick);
+
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["render"])(this._catalogComponent, this._catalogPaginationComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_7__["RenderPosition"].BEFOREEND);
   }
 
-  _clearBoard({resetRenderedCardsCount = false, resetSortByCategoryType = false} = {}) {
-    const cardCount = this._getCards().length;
+  _clearCatalog({resetRenderedGoodsCount = false, resetSortByCategoryType = false} = {}) {
+    const goodCount = this._getGoods().length;
 
     Object
-        .values(this._cards)
+        .values(this._goods)
         .forEach((presenter) => presenter.destroy());
-    this._cards = {};
+    this._goods = {};
 
     this._filterPresenter.destroy();
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["remove"])(this._catalogSortComponent);
 
-    if (resetRenderedCardsCount) {
-      this._renderedCardsCount = CARD_COUNT_PER_STEP;
+    if (resetRenderedGoodsCount) {
+      this._renderedGoodsCount = GOOD_COUNT_PER_STEP;
     } else {
-      this._renderedCardsCount = Math.min(cardCount, this._renderedCardsCount);
+      this._renderedGoodsCount = Math.min(goodCount, this._renderedGoodsCount);
     }
 
     if (resetSortByCategoryType) {
@@ -1330,11 +1355,12 @@ class Board {
     }
   }
 
-  _renderBoard() {
-    const cards = this._getCards();
-    const cardCount = cards.length;
+  _renderCatalog() {
+    const goods = this._getGoods();
+    const goodCount = goods.length;
 
-    // if (cardCount === 0) {
+    this._paginationStepCount = Math.floor(goodCount / GOOD_COUNT_PER_STEP);
+    // if (goodCount === 0) {
     //   this._renderNoCards();
     //   return;
     // }
@@ -1344,13 +1370,11 @@ class Board {
     }
 
     this._renderSort();
-    this._renderCards(cards.slice(0, Math.min(cardCount, this._renderedCardsCount)));
+    this._renderGoods(goods.slice(0, Math.min(goodCount, this._renderedGoodsCount)));
 
-    // if (cardCount > this._renderedCardsCount) {
-    this._renderPagination();
-
-
-    // }
+    if (goodCount > this._renderedGoodsCount) {
+      this._renderPagination();
+    }
   }
 }
 
@@ -1373,10 +1397,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class Filter {
-  constructor(filterContainer, filterModel, cardsModel) {
+  constructor(filterContainer, filterModel, goodsModel) {
     this._filterContainer = filterContainer;
     this._filterModel = filterModel;
-    this._cardsModel = cardsModel;
+    this._goodsModel = goodsModel;
 
     this._filterComponent = null;
 
@@ -1387,11 +1411,11 @@ class Filter {
 
   init() {
     this._currentFilter = this._filterModel.getFilter();
-    this._cards = this._cardsModel.getCards();
+    this._goods = this._goodsModel.getGoods();
 
     this._prevFilterComponent = this._filterComponent;
 
-    this._filterComponent = new _view_filters_js__WEBPACK_IMPORTED_MODULE_0__["default"](this._currentFilter, this._cards);
+    this._filterComponent = new _view_filters_js__WEBPACK_IMPORTED_MODULE_0__["default"](this._currentFilter, this._goods);
     this._filterComponent.setFilterTypeChangeHandler(this._handleFilterTypeChange);
     this._filterComponent.setFilterStringChangeHandler(this._handleFilterStringChange);
     this._filterComponent.setFilterPriceChangeHandler(this._handleFilterPriceChange);
@@ -1504,9 +1528,43 @@ class SiteMenu {
 
 /***/ }),
 
-/***/ "./source/js/utils/card.js":
+/***/ "./source/js/utils/filter.js":
+/*!***********************************!*\
+  !*** ./source/js/utils/filter.js ***!
+  \***********************************/
+/*! exports provided: filteredGoodsByType, filteredGoodsByPrice */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "filteredGoodsByType", function() { return filteredGoodsByType; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "filteredGoodsByPrice", function() { return filteredGoodsByPrice; });
+const filteredGoodsByType = (good, filters) => {
+  if (!filters.length) {
+    return true;
+  }
+  return filters.includes(good);
+};
+
+const filteredGoodsByPrice = (good, filters) => {
+  const keys = [`min`, `max`];
+  let PriceRange = {};
+
+  PriceRange = Object.assign(...keys.map((k, i) => ({[k]: filters[i]})));
+
+  if (!filters.length) {
+    return true;
+  }
+
+  return Number(good) <= PriceRange.max && Number(good) >= PriceRange.min;
+};
+
+
+/***/ }),
+
+/***/ "./source/js/utils/good.js":
 /*!*********************************!*\
-  !*** ./source/js/utils/card.js ***!
+  !*** ./source/js/utils/good.js ***!
   \*********************************/
 /*! exports provided: sortPriceDown, sortPriceUp, sortPopularityDown, sortPopularityUp */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -1522,63 +1580,6 @@ const sortPriceUp = (pointA, pointB) => Number(pointA.price) > Number(pointB.pri
 
 const sortPopularityDown = (pointA, pointB) => Number(pointA.reviewAmount) > Number(pointB.reviewAmount) ? -1 : 1;
 const sortPopularityUp = (pointA, pointB) => Number(pointA.reviewAmount) > Number(pointB.reviewAmount) ? 1 : -1;
-
-
-/***/ }),
-
-/***/ "./source/js/utils/filter.js":
-/*!***********************************!*\
-  !*** ./source/js/utils/filter.js ***!
-  \***********************************/
-/*! exports provided: filter, filteredCardsByType, filteredCardsByPrice */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "filter", function() { return filter; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "filteredCardsByType", function() { return filteredCardsByType; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "filteredCardsByPrice", function() { return filteredCardsByPrice; });
-/* harmony import */ var _const__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../const */ "./source/js/const.js");
-
-
-const filter = {
-  [_const__WEBPACK_IMPORTED_MODULE_0__["FilterType"].ALL]: (cards) => cards.filter((card) => card),
-  [_const__WEBPACK_IMPORTED_MODULE_0__["FilterType"].ACOUSTIC]: (cards) => cards.filter((card) => card.type === _const__WEBPACK_IMPORTED_MODULE_0__["FilterType"].ACOUSTIC),
-  [_const__WEBPACK_IMPORTED_MODULE_0__["FilterType"].ELECTRO]: (cards) => cards.filter((card) => card.type === _const__WEBPACK_IMPORTED_MODULE_0__["FilterType"].ELECTRO),
-  [_const__WEBPACK_IMPORTED_MODULE_0__["FilterType"].UKULELE]: (cards) => cards.filter((card) => card.type === _const__WEBPACK_IMPORTED_MODULE_0__["FilterType"].UKULELE),
-};
-
-// export const filteredCardsByKey = (targetArray, filters) => {
-//   const filterKeys = Object.keys(filters);
-//   return targetArray.filter((eachObj) => {
-//     return filterKeys.every((eachKey) => {
-//       if (!filters[eachKey].length) {
-//         return true;
-//       }
-//       return filters[eachKey].includes(eachObj[eachKey]);
-//     });
-//   });
-// };
-
-const filteredCardsByType = (card, filters) => {
-  if (!filters.length) {
-    return true;
-  }
-  return filters.includes(card);
-};
-
-const filteredCardsByPrice = (card, filters) => {
-  const keys = [`min`, `max`];
-  let PriceRange = {};
-
-  PriceRange = Object.assign(...keys.map((k, i) => ({[k]: filters[i]})));
-
-  if (!filters.length) {
-    return true;
-  }
-
-  return Number(card) <= PriceRange.max && Number(card) >= PriceRange.min;
-};
 
 
 /***/ }),
@@ -1668,19 +1669,12 @@ const renderTemplate = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
 };
 
-// Принцип работы прост:
-// 1. создаём пустой div-блок
-// 2. берём HTML в виде строки и вкладываем в этот div-блок, превращая в DOM-элемент
-// 3. возвращаем этот DOM-элемент
 const createElement = (template) => {
-  const newElement = document.createElement(`div`); // 1
-  newElement.innerHTML = template; // 2
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = template;
 
-  return newElement.firstChild; // 3
+  return newElement.firstChild;
 };
-// Единственный нюанс, что HTML в строке должен иметь общую обёртку,
-// то есть быть чем-то вроде <nav><a>Link 1</a><a>Link 2</a></nav>,
-// а не просто <a>Link 1</a><a>Link 2</a>
 
 const replace = (newChild, oldChild) => {
   if (oldChild instanceof _view_abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"]) {
@@ -1768,8 +1762,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _smart_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./smart.js */ "./source/js/view/smart.js");
 
 
-const createBasketItemElement = (card) => {
-  const {image, stringAmount, name, price, count} = card;
+const createBasketItemElement = (data) => {
+  const {image, stringAmount, name, price, count} = data;
 
   return `<li class="product__item">
           <div class="product__image-container">
@@ -1780,10 +1774,10 @@ const createBasketItemElement = (card) => {
             <li class="product__identifer-number">Артикул: ${count}</li>
             <li class="product__type">Электрогитара, ${stringAmount} струнная </li>
           </ul>
-          <div class="product__price">${price} ₽</div>
+          <div class="product__price"><p>${price} ₽</p></div>
           <div class="product__quantity">
             <button class="product__quantity-button" id="dec-button" type="button">-</button>
-            <input id="product-quantity" type="text" value="${count}" name="product-quantity">
+            <input id="product-quantity" type="text" value="${count}" name="product-quantity" disabled>
             <button class="product__quantity-button" id="inc-button" type="button">+</button>
           </div>
           <div class="product__price-total">${price * count} ₽</div>
@@ -1794,9 +1788,9 @@ const createBasketItemElement = (card) => {
 };
 
 class BasketItem extends _smart_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
-  constructor(card) {
+  constructor(data) {
     super();
-    this._data = card;
+    this._data = data;
 
     this._handleQuantityIncClick = this._handleQuantityIncClick.bind(this);
     this._handleQuantityDecClick = this._handleQuantityDecClick.bind(this);
@@ -1868,8 +1862,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./source/js/view/abstract.js");
 
 
-const createBasketPopUpDeleteElement = (card) => {
-  const {image, name, identiferNumber, stringAmount, price} = card;
+const createBasketPopUpDeleteElement = (data) => {
+  const {image, name, identiferNumber, stringAmount, price} = data;
   return `<section class="modal">
   <div class="modal__popup">
     <h2 class="modal__title">Удалить этот товар?</h2>
@@ -1899,9 +1893,9 @@ const createBasketPopUpDeleteElement = (card) => {
 };
 
 class CatalogPopUpDelete extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
-  constructor(card) {
+  constructor(data) {
     super();
-    this._data = card;
+    this._data = data;
 
     this._deleteClickHandler = this._deleteClickHandler.bind(this);
     this._closeClickHandler = this._closeClickHandler.bind(this);
@@ -1961,26 +1955,25 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const createBasketElement = (cards, discountType, isAvailable) => {
-  console.log(discountType);
-  console.log(isAvailable);
+const createBasketElement = (goods, discountType, isAvailable) => {
   let totalPrice = 0;
 
   const DISCOUNT = {
-    GITARAHIT: 0.9,
+    GITARAHIT_10_PERCENT: 0.9,
     SUPERGITARA: 700,
-    GITARA2020: 3500
+    GITARA2020: 3500,
+    GITARA2020_30_PERCENT: 0.7,
   };
 
   const getTotalPrice = () => {
-    if (cards.length !== 0) {
-      let cardPrice = [];
+    if (goods.length !== 0) {
+      let goodPrice = [];
 
-      cards.forEach((card) => {
-        return cardPrice.push(card.price * card.count);
+      goods.forEach((good) => {
+        return goodPrice.push(good.price * good.count);
       });
 
-      totalPrice = cardPrice.reduce((acc, price) => acc + price);
+      totalPrice = goodPrice.reduce((acc, price) => acc + price);
     }
     return totalPrice;
   };
@@ -1992,25 +1985,25 @@ const createBasketElement = (cards, discountType, isAvailable) => {
         break;
       case _const_js__WEBPACK_IMPORTED_MODULE_1__["DiscountType"].GITARAHIT:
         getTotalPrice();
-        return totalPrice * DISCOUNT.GITARAHIT;
+        if (totalPrice > 0) {
+          return totalPrice * DISCOUNT.GITARAHIT_10_PERCENT;
+        }
+        break;
       case _const_js__WEBPACK_IMPORTED_MODULE_1__["DiscountType"].SUPERGITARA:
         getTotalPrice();
-        return totalPrice - DISCOUNT.SUPERGITARA;
+        if (totalPrice > 0) {
+          return totalPrice - DISCOUNT.SUPERGITARA;
+        }
+        break;
       case _const_js__WEBPACK_IMPORTED_MODULE_1__["DiscountType"].GITARA2020:
         getTotalPrice();
-        return (DISCOUNT.GITARA2020) <= totalPrice * 0.7 ? totalPrice - DISCOUNT.GITARA2020 : totalPrice * 0.7;
+        if (totalPrice > 0) {
+          return (DISCOUNT.GITARA2020) <= totalPrice * DISCOUNT.GITARA2020_30_PERCENT ? totalPrice - DISCOUNT.GITARA2020 : totalPrice * DISCOUNT.GITARA2020_30_PERCENT;
+        }
+        break;
     }
     return totalPrice;
   };
-  // if (cards.length !== 0) {
-  //   let cardPrice = [];
-
-  //   cards.forEach((card) => {
-  //     return cardPrice.push(card.price * card.count);
-  //   });
-
-  //   totalPrice = cardPrice.reduce((acc, price) => acc + price);
-  // }
 
   return `<section class="shoppingbag">
   <div class="shoppingbag__content">
@@ -2026,7 +2019,7 @@ const createBasketElement = (cards, discountType, isAvailable) => {
           <span class="order__discount-subtitle">Введите свой промокод, если он у вас есть.</span>
         </div>
         <div class="order__discount-promo ${!isAvailable ? `order__discount-promo--error` : ``}">
-          <input type="text" name="order-discount-promo" id="order-discount-promo" placeholder="GITARAHIT" value="GITARAHIT">
+          <input type="text" name="order-discount-promo" id="order-discount-promo" placeholder="" value="">
           <button type="button">Применить купон</button>
         </div>
       </div>
@@ -2040,9 +2033,9 @@ const createBasketElement = (cards, discountType, isAvailable) => {
 };
 
 class Basket extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
-  constructor(cards, discountType, isAvailable) {
+  constructor(goods, discountType, isAvailable) {
     super();
-    this._cards = cards;
+    this._goods = goods;
     this._discountType = discountType;
     this._isAvailable = isAvailable;
 
@@ -2051,15 +2044,13 @@ class Basket extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
   }
 
   getTemplate() {
-    return createBasketElement(this._cards, this._discountType, this._isAvailable);
+    return createBasketElement(this._goods, this._discountType, this._isAvailable);
   }
 
   _discountClickHandler(evt) {
     evt.preventDefault();
     const discountType = this.getElement().querySelector(`input[name=order-discount-promo]`).value;
 
-    // this.getElement().querySelector(`.order__discount-promo`).classList.add(`.order__discount-promo--error`);
-    // console.log(DiscountType.GITARAHIT, discountType);
     this._callback.discountClick(discountType);
   }
 
@@ -2165,8 +2156,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./source/js/view/abstract.js");
 
 
-const createCatalogItemElement = (card) => {
-  const {image, reviewAmount, name, price, starsCount} = card;
+const createCatalogItemElement = (data) => {
+  const {image, reviewAmount, name, price, starsCount} = data;
   return (
     `<li class="list__item">
       <img src="${image}" width="80" height="202" alt="Изображение товара">
@@ -2190,15 +2181,15 @@ const createCatalogItemElement = (card) => {
 };
 
 class CatalogItem extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
-  constructor(card) {
+  constructor(data) {
     super();
-    this.card = card;
+    this.data = data;
 
     this._addClickHandler = this._addClickHandler.bind(this);
   }
 
   getTemplate() {
-    return createCatalogItemElement(this.card);
+    return createCatalogItemElement(this.data);
   }
 
   _addClickHandler(evt) {
@@ -2258,7 +2249,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const createCatalogPaginationElement = () => {
   return `<ul class="catalog__pagination pagination">
-    <li class="pagination__item pagination__item--button pagination__item--hide">
+    <li class="pagination__item pagination__item--button pagination__item--button-previous pagination__item--hide">
       <a href="#">Назад</a>
     </li>
     <li class="pagination__item pagination__item--current">
@@ -2273,15 +2264,42 @@ const createCatalogPaginationElement = () => {
     <li class="pagination__item">
       <a href="#">7</a>
     </li>
-    <li class="pagination__item pagination__item--button">
+    <li class="pagination__item pagination__item--button pagination__item--button-next">
       <a href="#">Далее</a>
     </li>
   </ul>`;
 };
 
 class CatalogPagination extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  constructor() {
+    super();
+
+    this._nextClickHandler = this._nextClickHandler.bind(this);
+    this._previousClickHandler = this._previousClickHandler.bind(this);
+  }
+
   getTemplate() {
     return createCatalogPaginationElement();
+  }
+
+  _nextClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.nextClick();
+  }
+
+  _previousClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.previousClick();
+  }
+
+  setNextClickHandler(callback) {
+    this._callback.nextClick = callback;
+    this.getElement().querySelector(`.pagination__item--button-next`).addEventListener(`click`, this._nextClickHandler);
+  }
+
+  setPreviousClickHandler(callback) {
+    this._callback.previousClick = callback;
+    this.getElement().querySelector(`.pagination__item--button-previous`).addEventListener(`click`, this._previousClickHandler);
   }
 }
 
@@ -2301,8 +2319,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./source/js/view/abstract.js");
 
 
-const createCatalogPopUpAddElement = (card) => {
-  const {image, name, identiferNumber, stringAmount, price} = card;
+const createCatalogPopUpAddElement = (data) => {
+  const {image, name, identiferNumber, stringAmount, price} = data;
   return `<section class="modal">
     <div class="modal__popup">
       <h2 class="modal__title">Добавить товар в корзину</h2>
@@ -2329,9 +2347,9 @@ const createCatalogPopUpAddElement = (card) => {
 };
 
 class CatalogPopUpAdd extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
-  constructor(card) {
+  constructor(data) {
     super();
-    this._data = card;
+    this._data = data;
 
     this._addClickHandler = this._addClickHandler.bind(this);
     this._closeClickHandler = this._closeClickHandler.bind(this);
@@ -2605,13 +2623,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const createFiltersElement = (currentFilter, cards) => {
+const createFiltersElement = (currentFilter, goods) => {
   let filteredGuitarsByType = {};
   let stringAmountAvailableList = [];
 
   if (currentFilter.type.length === 0) {
-    filteredGuitarsByType = cards
-        .filter((item) => Object(_utils_filter_js__WEBPACK_IMPORTED_MODULE_2__["filteredCardsByType"])(item.type, currentFilter.type));
+    filteredGuitarsByType = goods
+        .filter((item) => Object(_utils_filter_js__WEBPACK_IMPORTED_MODULE_2__["filteredGoodsByType"])(item.type, currentFilter.type));
 
     stringAmountAvailableList = Array.from(new Set(filteredGuitarsByType
         .map((item) => item.stringAmount)));
@@ -2781,10 +2799,10 @@ const createFiltersElement = (currentFilter, cards) => {
 };
 
 class Filters extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
-  constructor(currentFilter, cards) {
+  constructor(currentFilter, goods) {
     super();
     this._currentFilter = currentFilter;
-    this._cards = cards;
+    this._goods = goods;
 
     this._filterPriceChangeHandler = this._filterPriceChangeHandler.bind(this);
     this._filterGuitarTypeChangeHandler = this._filterGuitarTypeChangeHandler.bind(this);
@@ -2793,7 +2811,7 @@ class Filters extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
   }
 
   getTemplate() {
-    return createFiltersElement(this._currentFilter, this._cards);
+    return createFiltersElement(this._currentFilter, this._goods);
   }
 
   _filterGuitarTypeChangeHandler(evt) {
@@ -2874,7 +2892,7 @@ const createSiteMenuTemplate = (basketModel) => {
         </a>
         <ul class="main-nav__list site-list">
           <li class="site-list__item">
-            <a href="#" data-menu-type="${_const_js__WEBPACK_IMPORTED_MODULE_1__["MenuItem"].CARDS}">Каталог</a>
+            <a href="#" data-menu-type="${_const_js__WEBPACK_IMPORTED_MODULE_1__["MenuItem"].CATALOG}">Каталог</a>
           </li>
           <li class="site-list__item">
             <a href="#">Где купить?</a>
@@ -2967,7 +2985,6 @@ class Smart extends _abstract__WEBPACK_IMPORTED_MODULE_0__["default"] {
   }
 
   updateData(update, justDataUpdating) {
-    console.log(`update`);
     if (!update) {
       return;
     }
@@ -2977,8 +2994,6 @@ class Smart extends _abstract__WEBPACK_IMPORTED_MODULE_0__["default"] {
         this._data,
         update
     );
-
-    console.log(this._data);
 
     if (justDataUpdating) {
       return;
