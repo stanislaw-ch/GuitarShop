@@ -12,7 +12,7 @@ export default class SiteMenu {
   }
 
   init() {
-    this._siteMenuComponent = new SiteMenuView(this._basketModel.getBasket().length);
+    this._siteMenuComponent = new SiteMenuView(this._basketModel.getBasket());
     render(this._siteMenuContainer, this._siteMenuComponent, RenderPosition.AFTERBEGIN);
 
     this._siteMenuComponent.setMenuClickHandler(this._handleSiteMenuChange);

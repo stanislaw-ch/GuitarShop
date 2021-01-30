@@ -1,20 +1,12 @@
 import AbstractView from "./abstract.js";
-import {FilterType, FilterStringAmount, StringsAmountByType} from "../const.js";
+import {FilterType, FilterStringAmount} from "../const.js";
 import {filteredGoodsByType} from "../utils/filter.js";
 
 const createFiltersElement = (currentFilter, goods) => {
+  let [currentFrom, currentTo] = currentFilter.price;
   let filteredGuitarsByType = {};
   let stringAmountAvailableList = [];
-
-  if (currentFilter.type.length === 0) {
-    filteredGuitarsByType = goods
-        .filter((item) => filteredGoodsByType(item.type, currentFilter.type));
-
-    stringAmountAvailableList = Array.from(new Set(filteredGuitarsByType
-        .map((item) => item.stringAmount)));
-  }
-
-  filteredGuitarsByType = currentFilter.type;
+  let pricesInGoods = [];
 
   const guitarKeys = Object.keys(FilterType);
   const stringKeys = Object.keys(FilterStringAmount);
@@ -22,6 +14,43 @@ const createFiltersElement = (currentFilter, goods) => {
   let typeGuitarKeys = [];
   let typeGuitarValues = [];
   let typeStringsValues = [];
+
+  pricesInGoods = goods
+      .map((item) => item.price);
+
+  const minPriceInGoods = Math.min(...pricesInGoods);
+  const maxPriceInGoods = Math.max(...pricesInGoods);
+
+  if (currentFilter.price.length === 0) {
+    currentFrom = minPriceInGoods;
+    currentTo = maxPriceInGoods;
+  }
+
+  if (currentFrom > currentTo) {
+    currentTo = currentFrom;
+  }
+
+  if (currentFrom < minPriceInGoods) {
+    currentFrom = minPriceInGoods;
+  }
+
+  if (currentTo < currentFrom) {
+    currentTo = currentFrom;
+  }
+
+  if (currentFrom < minPriceInGoods || Number.isNaN(currentFrom)) {
+    currentFrom = minPriceInGoods;
+  }
+
+  if (currentTo > maxPriceInGoods || Number.isNaN(currentTo)) {
+    currentTo = maxPriceInGoods;
+  }
+
+  filteredGuitarsByType = goods
+      .filter((item) => filteredGoodsByType(item.type, currentFilter.type));
+
+  stringAmountAvailableList = Array.from(new Set(filteredGuitarsByType
+      .map((item) => item.stringAmount)));
 
   guitarKeys.filter((key) => (currentFilter.type.forEach((type) => {
     if (type.includes(FilterType[key])) {
@@ -47,10 +76,6 @@ const createFiltersElement = (currentFilter, goods) => {
     }
   })));
 
-  typeGuitarKeys.forEach((item) => {
-    stringAmountAvailableList.push(...StringsAmountByType[item]);
-    return stringAmountAvailableList;
-  });
   stringAmountAvailableList = Array.from(new Set(stringAmountAvailableList));
 
   const isStringsAvailable = (availableList, stringsCount) => {
@@ -64,20 +89,20 @@ const createFiltersElement = (currentFilter, goods) => {
         <h3>Цена, ₽</h3>
         <div class="catalog__filters-price-wrapper">
           <input
-              type="number"
+              type="text"
               name="filters-form-price-from"
               id="filters-form-price-from"
-              placeholder="1 000"
-              value="1000"
+              placeholder="${currentFrom.toLocaleString(`ru-RU`)}"
+              value="${currentFrom.toLocaleString(`ru-RU`)}"
               min="0"
               max="1000000"
               >
           <input
-              type="number"
+              type="text"
               name="filters-form-price-to"
               id="filters-form-price-to"
-              placeholder="30 000"
-              value="30000"
+              placeholder="${currentTo.toLocaleString(`ru-RU`)}"
+              value="${currentTo.toLocaleString(`ru-RU`)}"
               min="0"
               max="1000000"
               >
@@ -217,9 +242,18 @@ export default class Filters extends AbstractView {
 
   _filterPriceChangeHandler(evt) {
     evt.preventDefault();
+
+    // if (!evt.target.value) {
+    //   evt.target.setCustomValidity(`Enter the cost of the trip`);
+    //   return;
+    // }
+
+    // this.updateData({
+    //   price: Number(evt.target.value)
+    // }, true);
     let optionsPriceChangeArray = [];
 
-    document.querySelectorAll(`input[type='number']`)
+    document.querySelectorAll(`input[type='text']`)
         .forEach((checkbox) => optionsPriceChangeArray
             .push(checkbox.value));
 
@@ -238,6 +272,6 @@ export default class Filters extends AbstractView {
 
   setFilterPriceChangeHandler(callback) {
     this._callback.filterPriceChange = callback;
-    this.getElement().querySelector(`.catalog__filters-price-change`).addEventListener(`input`, this._filterPriceChangeHandler);
+    this.getElement().querySelector(`.catalog__filters-price-change`).addEventListener(`change`, this._filterPriceChangeHandler);
   }
 }

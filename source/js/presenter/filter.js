@@ -55,6 +55,17 @@ export default class Filter {
       return;
     }
 
+    // filterPriceType.forEach((filter) => {
+      // const elem = parseInt(String(filter).replace(/\s+/g, ``), 10);
+      // if (elem < 0) {
+        // this._filterComponent.getElement().querySelector(`.catalog__filters-price-change`).setCustomValidity(`2 комнаты — для 1 или 2 гостей!`);
+      // }
+    // });
+
+    filterPriceType = filterPriceType.map((filter) => {
+      return parseInt(String(filter).replace(/\s+/g, ``), 10);
+    });
+
     this._filterModel.setFilter(filterPriceType, `price`);
   }
 }

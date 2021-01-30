@@ -23,10 +23,13 @@ export default class Board {
     this._basketModel = basketModel;
     this._catalogContainer = catalogContainer;
     this._renderedGoodsCount = GOOD_COUNT_PER_STEP;
-
     this._currentSortByCategoryType = SortByCategoryType.DEFAULT;
     this._currentSortByPriorityType = SortByPriorityType.DEFAULT;
     this._goods = {};
+    this._minPaginationStep = 1;
+    this._currentPaginationStep = 1;
+
+    this._catalogPaginationComponent = null;
     this._catalogComponent = new CatalogBoardView();
     this._catalogListComponent = new CatalogListView();
 
@@ -55,7 +58,7 @@ export default class Board {
   }
 
   destroy() {
-    this._clearCatalog({resetRenderedGoodsCount: true, resetSortByCategoryType: true});
+    this._clearCatalog({resetSortByCategoryType: true});
 
     remove(this._catalogListComponent);
     remove(this._catalogComponent);
@@ -120,7 +123,7 @@ export default class Board {
 
     this._currentSortByCategoryType = sortByCategory;
 
-    this._clearCatalog({resetRenderedGoodsCount: true});
+    this._clearCatalog();
     this._renderCatalog();
   }
 
@@ -131,7 +134,7 @@ export default class Board {
 
     this._currentSortByPriorityType = sortByPriority;
 
-    this._clearCatalog({resetRenderedGoodsCount: true});
+    this._clearCatalog();
     this._renderCatalog();
   }
 
@@ -162,7 +165,7 @@ export default class Board {
   }
 
   _handleModelEvent() {
-    this._clearCatalog({resetRenderedGoodsCount: true});
+    this._clearCatalog();
     this._renderCatalog();
   }
 
@@ -188,8 +191,12 @@ export default class Board {
   _handlePaginationNextClick() {
     const goodsCount = this._getGoods().length;
 
-    const newRenderedGoodCount = Math.min(goodsCount, this._renderedGoodsCount + GOOD_COUNT_PER_STEP);
-    const goods = this._getGoods().slice(this._renderedGoodsCount, newRenderedGoodCount);
+    this._currentPaginationStep++;
+
+    const startIndex = GOOD_COUNT_PER_STEP * this._currentPaginationStep - GOOD_COUNT_PER_STEP;
+    const endIndex = GOOD_COUNT_PER_STEP * this._currentPaginationStep;
+
+    const goods = this._getGoods().slice(startIndex, endIndex);
 
     Object
         .values(this._goods)
@@ -198,38 +205,35 @@ export default class Board {
 
     this._renderGoods(goods);
 
-    if (this._renderedGoodsCount < newRenderedGoodCount) {
+    if (this._currentPaginationStep > this._minPaginationStep) {
       this._catalogPaginationComponent.getElement()
           .querySelector(`.pagination__item--button-previous`)
           .classList.remove(`pagination__item--hide`);
     }
 
-    this._renderedGoodsCount = newRenderedGoodCount;
-
-    if (this._renderedGoodsCount > goodsCount) {
+    if (GOOD_COUNT_PER_STEP > goodsCount) {
       remove(this._catalogPaginationComponent);
     }
 
-    if (this._renderedGoodsCount >= goodsCount) {
+    if (this._currentPaginationStep >= Math.ceil(goodsCount / this._currentPaginationStep)) {
       this._catalogPaginationComponent.getElement()
           .querySelector(`.pagination__item--button-next`)
           .classList.add(`pagination__item--hide`);
     }
+
+    remove(this._catalogPaginationComponent);
+    this._renderPagination(this._renderedGoodsCount);
   }
 
   _handlePaginationPreviousClick() {
     const goodsCount = this._getGoods().length;
-    const modulo = this._renderedGoodsCount % GOOD_COUNT_PER_STEP;
-    let newRenderedGoodCount = 0;
 
-    if (modulo !== 0) {
-      newRenderedGoodCount = Math.min(goodsCount, this._renderedGoodsCount - GOOD_COUNT_PER_STEP - modulo);
-      this._renderedGoodsCount = this._renderedGoodsCount - modulo;
-    } else {
-      newRenderedGoodCount = Math.min(goodsCount, this._renderedGoodsCount - GOOD_COUNT_PER_STEP);
-    }
+    this._currentPaginationStep--;
 
-    const goods = this._getGoods().slice(newRenderedGoodCount, this._renderedGoodsCount);
+    const startIndex = GOOD_COUNT_PER_STEP * this._currentPaginationStep - GOOD_COUNT_PER_STEP;
+    const endIndex = GOOD_COUNT_PER_STEP * this._currentPaginationStep;
+
+    const goods = this._getGoods().slice(startIndex, endIndex);
 
     Object
         .values(this._goods)
@@ -238,23 +242,24 @@ export default class Board {
 
     this._renderGoods(goods);
 
-    this._renderedGoodsCount = newRenderedGoodCount;
-
-    if (this._renderedGoodsCount > goodsCount) {
+    if (GOOD_COUNT_PER_STEP > goodsCount) {
       remove(this._catalogPaginationComponent);
     }
 
-    if (this._renderedGoodsCount === 0) {
+    if (this._currentPaginationStep === this._minPaginationStep) {
       this._catalogPaginationComponent.getElement()
           .querySelector(`.pagination__item--button-previous`)
           .classList.add(`pagination__item--hide`);
     }
 
-    if (this._renderedGoodsCount < goodsCount) {
+    if (this._currentPaginationStep <= Math.ceil(goodsCount / this._currentPaginationStep)) {
       this._catalogPaginationComponent.getElement()
           .querySelector(`.pagination__item--button-next`)
           .classList.remove(`pagination__item--hide`);
     }
+
+    remove(this._catalogPaginationComponent);
+    this._renderPagination(this._renderedGoodsCount);
   }
 
   _renderSort() {
@@ -280,15 +285,33 @@ export default class Board {
   }
 
   _renderPagination() {
-    this._catalogPaginationComponent = new CatalogPaginationView();
+    const goodsCount = this._getGoods().length;
+    // if (this._catalogPaginationComponent !== null) {
+    //   return;
+    // }
+
+
+    this._catalogPaginationComponent = new CatalogPaginationView(goodsCount, GOOD_COUNT_PER_STEP, this._currentPaginationStep);
     this._catalogPaginationComponent.setNextClickHandler(this._handlePaginationNextClick);
     this._catalogPaginationComponent.setPreviousClickHandler(this._handlePaginationPreviousClick);
 
     render(this._catalogComponent, this._catalogPaginationComponent, RenderPosition.BEFOREEND);
+
+    if (this._currentPaginationStep <= 1) {
+      this._catalogPaginationComponent.getElement()
+          .querySelector(`.pagination__item--button-previous`)
+          .classList.add(`pagination__item--hide`);
+    }
+
+    if (this._currentPaginationStep * GOOD_COUNT_PER_STEP >= goodsCount) {
+      this._catalogPaginationComponent.getElement()
+          .querySelector(`.pagination__item--button-next`)
+          .classList.add(`pagination__item--hide`);
+    }
   }
 
-  _clearCatalog({resetRenderedGoodsCount = false, resetSortByCategoryType = false} = {}) {
-    const goodCount = this._getGoods().length;
+  _clearCatalog({resetSortByCategoryType = false} = {}) {
+    // const goodCount = this._getGoods().length;
 
     Object
         .values(this._goods)
@@ -298,11 +321,14 @@ export default class Board {
     this._filterPresenter.destroy();
     remove(this._catalogSortComponent);
 
-    if (resetRenderedGoodsCount) {
-      this._renderedGoodsCount = GOOD_COUNT_PER_STEP;
-    } else {
-      this._renderedGoodsCount = Math.min(goodCount, this._renderedGoodsCount);
-    }
+    remove(this._catalogPaginationComponent);
+    // this._catalogPaginationComponent = null;
+
+    // if (resetRenderedGoodsCount) {
+    //   this._renderedGoodsCount = GOOD_COUNT_PER_STEP;
+    // } else {
+    //   this._renderedGoodsCount = Math.min(goodCount, this._renderedGoodsCount);
+    // }
 
     if (resetSortByCategoryType) {
       this._currentSortByCategoryType = SortByCategoryType.DEFAULT;
@@ -314,20 +340,16 @@ export default class Board {
     const goods = this._getGoods();
     const goodCount = goods.length;
 
-    this._paginationStepCount = Math.floor(goodCount / GOOD_COUNT_PER_STEP);
-    // if (goodCount === 0) {
-    //   this._renderNoCards();
-    //   return;
-    // }
+    // this._currentPaginationStepCount = Math.floor(goodCount / GOOD_COUNT_PER_STEP);
 
     if (this._filterPresenter !== null) {
       this._filterPresenter.init();
     }
 
     this._renderSort();
-    this._renderGoods(goods.slice(0, Math.min(goodCount, this._renderedGoodsCount)));
+    this._renderGoods(goods.slice(0, Math.min(goodCount, GOOD_COUNT_PER_STEP)));
 
-    if (goodCount > this._renderedGoodsCount) {
+    if (goodCount > GOOD_COUNT_PER_STEP) {
       this._renderPagination();
     }
   }

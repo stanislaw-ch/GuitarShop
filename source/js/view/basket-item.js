@@ -12,13 +12,13 @@ const createBasketItemElement = (data) => {
             <li class="product__identifer-number">Артикул: ${count}</li>
             <li class="product__type">Электрогитара, ${stringAmount} струнная </li>
           </ul>
-          <div class="product__price"><p>${price} ₽</p></div>
+          <div class="product__price"><p>${price.toLocaleString(`ru-RU`)} ₽</p></div>
           <div class="product__quantity">
             <button class="product__quantity-button" id="dec-button" type="button">-</button>
-            <input id="product-quantity" type="text" value="${count}" name="product-quantity" disabled>
+            <input type="text" value="${count}" name="product-quantity" disabled>
             <button class="product__quantity-button" id="inc-button" type="button">+</button>
           </div>
-          <div class="product__price-total">${price * count} ₽</div>
+          <div class="product__price-total">${(price * count).toLocaleString(`ru-RU`)} ₽</div>
           <button class="product__delete" type="button">
             <span class="visually-hidden">Удалить товар</span>
           </button>

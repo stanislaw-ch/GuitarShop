@@ -40,7 +40,7 @@ export const BreadcrumbsItem = {
 };
 
 export const BreadcrumbsTitle = {
-  CARDS: `Каталог гитар`,
+  CATALOG: `Каталог гитар`,
   BASKET: `Корзина`
 };
 

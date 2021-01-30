@@ -14,6 +14,5 @@ export const filteredGoodsByPrice = (good, filters) => {
   if (!filters.length) {
     return true;
   }
-
   return Number(good) <= PriceRange.max && Number(good) >= PriceRange.min;
 };

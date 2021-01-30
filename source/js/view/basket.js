@@ -48,7 +48,7 @@ const createBasketElement = (goods, discountType, isAvailable) => {
         }
         break;
     }
-    return totalPrice;
+    return totalPrice.toLocaleString(`ru-RU`);
   };
 
   return `<section class="shoppingbag">

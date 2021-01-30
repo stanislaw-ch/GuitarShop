@@ -148,7 +148,7 @@ const BreadcrumbsItem = {
 };
 
 const BreadcrumbsTitle = {
-  CARDS: `Каталог гитар`,
+  CATALOG: `Каталог гитар`,
   BASKET: `Корзина`
 };
 
@@ -251,7 +251,7 @@ __webpack_require__.r(__webpack_exports__);
     type: `электрогитара`,
     reviewAmount: `15`,
     stringAmount: `7`,
-    price: `17500`,
+    price: 17500,
     image: `img/gitar-electric_1.png`,
     starsCount: `3.2`
   },
@@ -262,7 +262,7 @@ __webpack_require__.r(__webpack_exports__);
     type: `электрогитара`,
     reviewAmount: `9`,
     stringAmount: `7`,
-    price: `29500`,
+    price: 29500,
     image: `img/gitar-electric_2.png`,
     starsCount: `4.5`
   },
@@ -273,7 +273,7 @@ __webpack_require__.r(__webpack_exports__);
     type: `укулеле`,
     reviewAmount: `21`,
     stringAmount: `4`,
-    price: `6800`,
+    price: 6800,
     image: `img/gitar-ukulele_1.png`,
     starsCount: `5`
   },
@@ -284,7 +284,7 @@ __webpack_require__.r(__webpack_exports__);
     type: `электрогитара`,
     reviewAmount: `15`,
     stringAmount: `6`,
-    price: `30000`,
+    price: 30000,
     image: `img/gitar-electric_3.png`,
     starsCount: `3`
   },
@@ -295,7 +295,7 @@ __webpack_require__.r(__webpack_exports__);
     type: `акустическая гитара`,
     reviewAmount: `5`,
     stringAmount: `7`,
-    price: `3500`,
+    price: 3500,
     image: `img/gitar-acoustic_2.png`,
     starsCount: `4.5`
   },
@@ -306,7 +306,7 @@ __webpack_require__.r(__webpack_exports__);
     type: `электрогитара`,
     reviewAmount: `17`,
     stringAmount: `6`,
-    price: `15300`,
+    price: 15300,
     image: `img/gitar-electric_1.png`,
     starsCount: `4.15`
   },
@@ -317,7 +317,7 @@ __webpack_require__.r(__webpack_exports__);
     type: `укулеле`,
     reviewAmount: `5`,
     stringAmount: `4`,
-    price: `2200`,
+    price: 2200,
     image: `img/gitar-ukulele_1.png`,
     starsCount: `3.15`
   },
@@ -328,7 +328,7 @@ __webpack_require__.r(__webpack_exports__);
     type: `электрогитара`,
     reviewAmount: `27`,
     stringAmount: `4`,
-    price: `30000`,
+    price: 30000,
     image: `img/gitar-electric_1.png`,
     starsCount: `2.15`
   },
@@ -339,7 +339,7 @@ __webpack_require__.r(__webpack_exports__);
     type: `акустическая гитара`,
     reviewAmount: `3`,
     stringAmount: `7`,
-    price: `1700`,
+    price: 1700,
     image: `img/gitar-acoustic_2.png`,
     starsCount: `3.15`
   },
@@ -350,7 +350,7 @@ __webpack_require__.r(__webpack_exports__);
     type: `электрогитара`,
     reviewAmount: `20`,
     stringAmount: `4`,
-    price: `23000`,
+    price: 23000,
     image: `img/gitar-electric_2.png`,
     starsCount: `5`
   },
@@ -361,7 +361,7 @@ __webpack_require__.r(__webpack_exports__);
     type: `электрогитара`,
     reviewAmount: `20`,
     stringAmount: `4`,
-    price: `23000`,
+    price: 23000,
     image: `img/gitar-electric_2.png`,
     starsCount: `5`
   },
@@ -462,7 +462,7 @@ class Filter extends _utils_observer_js__WEBPACK_IMPORTED_MODULE_0__["default"] 
     this._activeFilter = {
       type: [],
       stringAmount: [],
-      price: [`1000`, `30000`]
+      price: []
     };
   }
 
@@ -1002,13 +1002,13 @@ class CatalogGood {
   _handleAddToBasketPopUpSuccessClick(menuItem) {
     this._currentMenuItem = this._siteMenuModel.getMenuItem();
 
-    this._siteMenuComponent.getElement()
-        .querySelector(`[data-menu-type="${this._currentMenuItem}"]`)
-        .parentElement.classList.remove(`site-list__item--active`);
+    // this._siteMenuComponent.getElement()
+    //     .querySelector(`[data-menu-type="${this._currentMenuItem}"]`)
+    //     .parentElement.classList.remove(`site-list__item--active`);
 
-    this._siteMenuComponent.getElement()
-        .querySelector(`[data-menu-type="${menuItem}"]`)
-        .parentElement.classList.add(`site-list__item--active`);
+    // this._siteMenuComponent.getElement()
+    //     .querySelector(`[data-menu-type="${menuItem}"]`)
+    //     .parentElement.classList.add(`site-list__item--active`);
 
     this._siteMenuModel.setMenuItem(menuItem);
     this._removePopUpSuccessComponent();
@@ -1068,10 +1068,13 @@ class Board {
     this._basketModel = basketModel;
     this._catalogContainer = catalogContainer;
     this._renderedGoodsCount = GOOD_COUNT_PER_STEP;
-
     this._currentSortByCategoryType = _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByCategoryType"].DEFAULT;
     this._currentSortByPriorityType = _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByPriorityType"].DEFAULT;
     this._goods = {};
+    this._minPaginationStep = 1;
+    this._currentPaginationStep = 1;
+
+    this._catalogPaginationComponent = null;
     this._catalogComponent = new _view_catalog_board_js__WEBPACK_IMPORTED_MODULE_0__["default"]();
     this._catalogListComponent = new _view_catalog_list_js__WEBPACK_IMPORTED_MODULE_2__["default"]();
 
@@ -1100,7 +1103,7 @@ class Board {
   }
 
   destroy() {
-    this._clearCatalog({resetRenderedGoodsCount: true, resetSortByCategoryType: true});
+    this._clearCatalog({resetSortByCategoryType: true});
 
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["remove"])(this._catalogListComponent);
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["remove"])(this._catalogComponent);
@@ -1165,7 +1168,7 @@ class Board {
 
     this._currentSortByCategoryType = sortByCategory;
 
-    this._clearCatalog({resetRenderedGoodsCount: true});
+    this._clearCatalog();
     this._renderCatalog();
   }
 
@@ -1176,7 +1179,7 @@ class Board {
 
     this._currentSortByPriorityType = sortByPriority;
 
-    this._clearCatalog({resetRenderedGoodsCount: true});
+    this._clearCatalog();
     this._renderCatalog();
   }
 
@@ -1207,7 +1210,7 @@ class Board {
   }
 
   _handleModelEvent() {
-    this._clearCatalog({resetRenderedGoodsCount: true});
+    this._clearCatalog();
     this._renderCatalog();
   }
 
@@ -1233,8 +1236,12 @@ class Board {
   _handlePaginationNextClick() {
     const goodsCount = this._getGoods().length;
 
-    const newRenderedGoodCount = Math.min(goodsCount, this._renderedGoodsCount + GOOD_COUNT_PER_STEP);
-    const goods = this._getGoods().slice(this._renderedGoodsCount, newRenderedGoodCount);
+    this._currentPaginationStep++;
+
+    const startIndex = GOOD_COUNT_PER_STEP * this._currentPaginationStep - GOOD_COUNT_PER_STEP;
+    const endIndex = GOOD_COUNT_PER_STEP * this._currentPaginationStep;
+
+    const goods = this._getGoods().slice(startIndex, endIndex);
 
     Object
         .values(this._goods)
@@ -1243,38 +1250,35 @@ class Board {
 
     this._renderGoods(goods);
 
-    if (this._renderedGoodsCount < newRenderedGoodCount) {
+    if (this._currentPaginationStep > this._minPaginationStep) {
       this._catalogPaginationComponent.getElement()
           .querySelector(`.pagination__item--button-previous`)
           .classList.remove(`pagination__item--hide`);
     }
 
-    this._renderedGoodsCount = newRenderedGoodCount;
-
-    if (this._renderedGoodsCount > goodsCount) {
+    if (GOOD_COUNT_PER_STEP > goodsCount) {
       Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["remove"])(this._catalogPaginationComponent);
     }
 
-    if (this._renderedGoodsCount >= goodsCount) {
+    if (this._currentPaginationStep >= Math.ceil(goodsCount / this._currentPaginationStep)) {
       this._catalogPaginationComponent.getElement()
           .querySelector(`.pagination__item--button-next`)
           .classList.add(`pagination__item--hide`);
     }
+
+    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["remove"])(this._catalogPaginationComponent);
+    this._renderPagination(this._renderedGoodsCount);
   }
 
   _handlePaginationPreviousClick() {
     const goodsCount = this._getGoods().length;
-    const modulo = this._renderedGoodsCount % GOOD_COUNT_PER_STEP;
-    let newRenderedGoodCount = 0;
 
-    if (modulo !== 0) {
-      newRenderedGoodCount = Math.min(goodsCount, this._renderedGoodsCount - GOOD_COUNT_PER_STEP - modulo);
-      this._renderedGoodsCount = this._renderedGoodsCount - modulo;
-    } else {
-      newRenderedGoodCount = Math.min(goodsCount, this._renderedGoodsCount - GOOD_COUNT_PER_STEP);
-    }
+    this._currentPaginationStep--;
 
-    const goods = this._getGoods().slice(newRenderedGoodCount, this._renderedGoodsCount);
+    const startIndex = GOOD_COUNT_PER_STEP * this._currentPaginationStep - GOOD_COUNT_PER_STEP;
+    const endIndex = GOOD_COUNT_PER_STEP * this._currentPaginationStep;
+
+    const goods = this._getGoods().slice(startIndex, endIndex);
 
     Object
         .values(this._goods)
@@ -1283,23 +1287,24 @@ class Board {
 
     this._renderGoods(goods);
 
-    this._renderedGoodsCount = newRenderedGoodCount;
-
-    if (this._renderedGoodsCount > goodsCount) {
+    if (GOOD_COUNT_PER_STEP > goodsCount) {
       Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["remove"])(this._catalogPaginationComponent);
     }
 
-    if (this._renderedGoodsCount === 0) {
+    if (this._currentPaginationStep === this._minPaginationStep) {
       this._catalogPaginationComponent.getElement()
           .querySelector(`.pagination__item--button-previous`)
           .classList.add(`pagination__item--hide`);
     }
 
-    if (this._renderedGoodsCount < goodsCount) {
+    if (this._currentPaginationStep <= Math.ceil(goodsCount / this._currentPaginationStep)) {
       this._catalogPaginationComponent.getElement()
           .querySelector(`.pagination__item--button-next`)
           .classList.remove(`pagination__item--hide`);
     }
+
+    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["remove"])(this._catalogPaginationComponent);
+    this._renderPagination(this._renderedGoodsCount);
   }
 
   _renderSort() {
@@ -1325,15 +1330,33 @@ class Board {
   }
 
   _renderPagination() {
-    this._catalogPaginationComponent = new _view_catalog_pagination_js__WEBPACK_IMPORTED_MODULE_3__["default"]();
+    const goodsCount = this._getGoods().length;
+    // if (this._catalogPaginationComponent !== null) {
+    //   return;
+    // }
+
+
+    this._catalogPaginationComponent = new _view_catalog_pagination_js__WEBPACK_IMPORTED_MODULE_3__["default"](goodsCount, GOOD_COUNT_PER_STEP, this._currentPaginationStep);
     this._catalogPaginationComponent.setNextClickHandler(this._handlePaginationNextClick);
     this._catalogPaginationComponent.setPreviousClickHandler(this._handlePaginationPreviousClick);
 
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["render"])(this._catalogComponent, this._catalogPaginationComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_7__["RenderPosition"].BEFOREEND);
+
+    if (this._currentPaginationStep <= 1) {
+      this._catalogPaginationComponent.getElement()
+          .querySelector(`.pagination__item--button-previous`)
+          .classList.add(`pagination__item--hide`);
+    }
+
+    if (this._currentPaginationStep * GOOD_COUNT_PER_STEP >= goodsCount) {
+      this._catalogPaginationComponent.getElement()
+          .querySelector(`.pagination__item--button-next`)
+          .classList.add(`pagination__item--hide`);
+    }
   }
 
-  _clearCatalog({resetRenderedGoodsCount = false, resetSortByCategoryType = false} = {}) {
-    const goodCount = this._getGoods().length;
+  _clearCatalog({resetSortByCategoryType = false} = {}) {
+    // const goodCount = this._getGoods().length;
 
     Object
         .values(this._goods)
@@ -1343,11 +1366,14 @@ class Board {
     this._filterPresenter.destroy();
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["remove"])(this._catalogSortComponent);
 
-    if (resetRenderedGoodsCount) {
-      this._renderedGoodsCount = GOOD_COUNT_PER_STEP;
-    } else {
-      this._renderedGoodsCount = Math.min(goodCount, this._renderedGoodsCount);
-    }
+    Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["remove"])(this._catalogPaginationComponent);
+    // this._catalogPaginationComponent = null;
+
+    // if (resetRenderedGoodsCount) {
+    //   this._renderedGoodsCount = GOOD_COUNT_PER_STEP;
+    // } else {
+    //   this._renderedGoodsCount = Math.min(goodCount, this._renderedGoodsCount);
+    // }
 
     if (resetSortByCategoryType) {
       this._currentSortByCategoryType = _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByCategoryType"].DEFAULT;
@@ -1359,20 +1385,16 @@ class Board {
     const goods = this._getGoods();
     const goodCount = goods.length;
 
-    this._paginationStepCount = Math.floor(goodCount / GOOD_COUNT_PER_STEP);
-    // if (goodCount === 0) {
-    //   this._renderNoCards();
-    //   return;
-    // }
+    // this._currentPaginationStepCount = Math.floor(goodCount / GOOD_COUNT_PER_STEP);
 
     if (this._filterPresenter !== null) {
       this._filterPresenter.init();
     }
 
     this._renderSort();
-    this._renderGoods(goods.slice(0, Math.min(goodCount, this._renderedGoodsCount)));
+    this._renderGoods(goods.slice(0, Math.min(goodCount, GOOD_COUNT_PER_STEP)));
 
-    if (goodCount > this._renderedGoodsCount) {
+    if (goodCount > GOOD_COUNT_PER_STEP) {
       this._renderPagination();
     }
   }
@@ -1450,6 +1472,17 @@ class Filter {
       return;
     }
 
+    // filterPriceType.forEach((filter) => {
+      // const elem = parseInt(String(filter).replace(/\s+/g, ``), 10);
+      // if (elem < 0) {
+        // this._filterComponent.getElement().querySelector(`.catalog__filters-price-change`).setCustomValidity(`2 комнаты — для 1 или 2 гостей!`);
+      // }
+    // });
+
+    filterPriceType = filterPriceType.map((filter) => {
+      return parseInt(String(filter).replace(/\s+/g, ``), 10);
+    });
+
     this._filterModel.setFilter(filterPriceType, `price`);
   }
 }
@@ -1483,7 +1516,7 @@ class SiteMenu {
   }
 
   init() {
-    this._siteMenuComponent = new _view_site_menu_js__WEBPACK_IMPORTED_MODULE_0__["default"](this._basketModel.getBasket().length);
+    this._siteMenuComponent = new _view_site_menu_js__WEBPACK_IMPORTED_MODULE_0__["default"](this._basketModel.getBasket());
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_1__["render"])(this._siteMenuContainer, this._siteMenuComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_1__["RenderPosition"].AFTERBEGIN);
 
     this._siteMenuComponent.setMenuClickHandler(this._handleSiteMenuChange);
@@ -1555,7 +1588,6 @@ const filteredGoodsByPrice = (good, filters) => {
   if (!filters.length) {
     return true;
   }
-
   return Number(good) <= PriceRange.max && Number(good) >= PriceRange.min;
 };
 
@@ -1774,13 +1806,13 @@ const createBasketItemElement = (data) => {
             <li class="product__identifer-number">Артикул: ${count}</li>
             <li class="product__type">Электрогитара, ${stringAmount} струнная </li>
           </ul>
-          <div class="product__price"><p>${price} ₽</p></div>
+          <div class="product__price"><p>${price.toLocaleString(`ru-RU`)} ₽</p></div>
           <div class="product__quantity">
             <button class="product__quantity-button" id="dec-button" type="button">-</button>
-            <input id="product-quantity" type="text" value="${count}" name="product-quantity" disabled>
+            <input type="text" value="${count}" name="product-quantity" disabled>
             <button class="product__quantity-button" id="inc-button" type="button">+</button>
           </div>
-          <div class="product__price-total">${price * count} ₽</div>
+          <div class="product__price-total">${(price * count).toLocaleString(`ru-RU`)} ₽</div>
           <button class="product__delete" type="button">
             <span class="visually-hidden">Удалить товар</span>
           </button>
@@ -2002,7 +2034,7 @@ const createBasketElement = (goods, discountType, isAvailable) => {
         }
         break;
     }
-    return totalPrice;
+    return totalPrice.toLocaleString(`ru-RU`);
   };
 
   return `<section class="shoppingbag">
@@ -2082,8 +2114,8 @@ const createBreadcrumbsTemplate = (siteMenuItem) => {
   const breadcrumbsElement = (element) => {
     let title = ``;
     switch (siteMenuItem) {
-      case _const_js__WEBPACK_IMPORTED_MODULE_1__["MenuItem"].CARDS:
-        title = element.CARDS;
+      case _const_js__WEBPACK_IMPORTED_MODULE_1__["MenuItem"].CATALOG:
+        title = element.CATALOG;
         return title;
       case _const_js__WEBPACK_IMPORTED_MODULE_1__["MenuItem"].BASKET:
         title = element.BASKET;
@@ -2170,7 +2202,7 @@ const createCatalogItemElement = (data) => {
       </div>
       <div class="list__descriotion-wrapper">
         <h3>${name}</h3>
-        <p>${price} ₽</p>
+        <p>${price.toLocaleString(`ru-RU`)} ₽</p>
       </div>
       <div class="list__navigation-wrapper">
         <a href="" class="catalog__button--info catalog__button">Подробнее</a>
@@ -2247,23 +2279,46 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./source/js/view/abstract.js");
 
 
-const createCatalogPaginationElement = () => {
+const createCatalogPaginationElement = (goodsCount, goodsCountPerStep, paginationStep) => {
+  const stepCount = Math.ceil(goodsCount / goodsCountPerStep);
+  const delta = stepCount - 1;
+
+  // console.log(stepCount);
+
+  let arr = [];
+  let temp = ``;
+  for (let i = 1; i < stepCount + 1; i++) {
+    temp = `<li class="pagination__item ${i === paginationStep ? `pagination__item--current` : ``}"><a href="#">${i}</a></li>`;
+    arr.push(temp);
+  }
+  // console.log(arr);
+
+  let template1 = ``;
+  for (let i = paginationStep; i < paginationStep + 2; i++) {
+    template1 += `<li class="pagination__item ${i === paginationStep ? `pagination__item--current` : ``}"><a href="#">${i}</a></li>`;
+  }
+
+  let template4 = ``;
+  for (let i = stepCount - delta; i <= stepCount; i++) {
+    template4 += `<li class="pagination__item ${i === paginationStep ? `pagination__item--current` : ``}"><a href="#">${i}</a></li>`;
+  }
+
+  let template2 = `<li class="pagination__item"><a href="#">${`...`}</a></li>`;
+
+  let template3 = `<li class="pagination__item ${stepCount === paginationStep ? `pagination__item--current` : ``}"><a href="#">${stepCount}</a></li>`;
+
+  // let template5 = ``;
+  // for (let i = paginationStep - 1; i < paginationStep; i++) {
+  //   template5 = `<li class="pagination__item"><a href="#">${i}</a></li>`;
+  // }
+
+  // ${paginationStep > 1 ? template5 : ``}
+  // ${paginationStep >= stepCount - delta ? template4 : template1}${paginationStep >= stepCount - delta ? `` : template2}${paginationStep >= stepCount - 3 ? `` : template3}
   return `<ul class="catalog__pagination pagination">
-    <li class="pagination__item pagination__item--button pagination__item--button-previous pagination__item--hide">
+    <li class="pagination__item pagination__item--button pagination__item--button-previous">
       <a href="#">Назад</a>
     </li>
-    <li class="pagination__item pagination__item--current">
-      <a href="#">1</a>
-    </li>
-    <li class="pagination__item">
-      <a href="#">2</a>
-    </li>
-    <li class="pagination__item">
-      <a href="#">...</a>
-    </li>
-    <li class="pagination__item">
-      <a href="#">7</a>
-    </li>
+   ${arr.slice(paginationStep - 1, paginationStep + 1)}${template2}${arr.slice(stepCount - 1, stepCount)}
     <li class="pagination__item pagination__item--button pagination__item--button-next">
       <a href="#">Далее</a>
     </li>
@@ -2271,15 +2326,18 @@ const createCatalogPaginationElement = () => {
 };
 
 class CatalogPagination extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
-  constructor() {
+  constructor(goodsCount, goodsCountPerStep, paginationStep) {
     super();
+    this._goodsCount = goodsCount;
+    this._goodsCountPerStep = goodsCountPerStep;
+    this._paginationStep = paginationStep;
 
     this._nextClickHandler = this._nextClickHandler.bind(this);
     this._previousClickHandler = this._previousClickHandler.bind(this);
   }
 
   getTemplate() {
-    return createCatalogPaginationElement();
+    return createCatalogPaginationElement(this._goodsCount, this._goodsCountPerStep, this._paginationStep);
   }
 
   _nextClickHandler(evt) {
@@ -2624,18 +2682,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const createFiltersElement = (currentFilter, goods) => {
+  let [currentFrom, currentTo] = currentFilter.price;
   let filteredGuitarsByType = {};
   let stringAmountAvailableList = [];
-
-  if (currentFilter.type.length === 0) {
-    filteredGuitarsByType = goods
-        .filter((item) => Object(_utils_filter_js__WEBPACK_IMPORTED_MODULE_2__["filteredGoodsByType"])(item.type, currentFilter.type));
-
-    stringAmountAvailableList = Array.from(new Set(filteredGuitarsByType
-        .map((item) => item.stringAmount)));
-  }
-
-  filteredGuitarsByType = currentFilter.type;
+  let pricesInGoods = [];
 
   const guitarKeys = Object.keys(_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"]);
   const stringKeys = Object.keys(_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterStringAmount"]);
@@ -2643,6 +2693,43 @@ const createFiltersElement = (currentFilter, goods) => {
   let typeGuitarKeys = [];
   let typeGuitarValues = [];
   let typeStringsValues = [];
+
+  pricesInGoods = goods
+      .map((item) => item.price);
+
+  const minPriceInGoods = Math.min(...pricesInGoods);
+  const maxPriceInGoods = Math.max(...pricesInGoods);
+
+  if (currentFilter.price.length === 0) {
+    currentFrom = minPriceInGoods;
+    currentTo = maxPriceInGoods;
+  }
+
+  if (currentFrom > currentTo) {
+    currentTo = currentFrom;
+  }
+
+  if (currentFrom < minPriceInGoods) {
+    currentFrom = minPriceInGoods;
+  }
+
+  if (currentTo < currentFrom) {
+    currentTo = currentFrom;
+  }
+
+  if (currentFrom < minPriceInGoods || Number.isNaN(currentFrom)) {
+    currentFrom = minPriceInGoods;
+  }
+
+  if (currentTo > maxPriceInGoods || Number.isNaN(currentTo)) {
+    currentTo = maxPriceInGoods;
+  }
+
+  filteredGuitarsByType = goods
+      .filter((item) => Object(_utils_filter_js__WEBPACK_IMPORTED_MODULE_2__["filteredGoodsByType"])(item.type, currentFilter.type));
+
+  stringAmountAvailableList = Array.from(new Set(filteredGuitarsByType
+      .map((item) => item.stringAmount)));
 
   guitarKeys.filter((key) => (currentFilter.type.forEach((type) => {
     if (type.includes(_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"][key])) {
@@ -2668,10 +2755,6 @@ const createFiltersElement = (currentFilter, goods) => {
     }
   })));
 
-  typeGuitarKeys.forEach((item) => {
-    stringAmountAvailableList.push(..._const_js__WEBPACK_IMPORTED_MODULE_1__["StringsAmountByType"][item]);
-    return stringAmountAvailableList;
-  });
   stringAmountAvailableList = Array.from(new Set(stringAmountAvailableList));
 
   const isStringsAvailable = (availableList, stringsCount) => {
@@ -2685,20 +2768,20 @@ const createFiltersElement = (currentFilter, goods) => {
         <h3>Цена, ₽</h3>
         <div class="catalog__filters-price-wrapper">
           <input
-              type="number"
+              type="text"
               name="filters-form-price-from"
               id="filters-form-price-from"
-              placeholder="1 000"
-              value="1000"
+              placeholder="${currentFrom.toLocaleString(`ru-RU`)}"
+              value="${currentFrom.toLocaleString(`ru-RU`)}"
               min="0"
               max="1000000"
               >
           <input
-              type="number"
+              type="text"
               name="filters-form-price-to"
               id="filters-form-price-to"
-              placeholder="30 000"
-              value="30000"
+              placeholder="${currentTo.toLocaleString(`ru-RU`)}"
+              value="${currentTo.toLocaleString(`ru-RU`)}"
               min="0"
               max="1000000"
               >
@@ -2838,9 +2921,18 @@ class Filters extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
   _filterPriceChangeHandler(evt) {
     evt.preventDefault();
+
+    // if (!evt.target.value) {
+    //   evt.target.setCustomValidity(`Enter the cost of the trip`);
+    //   return;
+    // }
+
+    // this.updateData({
+    //   price: Number(evt.target.value)
+    // }, true);
     let optionsPriceChangeArray = [];
 
-    document.querySelectorAll(`input[type='number']`)
+    document.querySelectorAll(`input[type='text']`)
         .forEach((checkbox) => optionsPriceChangeArray
             .push(checkbox.value));
 
@@ -2859,7 +2951,7 @@ class Filters extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
   setFilterPriceChangeHandler(callback) {
     this._callback.filterPriceChange = callback;
-    this.getElement().querySelector(`.catalog__filters-price-change`).addEventListener(`input`, this._filterPriceChangeHandler);
+    this.getElement().querySelector(`.catalog__filters-price-change`).addEventListener(`change`, this._filterPriceChangeHandler);
   }
 }
 
@@ -2882,6 +2974,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const createSiteMenuTemplate = (basketModel) => {
+  const goodsInBasket = basketModel;
+
+  let goodsCount = 0;
+  if (goodsInBasket.length !== 0) {
+    goodsCount = goodsInBasket.map((good) => good.count)
+        .reduce((total, count) => total + count);
+  }
   return `<nav class="main-nav">
     <div class="container">
       <div class="main-nav__wrapper">
@@ -2931,7 +3030,7 @@ const createSiteMenuTemplate = (basketModel) => {
               </svg>
               <!-- <img src="img/icon_basket.svg" width="16" height="18" alt="Корзина"> -->
             </a>
-            <span class="" data-title="${basketModel === 0 ? `` : basketModel}"></span>
+            <span class="" data-title="${goodsInBasket.length === 0 ? `` : goodsCount}"></span>
           </li>
         </ul>
       </div>

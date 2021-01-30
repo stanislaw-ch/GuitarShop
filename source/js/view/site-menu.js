@@ -2,6 +2,13 @@ import AbstractView from "./abstract.js";
 import {MenuItem} from "../const.js";
 
 const createSiteMenuTemplate = (basketModel) => {
+  const goodsInBasket = basketModel;
+
+  let goodsCount = 0;
+  if (goodsInBasket.length !== 0) {
+    goodsCount = goodsInBasket.map((good) => good.count)
+        .reduce((total, count) => total + count);
+  }
   return `<nav class="main-nav">
     <div class="container">
       <div class="main-nav__wrapper">
@@ -51,7 +58,7 @@ const createSiteMenuTemplate = (basketModel) => {
               </svg>
               <!-- <img src="img/icon_basket.svg" width="16" height="18" alt="Корзина"> -->
             </a>
-            <span class="" data-title="${basketModel === 0 ? `` : basketModel}"></span>
+            <span class="" data-title="${goodsInBasket.length === 0 ? `` : goodsCount}"></span>
           </li>
         </ul>
       </div>

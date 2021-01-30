@@ -6,7 +6,7 @@ export default [
     type: `электрогитара`,
     reviewAmount: `15`,
     stringAmount: `7`,
-    price: `17500`,
+    price: 17500,
     image: `img/gitar-electric_1.png`,
     starsCount: `3.2`
   },
@@ -17,7 +17,7 @@ export default [
     type: `электрогитара`,
     reviewAmount: `9`,
     stringAmount: `7`,
-    price: `29500`,
+    price: 29500,
     image: `img/gitar-electric_2.png`,
     starsCount: `4.5`
   },
@@ -28,7 +28,7 @@ export default [
     type: `укулеле`,
     reviewAmount: `21`,
     stringAmount: `4`,
-    price: `6800`,
+    price: 6800,
     image: `img/gitar-ukulele_1.png`,
     starsCount: `5`
   },
@@ -39,7 +39,7 @@ export default [
     type: `электрогитара`,
     reviewAmount: `15`,
     stringAmount: `6`,
-    price: `30000`,
+    price: 30000,
     image: `img/gitar-electric_3.png`,
     starsCount: `3`
   },
@@ -50,7 +50,7 @@ export default [
     type: `акустическая гитара`,
     reviewAmount: `5`,
     stringAmount: `7`,
-    price: `3500`,
+    price: 3500,
     image: `img/gitar-acoustic_2.png`,
     starsCount: `4.5`
   },
@@ -61,7 +61,7 @@ export default [
     type: `электрогитара`,
     reviewAmount: `17`,
     stringAmount: `6`,
-    price: `15300`,
+    price: 15300,
     image: `img/gitar-electric_1.png`,
     starsCount: `4.15`
   },
@@ -72,7 +72,7 @@ export default [
     type: `укулеле`,
     reviewAmount: `5`,
     stringAmount: `4`,
-    price: `2200`,
+    price: 2200,
     image: `img/gitar-ukulele_1.png`,
     starsCount: `3.15`
   },
@@ -83,7 +83,7 @@ export default [
     type: `электрогитара`,
     reviewAmount: `27`,
     stringAmount: `4`,
-    price: `30000`,
+    price: 30000,
     image: `img/gitar-electric_1.png`,
     starsCount: `2.15`
   },
@@ -94,7 +94,7 @@ export default [
     type: `акустическая гитара`,
     reviewAmount: `3`,
     stringAmount: `7`,
-    price: `1700`,
+    price: 1700,
     image: `img/gitar-acoustic_2.png`,
     starsCount: `3.15`
   },
@@ -105,7 +105,7 @@ export default [
     type: `электрогитара`,
     reviewAmount: `20`,
     stringAmount: `4`,
-    price: `23000`,
+    price: 23000,
     image: `img/gitar-electric_2.png`,
     starsCount: `5`
   },
@@ -116,7 +116,7 @@ export default [
     type: `электрогитара`,
     reviewAmount: `20`,
     stringAmount: `4`,
-    price: `23000`,
+    price: 23000,
     image: `img/gitar-electric_2.png`,
     starsCount: `5`
   },

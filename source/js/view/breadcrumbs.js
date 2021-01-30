@@ -5,8 +5,8 @@ const createBreadcrumbsTemplate = (siteMenuItem) => {
   const breadcrumbsElement = (element) => {
     let title = ``;
     switch (siteMenuItem) {
-      case MenuItem.CARDS:
-        title = element.CARDS;
+      case MenuItem.CATALOG:
+        title = element.CATALOG;
         return title;
       case MenuItem.BASKET:
         title = element.BASKET;
