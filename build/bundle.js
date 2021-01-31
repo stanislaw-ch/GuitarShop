@@ -86,6 +86,353 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./source/js/api/index.js":
+/*!********************************!*\
+  !*** ./source/js/api/index.js ***!
+  \********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Api; });
+/* harmony import */ var _model_goods_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../model/goods.js */ "./source/js/model/goods.js");
+
+
+const Method = {
+  GET: `GET`,
+  PUT: `PUT`,
+  POST: `POST`,
+  DELETE: `DELETE`
+};
+
+const SuccessHTTPStatusRange = {
+  MIN: 200,
+  MAX: 299
+};
+
+class Api {
+  constructor(endPoint, authorization) {
+    this._endPoint = endPoint;
+    this._authorization = authorization;
+  }
+
+  // getOffers() {
+  //   return this._load({url: `offers`})
+  //     .then(Api.toJSON);
+  // }
+
+  getPoints() {
+    return this._load()
+        .then(Api.toJSON)
+        .then((goods) => goods.map(_model_goods_js__WEBPACK_IMPORTED_MODULE_0__["default"].adaptToClient));
+  }
+
+  // getDestinations() {
+  //   return this._load({url: `destinations`})
+  //     .then(Api.toJSON);
+  // }
+
+  updatePoint(point) {
+    return this._load({
+      url: `points/${point.id}`,
+      method: Method.PUT,
+      body: JSON.stringify(_model_goods_js__WEBPACK_IMPORTED_MODULE_0__["default"].adaptToServer(point)),
+      headers: new Headers({"Content-Type": `application/json`})
+    })
+      .then(Api.toJSON)
+      .then(_model_goods_js__WEBPACK_IMPORTED_MODULE_0__["default"].adaptToClient);
+  }
+
+  addPoint(point) {
+    return this._load({
+      url: `points`,
+      method: Method.POST,
+      body: JSON.stringify(_model_goods_js__WEBPACK_IMPORTED_MODULE_0__["default"].adaptToServer(point)),
+      headers: new Headers({"Content-Type": `application/json`})
+    })
+      .then(Api.toJSON)
+      .then(_model_goods_js__WEBPACK_IMPORTED_MODULE_0__["default"].adaptToClient);
+  }
+
+  deletePoint(point) {
+    return this._load({
+      url: `points/${point.id}`,
+      method: Method.DELETE
+    });
+  }
+
+  sync(data) {
+    return this._load({
+      url: `points/sync`,
+      method: Method.POST,
+      body: JSON.stringify(data),
+      headers: new Headers({"Content-Type": `application/json`})
+    })
+      .then(Api.toJSON);
+  }
+
+  _load({
+    method = Method.GET,
+    body = null,
+    headers = new Headers()
+  }) {
+    headers.append(`Authorization`, this._authorization);
+
+    return fetch(
+        `${this._endPoint}`,
+        {method, body, headers}
+    )
+        .then(Api.checkStatus)
+        .catch(Api.catchError);
+  }
+
+  static checkStatus(response) {
+    if (
+      response.status < SuccessHTTPStatusRange.MIN &&
+      response.status > SuccessHTTPStatusRange.MAX
+    ) {
+      throw new Error(`${response.status}: ${response.statusText}`);
+    }
+
+    return response;
+  }
+
+  static toJSON(response) {
+    return response.json();
+  }
+
+  static catchError(err) {
+    throw err;
+  }
+}
+
+
+/***/ }),
+
+/***/ "./source/js/api/provider.js":
+/*!***********************************!*\
+  !*** ./source/js/api/provider.js ***!
+  \***********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Provider; });
+/* harmony import */ var _model_goods_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../model/goods.js */ "./source/js/model/goods.js");
+// import {nanoid} from "nanoid";
+
+
+const getSyncedPoints = (items) => {
+  return items.filter(({success}) => success)
+    .map(({payload}) => payload.point);
+};
+
+class Provider {
+  constructor(api, store) {
+    this._api = api;
+    this._store = store;
+  }
+
+  getOffers() {
+    if (Provider.isOnline()) {
+      return this._api.getOffers()
+        .then((offers) => {
+          this._store.setOffers(offers);
+          return offers;
+        });
+    }
+    const storeOffers = Object.values(this._store.getOffers());
+
+    return Promise.resolve(storeOffers);
+  }
+
+  getDestinations() {
+    if (Provider.isOnline()) {
+      return this._api.getDestinations()
+        .then((destinations) => {
+          this._store.setDestinations(destinations);
+          return destinations;
+        });
+    }
+
+    const storeDestinations = Object.values(this._store.getDestinations());
+
+    return Promise.resolve(storeDestinations);
+  }
+
+  getPoints() {
+    if (Provider.isOnline()) {
+      return this._api.getPoints()
+        .then((points) => {
+          const items = points.map(_model_goods_js__WEBPACK_IMPORTED_MODULE_0__["default"].adaptToServer);
+          this._store.setPoints(items);
+
+          return points;
+        });
+    }
+
+    const storePoints = Object.values(this._store.getPoints());
+
+    return Promise.resolve(storePoints.map(_model_goods_js__WEBPACK_IMPORTED_MODULE_0__["default"].adaptToClient));
+  }
+
+  updatePoint(point) {
+    if (Provider.isOnline()) {
+      return this._api.updatePoint(point)
+        .then((updatedPoint) => {
+          this._store.updateItem(updatedPoint.id, _model_goods_js__WEBPACK_IMPORTED_MODULE_0__["default"].adaptToServer(updatedPoint));
+          return updatedPoint;
+        });
+    }
+
+    this._store.updateItem(point.id, _model_goods_js__WEBPACK_IMPORTED_MODULE_0__["default"].adaptToServer(Object.assign({}, point)));
+
+    return Promise.resolve(point);
+  }
+
+  // addPoint(point) {
+  //   if (Provider.isOnline()) {
+  //     return this._api.addPoint(point)
+  //       .then((newPoint) => {
+  //         this._store.setItem(GoodsModel.adaptToServer(newPoint));
+  //         return newPoint;
+  //       });
+  //   }
+
+  //   const localNewPointId = nanoid();
+  //   const localNewPoint = Object.assign({}, point, {id: localNewPointId});
+
+  //   this._store.setItem(GoodsModel.adaptToServer(localNewPoint));
+
+  //   return Promise.resolve(localNewPoint);
+  // }
+
+  deletePoint(point) {
+    if (Provider.isOnline()) {
+      return this._api.deletePoint(point)
+        .then(() => this._store.leftPoints(point.id));
+    }
+
+    this._store.leftPoints(point.id);
+
+    return Promise.resolve();
+  }
+
+  sync() {
+    if (Provider.isOnline()) {
+      const storePoints = this._store.getPoints();
+
+      return this._api.sync(storePoints)
+        .then((response) => {
+          const createdPoints = response.created;
+          const updatedPoints = getSyncedPoints(response.updated);
+          const items = [...createdPoints, ...updatedPoints];
+
+          this._store.setPoints(items);
+        });
+    }
+
+    return Promise.reject(new Error(`Sync data failed`));
+  }
+
+  static isOnline() {
+    return window.navigator.onLine;
+  }
+}
+
+
+/***/ }),
+
+/***/ "./source/js/api/store.js":
+/*!********************************!*\
+  !*** ./source/js/api/store.js ***!
+  \********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Store; });
+class Store {
+  constructor(key, storage) {
+    this._storage = storage;
+    this._storeKey = key;
+  }
+
+  getData() {
+    try {
+      return JSON.parse(this._storage.getItem(this._storeKey)) || {};
+    } catch (err) {
+      return {};
+    }
+  }
+
+  setData(data) {
+    this._storage.setItem(this._storeKey, JSON.stringify(data));
+  }
+
+  setOffers(offers) {
+    const data = this.getData();
+    data.offers = offers;
+
+    this.setData(data);
+  }
+
+  setDestinations(destinations) {
+    const data = this.getData();
+    data.destinations = destinations;
+
+    this.setData(data);
+  }
+
+  setPoints(points) {
+    const data = this.getData();
+    data.points = points;
+
+    this.setData(data);
+  }
+
+  getOffers() {
+    return this.getData().offers;
+  }
+
+  getDestinations() {
+    return this.getData().destinations;
+  }
+
+  getPoints() {
+    return this.getData().points;
+  }
+
+  setItem(value) {
+    const store = this.getData();
+    store.points.push(value);
+
+    this.setData(store);
+  }
+
+  updateItem(key, value) {
+    const storedPoints = this.getPoints();
+
+    const index = storedPoints.findIndex((point) => point.id === key);
+    storedPoints[index] = value;
+
+    this.setPoints(storedPoints);
+  }
+
+  leftPoints(key) {
+    const store = this.getData();
+    const removePoints = store.points.filter((point) => point.id !== key);
+
+    this.setPoints(removePoints);
+  }
+}
+
+
+/***/ }),
+
 /***/ "./source/js/const.js":
 /*!****************************!*\
   !*** ./source/js/const.js ***!
@@ -192,8 +539,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _model_filter_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./model/filter.js */ "./source/js/model/filter.js");
 /* harmony import */ var _model_site_menu_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./model/site-menu.js */ "./source/js/model/site-menu.js");
 /* harmony import */ var _model_basket_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./model/basket.js */ "./source/js/model/basket.js");
-/* harmony import */ var _mock_json_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./mock/json.js */ "./source/js/mock/json.js");
-/* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./utils/render.js */ "./source/js/utils/render.js");
+/* harmony import */ var _api_index_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./api/index.js */ "./source/js/api/index.js");
+/* harmony import */ var _api_store_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./api/store.js */ "./source/js/api/store.js");
+/* harmony import */ var _api_provider_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./api/provider.js */ "./source/js/api/provider.js");
+/* harmony import */ var _mock_goods_json__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./mock/goods.json */ "./source/js/mock/goods.json");
+var _mock_goods_json__WEBPACK_IMPORTED_MODULE_12___namespace = /*#__PURE__*/__webpack_require__.t(/*! ./mock/goods.json */ "./source/js/mock/goods.json", 1);
+/* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./utils/render.js */ "./source/js/utils/render.js");
 
 
 
@@ -206,9 +557,22 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+const AUTHORIZATION = `Basic oovigizsskoktddjjhg`;
+const END_POINT = `./mock/goods.json`;
+const STORE_PREFIX = `guitarShop-localStorage`;
+const STORE_VER = `v01`;
+const STORE_NAME = `${STORE_PREFIX}-${STORE_VER}`;
+
+const api = new _api_index_js__WEBPACK_IMPORTED_MODULE_9__["default"](END_POINT, AUTHORIZATION);
+const store = new _api_store_js__WEBPACK_IMPORTED_MODULE_10__["default"](STORE_NAME, window.localStorage);
+const apiWithProvider = new _api_provider_js__WEBPACK_IMPORTED_MODULE_11__["default"](api, store);
 
 const goodsModel = new _model_goods_js__WEBPACK_IMPORTED_MODULE_5__["default"]();
-goodsModel.setGoods(_mock_json_js__WEBPACK_IMPORTED_MODULE_9__["default"]);
+goodsModel.setGoods(_mock_goods_json__WEBPACK_IMPORTED_MODULE_12__);
 
 const filterModel = new _model_filter_js__WEBPACK_IMPORTED_MODULE_6__["default"]();
 const siteMenuModel = new _model_site_menu_js__WEBPACK_IMPORTED_MODULE_7__["default"]();
@@ -220,8 +584,8 @@ const siteHeaderElement = document.querySelector(`.page-header`);
 const siteMainElement = document.querySelector(`.page-main`);
 const siteMainContainerElement = siteMainElement.querySelector(`.container`);
 
-Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_10__["render"])(siteMainContainerElement, siteCatalogSectionComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_10__["RenderPosition"].BEFOREEND);
-Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_10__["render"])(siteCatalogSectionComponent, siteCatalogSectionWrapperComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_10__["RenderPosition"].BEFOREEND);
+Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_13__["render"])(siteMainContainerElement, siteCatalogSectionComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_13__["RenderPosition"].BEFOREEND);
+Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_13__["render"])(siteCatalogSectionComponent, siteCatalogSectionWrapperComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_13__["RenderPosition"].BEFOREEND);
 
 const siteMenuPresenter = new _presenter_site_menu_js__WEBPACK_IMPORTED_MODULE_2__["default"](siteHeaderElement, siteMenuModel, basketModel);
 const breadcrumbsPresenter = new _presenter_breadcrumbs_js__WEBPACK_IMPORTED_MODULE_4__["default"](siteMainContainerElement, siteMenuModel);
@@ -231,142 +595,38 @@ siteMenuPresenter.init();
 breadcrumbsPresenter.init();
 catalogPresenter.init();
 
+// apiWithProvider.getPoints()
+//     .then((goods) => {
+//       goodsModel.setGoods(goods);
+//     })
+//     .catch(() => {
+//       goodsModel.setGoods([]);
+//     });
+
+// window.addEventListener(`load`, () => {
+//   navigator.serviceWorker.register(`/sw.js`);
+// });
+
+// window.addEventListener(`online`, () => {
+//   document.title = document.title.replace(` [offline]`, ``);
+//   apiWithProvider.sync();
+// });
+
+// window.addEventListener(`offline`, () => {
+//   document.title += ` [offline]`;
+// });
+
 
 /***/ }),
 
-/***/ "./source/js/mock/json.js":
-/*!********************************!*\
-  !*** ./source/js/mock/json.js ***!
-  \********************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ "./source/js/mock/goods.json":
+/*!***********************************!*\
+  !*** ./source/js/mock/goods.json ***!
+  \***********************************/
+/*! exports provided: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, default */
+/***/ (function(module) {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ([
-  {
-    id: 0,
-    identiferNumber: `SO757575`,
-    name: `Честер Bass`,
-    type: `электрогитара`,
-    reviewAmount: `15`,
-    stringAmount: `7`,
-    price: 17500,
-    image: `img/gitar-electric_1.png`,
-    starsCount: `3.2`
-  },
-  {
-    id: 1,
-    identiferNumber: `TK129049`,
-    name: `СURT Z300`,
-    type: `электрогитара`,
-    reviewAmount: `9`,
-    stringAmount: `7`,
-    price: 29500,
-    image: `img/gitar-electric_2.png`,
-    starsCount: `4.5`
-  },
-  {
-    id: 2,
-    identiferNumber: `RO111111`,
-    name: `Roman LX`,
-    type: `укулеле`,
-    reviewAmount: `21`,
-    stringAmount: `4`,
-    price: 6800,
-    image: `img/gitar-ukulele_1.png`,
-    starsCount: `5`
-  },
-  {
-    id: 3,
-    identiferNumber: `TK436457`,
-    name: `СURT T300`,
-    type: `электрогитара`,
-    reviewAmount: `15`,
-    stringAmount: `6`,
-    price: 30000,
-    image: `img/gitar-electric_3.png`,
-    starsCount: `3`
-  },
-  {
-    id: 4,
-    identiferNumber: `DI192138`,
-    name: `Dania Super`,
-    type: `акустическая гитара`,
-    reviewAmount: `5`,
-    stringAmount: `7`,
-    price: 3500,
-    image: `img/gitar-acoustic_2.png`,
-    starsCount: `4.5`
-  },
-  {
-    id: 5,
-    identiferNumber: `SO934345`,
-    name: `Честер WX`,
-    type: `электрогитара`,
-    reviewAmount: `17`,
-    stringAmount: `6`,
-    price: 15300,
-    image: `img/gitar-electric_1.png`,
-    starsCount: `4.15`
-  },
-  {
-    id: 6,
-    identiferNumber: `DI082347`,
-    name: `Dania VX`,
-    type: `укулеле`,
-    reviewAmount: `5`,
-    stringAmount: `4`,
-    price: 2200,
-    image: `img/gitar-ukulele_1.png`,
-    starsCount: `3.15`
-  },
-  {
-    id: 7,
-    identiferNumber: `SO135646`,
-    name: `Честер Plus`,
-    type: `электрогитара`,
-    reviewAmount: `27`,
-    stringAmount: `4`,
-    price: 30000,
-    image: `img/gitar-electric_1.png`,
-    starsCount: `2.15`
-  },
-  {
-    id: 8,
-    identiferNumber: `VO154751`,
-    name: `Виолана 300`,
-    type: `акустическая гитара`,
-    reviewAmount: `3`,
-    stringAmount: `7`,
-    price: 1700,
-    image: `img/gitar-acoustic_2.png`,
-    starsCount: `3.15`
-  },
-  {
-    id: 9,
-    identiferNumber: `TK244556`,
-    name: `СURT Clasic`,
-    type: `электрогитара`,
-    reviewAmount: `20`,
-    stringAmount: `4`,
-    price: 23000,
-    image: `img/gitar-electric_2.png`,
-    starsCount: `5`
-  },
-  {
-    id: 10,
-    identiferNumber: `TK244556`,
-    name: `СURT Clasic`,
-    type: `электрогитара`,
-    reviewAmount: `20`,
-    stringAmount: `4`,
-    price: 23000,
-    image: `img/gitar-electric_2.png`,
-    starsCount: `5`
-  },
-]);
-
+module.exports = JSON.parse("[{\"id\":0,\"identiferNumber\":\"SO757575\",\"name\":\"Честер Bass\",\"type\":\"электрогитара\",\"reviewAmount\":\"15\",\"stringAmount\":\"7\",\"price\":17500,\"image\":\"img/gitar-electric_1.png\",\"starsCount\":\"3.2\"},{\"id\":1,\"identiferNumber\":\"TK129049\",\"name\":\"СURT Z300\",\"type\":\"электрогитара\",\"reviewAmount\":\"9\",\"stringAmount\":\"7\",\"price\":29500,\"image\":\"img/gitar-electric_2.png\",\"starsCount\":\"4.5\"},{\"id\":2,\"identiferNumber\":\"RO111111\",\"name\":\"Roman LX\",\"type\":\"укулеле\",\"reviewAmount\":\"21\",\"stringAmount\":\"4\",\"price\":6800,\"image\":\"img/gitar-ukulele_1.png\",\"starsCount\":\"5\"},{\"id\":3,\"identiferNumber\":\"TK436457\",\"name\":\"СURT T300\",\"type\":\"электрогитара\",\"reviewAmount\":\"15\",\"stringAmount\":\"6\",\"price\":30000,\"image\":\"img/gitar-electric_3.png\",\"starsCount\":\"3\"},{\"id\":4,\"identiferNumber\":\"DI192138\",\"name\":\"Dania Super\",\"type\":\"акустическая гитара\",\"reviewAmount\":\"5\",\"stringAmount\":\"7\",\"price\":3500,\"image\":\"img/gitar-acoustic_2.png\",\"starsCount\":\"4.5\"},{\"id\":5,\"identiferNumber\":\"SO934345\",\"name\":\"Честер WX\",\"type\":\"электрогитара\",\"reviewAmount\":\"17\",\"stringAmount\":\"6\",\"price\":15300,\"image\":\"img/gitar-electric_1.png\",\"starsCount\":\"4.15\"},{\"id\":6,\"identiferNumber\":\"DI082347\",\"name\":\"Dania VX\",\"type\":\"укулеле\",\"reviewAmount\":\"5\",\"stringAmount\":\"4\",\"price\":2200,\"image\":\"img/gitar-ukulele_1.png\",\"starsCount\":\"3.15\"},{\"id\":7,\"identiferNumber\":\"SO135646\",\"name\":\"Честер Plus\",\"type\":\"электрогитара\",\"reviewAmount\":\"27\",\"stringAmount\":\"4\",\"price\":30000,\"image\":\"img/gitar-electric_1.png\",\"starsCount\":\"2.15\"},{\"id\":8,\"identiferNumber\":\"VO154751\",\"name\":\"Виолана 300\",\"type\":\"акустическая гитара\",\"reviewAmount\":\"3\",\"stringAmount\":\"7\",\"price\":1700,\"image\":\"img/gitar-acoustic_2.png\",\"starsCount\":\"3.15\"},{\"id\":9,\"identiferNumber\":\"TK244556\",\"name\":\"СURT Clasic\",\"type\":\"электрогитара\",\"reviewAmount\":20,\"stringAmount\":4,\"price\":23000,\"image\":\"img/gitar-electric_2.png\",\"starsCount\":5},{\"id\":10,\"identiferNumber\":\"TK244556\",\"name\":\"СURT Clasic\",\"type\":\"электрогитара\",\"reviewAmount\":\"20\",\"stringAmount\":\"4\",\"price\":23000,\"image\":\"img/gitar-electric_2.png\",\"starsCount\":\"5\"}]");
 
 /***/ }),
 
@@ -506,6 +766,24 @@ class Goods extends _utils_observer_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
   getGoods() {
     return this._goods;
+  }
+
+  static adaptToClient(point) {
+    const adaptedPoint = Object.assign(
+        {},
+        point
+    );
+
+    return adaptedPoint;
+  }
+
+  static adaptToServer(point) {
+    const adaptedPoint = Object.assign(
+        {},
+        point
+    );
+
+    return adaptedPoint;
   }
 }
 
@@ -1058,7 +1336,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const GOOD_COUNT_PER_STEP = 3;
+const GOOD_COUNT_PER_STEP = 2;
 
 class Board {
   constructor(catalogContainer, goodsModel, filterModel, siteMenuModel, basketModel) {
@@ -1464,6 +1742,10 @@ class Filter {
       return;
     }
 
+    // filterStringType = filterStringType.map((string) => Number(string));
+
+    // console.log(filterStringType);
+
     this._filterModel.setFilter(filterStringType, `stringAmount`);
   }
 
@@ -1471,13 +1753,6 @@ class Filter {
     if (this._prevFilterComponent === 0) {
       return;
     }
-
-    // filterPriceType.forEach((filter) => {
-      // const elem = parseInt(String(filter).replace(/\s+/g, ``), 10);
-      // if (elem < 0) {
-        // this._filterComponent.getElement().querySelector(`.catalog__filters-price-change`).setCustomValidity(`2 комнаты — для 1 или 2 гостей!`);
-      // }
-    // });
 
     filterPriceType = filterPriceType.map((filter) => {
       return parseInt(String(filter).replace(/\s+/g, ``), 10);
@@ -2280,45 +2555,69 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const createCatalogPaginationElement = (goodsCount, goodsCountPerStep, paginationStep) => {
-  const stepCount = Math.ceil(goodsCount / goodsCountPerStep);
-  const delta = stepCount - 1;
+  const paginationCount = Math.ceil(goodsCount / goodsCountPerStep);
+  const paginationRange = 4;
 
-  // console.log(stepCount);
+  const renderPagination = () => {
+    let paginationItems = [];
+    let temp = ``;
+    for (let i = 1; i <= paginationCount; i++) {
+      temp = `<li class="pagination__item ${i === paginationStep ? `pagination__item--current` : ``}"><a>${i}</a></li>`;
+      paginationItems.push(temp);
+    }
 
-  let arr = [];
-  let temp = ``;
-  for (let i = 1; i < stepCount + 1; i++) {
-    temp = `<li class="pagination__item ${i === paginationStep ? `pagination__item--current` : ``}"><a href="#">${i}</a></li>`;
-    arr.push(temp);
-  }
-  // console.log(arr);
+    if (paginationRange >= paginationCount) {
+      return paginationItems.slice(0, paginationCount).join(``);
+    }
 
-  let template1 = ``;
-  for (let i = paginationStep; i < paginationStep + 2; i++) {
-    template1 += `<li class="pagination__item ${i === paginationStep ? `pagination__item--current` : ``}"><a href="#">${i}</a></li>`;
-  }
+    if (paginationRange < paginationCount) {
+      let paginationDots = [`<li class="pagination__item"><a>...</a></li>`];
+      let count = paginationStep - 1;
 
-  let template4 = ``;
-  for (let i = stepCount - delta; i <= stepCount; i++) {
-    template4 += `<li class="pagination__item ${i === paginationStep ? `pagination__item--current` : ``}"><a href="#">${i}</a></li>`;
-  }
+      if (paginationStep < 2) {
+        paginationItems = [
+          ...paginationItems.slice(0, paginationStep + 1),
+          paginationDots,
+          ...paginationItems.slice(paginationCount - 1, paginationCount)
+        ].join(``);
 
-  let template2 = `<li class="pagination__item"><a href="#">${`...`}</a></li>`;
+        return paginationItems;
+      }
 
-  let template3 = `<li class="pagination__item ${stepCount === paginationStep ? `pagination__item--current` : ``}"><a href="#">${stepCount}</a></li>`;
+      if (paginationStep === 2) {
+        paginationItems = [
+          ...paginationItems.slice(count - 1, paginationStep),
+          paginationDots,
+          ...paginationItems.slice(paginationCount - 1, paginationCount)
+        ].join(``);
 
-  // let template5 = ``;
-  // for (let i = paginationStep - 1; i < paginationStep; i++) {
-  //   template5 = `<li class="pagination__item"><a href="#">${i}</a></li>`;
-  // }
+        return paginationItems;
+      }
 
-  // ${paginationStep > 1 ? template5 : ``}
-  // ${paginationStep >= stepCount - delta ? template4 : template1}${paginationStep >= stepCount - delta ? `` : template2}${paginationStep >= stepCount - 3 ? `` : template3}
+      if (paginationCount - paginationStep < paginationRange - 1) {
+        paginationItems = [
+          ...paginationItems.slice(paginationCount - paginationRange, paginationCount)
+        ].join(``);
+
+        return paginationItems;
+      }
+
+      paginationItems = [
+        ...paginationItems.slice(count - 1, paginationStep),
+        paginationDots,
+        ...paginationItems.slice(paginationCount - 1, paginationCount)
+      ].join(``);
+
+      return paginationItems;
+    }
+    return paginationItems.join(``);
+  };
+
   return `<ul class="catalog__pagination pagination">
     <li class="pagination__item pagination__item--button pagination__item--button-previous">
       <a href="#">Назад</a>
     </li>
-   ${arr.slice(paginationStep - 1, paginationStep + 1)}${template2}${arr.slice(stepCount - 1, stepCount)}
+    ${renderPagination()}
     <li class="pagination__item pagination__item--button pagination__item--button-next">
       <a href="#">Далее</a>
     </li>
