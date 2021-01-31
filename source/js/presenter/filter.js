@@ -47,6 +47,10 @@ export default class Filter {
       return;
     }
 
+    // filterStringType = filterStringType.map((string) => Number(string));
+
+    // console.log(filterStringType);
+
     this._filterModel.setFilter(filterStringType, `stringAmount`);
   }
 
@@ -54,13 +58,6 @@ export default class Filter {
     if (this._prevFilterComponent === 0) {
       return;
     }
-
-    // filterPriceType.forEach((filter) => {
-      // const elem = parseInt(String(filter).replace(/\s+/g, ``), 10);
-      // if (elem < 0) {
-        // this._filterComponent.getElement().querySelector(`.catalog__filters-price-change`).setCustomValidity(`2 комнаты — для 1 или 2 гостей!`);
-      // }
-    // });
 
     filterPriceType = filterPriceType.map((filter) => {
       return parseInt(String(filter).replace(/\s+/g, ``), 10);

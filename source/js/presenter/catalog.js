@@ -13,7 +13,7 @@ import {SortByCategoryType, SortByPriorityType} from "../const.js";
 import {filteredGoodsByType, filteredGoodsByPrice} from "../utils/filter.js";
 import {MenuItem, UserAction} from "../const.js";
 
-const GOOD_COUNT_PER_STEP = 3;
+const GOOD_COUNT_PER_STEP = 2;
 
 export default class Board {
   constructor(catalogContainer, goodsModel, filterModel, siteMenuModel, basketModel) {

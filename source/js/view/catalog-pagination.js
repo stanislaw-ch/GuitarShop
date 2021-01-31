@@ -1,45 +1,69 @@
 import AbstractView from "./abstract.js";
 
 const createCatalogPaginationElement = (goodsCount, goodsCountPerStep, paginationStep) => {
-  const stepCount = Math.ceil(goodsCount / goodsCountPerStep);
-  const delta = stepCount - 1;
+  const paginationCount = Math.ceil(goodsCount / goodsCountPerStep);
+  const paginationRange = 4;
 
-  // console.log(stepCount);
+  const renderPagination = () => {
+    let paginationItems = [];
+    let temp = ``;
+    for (let i = 1; i <= paginationCount; i++) {
+      temp = `<li class="pagination__item ${i === paginationStep ? `pagination__item--current` : ``}"><a>${i}</a></li>`;
+      paginationItems.push(temp);
+    }
 
-  let arr = [];
-  let temp = ``;
-  for (let i = 1; i < stepCount + 1; i++) {
-    temp = `<li class="pagination__item ${i === paginationStep ? `pagination__item--current` : ``}"><a href="#">${i}</a></li>`;
-    arr.push(temp);
-  }
-  // console.log(arr);
+    if (paginationRange >= paginationCount) {
+      return paginationItems.slice(0, paginationCount).join(``);
+    }
 
-  let template1 = ``;
-  for (let i = paginationStep; i < paginationStep + 2; i++) {
-    template1 += `<li class="pagination__item ${i === paginationStep ? `pagination__item--current` : ``}"><a href="#">${i}</a></li>`;
-  }
+    if (paginationRange < paginationCount) {
+      let paginationDots = [`<li class="pagination__item"><a>...</a></li>`];
+      let count = paginationStep - 1;
 
-  let template4 = ``;
-  for (let i = stepCount - delta; i <= stepCount; i++) {
-    template4 += `<li class="pagination__item ${i === paginationStep ? `pagination__item--current` : ``}"><a href="#">${i}</a></li>`;
-  }
+      if (paginationStep < 2) {
+        paginationItems = [
+          ...paginationItems.slice(0, paginationStep + 1),
+          paginationDots,
+          ...paginationItems.slice(paginationCount - 1, paginationCount)
+        ].join(``);
 
-  let template2 = `<li class="pagination__item"><a href="#">${`...`}</a></li>`;
+        return paginationItems;
+      }
 
-  let template3 = `<li class="pagination__item ${stepCount === paginationStep ? `pagination__item--current` : ``}"><a href="#">${stepCount}</a></li>`;
+      if (paginationStep === 2) {
+        paginationItems = [
+          ...paginationItems.slice(count - 1, paginationStep),
+          paginationDots,
+          ...paginationItems.slice(paginationCount - 1, paginationCount)
+        ].join(``);
 
-  // let template5 = ``;
-  // for (let i = paginationStep - 1; i < paginationStep; i++) {
-  //   template5 = `<li class="pagination__item"><a href="#">${i}</a></li>`;
-  // }
+        return paginationItems;
+      }
 
-  // ${paginationStep > 1 ? template5 : ``}
-  // ${paginationStep >= stepCount - delta ? template4 : template1}${paginationStep >= stepCount - delta ? `` : template2}${paginationStep >= stepCount - 3 ? `` : template3}
+      if (paginationCount - paginationStep < paginationRange - 1) {
+        paginationItems = [
+          ...paginationItems.slice(paginationCount - paginationRange, paginationCount)
+        ].join(``);
+
+        return paginationItems;
+      }
+
+      paginationItems = [
+        ...paginationItems.slice(count - 1, paginationStep),
+        paginationDots,
+        ...paginationItems.slice(paginationCount - 1, paginationCount)
+      ].join(``);
+
+      return paginationItems;
+    }
+    return paginationItems.join(``);
+  };
+
   return `<ul class="catalog__pagination pagination">
     <li class="pagination__item pagination__item--button pagination__item--button-previous">
       <a href="#">Назад</a>
     </li>
-   ${arr.slice(paginationStep - 1, paginationStep + 1)}${template2}${arr.slice(stepCount - 1, stepCount)}
+    ${renderPagination()}
     <li class="pagination__item pagination__item--button pagination__item--button-next">
       <a href="#">Далее</a>
     </li>

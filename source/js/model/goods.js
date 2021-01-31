@@ -14,4 +14,22 @@ export default class Goods extends Observer {
   getGoods() {
     return this._goods;
   }
+
+  static adaptToClient(point) {
+    const adaptedPoint = Object.assign(
+        {},
+        point
+    );
+
+    return adaptedPoint;
+  }
+
+  static adaptToServer(point) {
+    const adaptedPoint = Object.assign(
+        {},
+        point
+    );
+
+    return adaptedPoint;
+  }
 }
