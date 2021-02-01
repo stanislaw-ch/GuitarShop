@@ -1,10 +1,12 @@
 import AbstractView from "./abstract.js";
+import {getGuitarType} from "../utils/good.js";
 
 const createCatalogItemElement = (data) => {
-  const {image, reviewAmount, name, price, starsCount} = data;
+  const {type, reviewAmount, name, price, starsCount} = data;
+
   return (
     `<li class="list__item">
-      <img src="${image}" width="80" height="202" alt="Изображение товара">
+      <img src="img/guitar-${getGuitarType(type)}.png" width="80" height="202" alt="Изображение товара">
       <div class="list__rating rating">
         <div class="list__stars rating__stars">
           <span style="width: ${starsCount * 20}%;"></span>

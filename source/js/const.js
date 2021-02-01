@@ -11,22 +11,22 @@ export const SortByPriorityType = {
 };
 
 export const FilterType = {
-  ELECTRO: `электрогитара`,
+  ELECTRIC: `электрогитара`,
   ACOUSTIC: `акустическая гитара`,
   UKULELE: `укулеле`
 };
 
 export const FilterStringAmount = {
-  FOUR: `4`,
-  SIX: `6`,
-  SEVEN: `7`,
-  TWELVE: `12`,
+  FOUR: 4,
+  SIX: 6,
+  SEVEN: 7,
+  TWELVE: 12,
 };
 
 export const StringsAmountByType = {
-  ELECTRO: [`4`, `6`, `7`],
-  ACOUSTIC: [`6`, `7`, `12`],
-  UKULELE: [`4`]
+  ELECTRIC: [4, 6, 7],
+  ACOUSTIC: [6, 7, 12],
+  UKULELE: [4]
 };
 
 export const MenuItem = {
@@ -45,14 +45,11 @@ export const BreadcrumbsTitle = {
 };
 
 export const UserAction = {
-  UPDATE_POINT: `UPDATE_POINT`,
-  ADD_POINT: `ADD_POINT`,
-  DELETE_POINT: `DELETE_POINT`
+  UPDATE_GOOD: `UPDATE_GOOD`,
+  DELETE_GOOD: `DELETE_GOOD`
 };
 
 export const UpdateType = {
-  MINOR: `MINOR`,
-  MAJOR: `MAJOR`,
   INIT: `INIT`
 };
 

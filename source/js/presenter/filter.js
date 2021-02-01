@@ -47,9 +47,9 @@ export default class Filter {
       return;
     }
 
-    // filterStringType = filterStringType.map((string) => Number(string));
+    filterStringType = filterStringType.map((string) => Number(string));
 
-    // console.log(filterStringType);
+    console.log(filterStringType);
 
     this._filterModel.setFilter(filterStringType, `stringAmount`);
   }

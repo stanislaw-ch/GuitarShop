@@ -13,12 +13,14 @@ export default class BasketGoodElement {
 
     this._handleQuantityIncClick = this._handleQuantityIncClick.bind(this);
     this._handleQuantityDecClick = this._handleQuantityDecClick.bind(this);
+    this._handleProductQuantityChange = this._handleProductQuantityChange.bind(this);
     this._handleDeleteClick = this._handleDeleteClick.bind(this);
 
     this._handleDeletePopUpClick = this._handleDeletePopUpClick.bind(this);
     this._handleToShoppingPopUpClick = this._handleToShoppingPopUpClick.bind(this);
     this._handleCloseClick = this._handleCloseClick.bind(this);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
+    this._overlayClickHandler = this._overlayClickHandler.bind(this);
   }
 
   init(basketCard) {
@@ -31,6 +33,7 @@ export default class BasketGoodElement {
 
     this._basketItemComponent.setQuantityIncHandle(this._handleQuantityIncClick);
     this._basketItemComponent.setQuantityDecHandle(this._handleQuantityDecClick);
+    this._basketItemComponent.setProductQuantityChangeHandle(this._handleProductQuantityChange);
     this._basketItemComponent.setDeleteClickHandler(this._handleDeleteClick);
   }
 
@@ -40,8 +43,8 @@ export default class BasketGoodElement {
 
   _handleQuantityIncClick(update) {
     this._changeData(
-        UserAction.UPDATE_POINT,
-        UpdateType.MINOR,
+        UserAction.UPDATE_GOOD,
+        UpdateType.INIT,
         Object.assign({}, this._basketCard, {count: update})
     );
   }
@@ -52,8 +55,20 @@ export default class BasketGoodElement {
       return;
     }
     this._changeData(
-        UserAction.UPDATE_POINT,
-        UpdateType.MINOR,
+        UserAction.UPDATE_GOOD,
+        UpdateType.INIT,
+        Object.assign({}, this._basketCard, {count: update})
+    );
+  }
+
+  _handleProductQuantityChange(update) {
+    if (update === 0) {
+      this._handleDeleteClick();
+      return;
+    }
+    this._changeData(
+        UserAction.UPDATE_GOOD,
+        UpdateType.INIT,
         Object.assign({}, this._basketCard, {count: update})
     );
   }
@@ -63,6 +78,7 @@ export default class BasketGoodElement {
 
     render(this._basketPopUpContainer, this._basketPopUpDeleteComponent, RenderPosition.AFTERBEGIN);
     document.addEventListener(`keydown`, this._escKeyDownHandler);
+    document.addEventListener(`click`, this._overlayClickHandler);
 
     this._basketPopUpDeleteComponent.setCloseClickHandler(this._handleCloseClick);
     this._basketPopUpDeleteComponent.setDeleteClickHandler(this._handleDeletePopUpClick);
@@ -72,8 +88,8 @@ export default class BasketGoodElement {
 
   _handleDeletePopUpClick() {
     this._changeData(
-        UserAction.DELETE_POINT,
-        UpdateType.MINOR,
+        UserAction.DELETE_GOOD,
+        UpdateType.INIT,
         Object.assign({}, this._basketCard)
     );
     this._removeBasketPopUpDeleteComponent();
@@ -82,6 +98,7 @@ export default class BasketGoodElement {
   _removeBasketPopUpDeleteComponent() {
     remove(this._basketPopUpDeleteComponent);
     document.removeEventListener(`keydown`, this._escKeyDownHandler);
+    document.removeEventListener(`keydown`, this._overlayClickHandler);
   }
 
   _escKeyDownHandler(evt) {
@@ -94,9 +111,19 @@ export default class BasketGoodElement {
     }
   }
 
+  _overlayClickHandler(evt) {
+    if (evt.target.classList.contains(`overlay`)) {
+      evt.preventDefault();
+
+      if (this._basketPopUpDeleteComponent !== null) {
+        this._removeBasketPopUpDeleteComponent();
+      }
+    }
+  }
+
   _handleCloseClick() {
     if (this._basketPopUpDeleteComponent !== null) {
-      this._basketPopUpDeleteComponent();
+      this._removeBasketPopUpDeleteComponent();
     }
   }
 

@@ -1,5 +1,5 @@
 import BasketView from "../view/basket.js";
-import BasketGoodPresenter, {State as CardPresenterViewState} from "../presenter/basket-good.js";
+import BasketGoodPresenter from "../presenter/basket-good.js";
 import {render, RenderPosition, remove} from "../utils/render.js";
 import {UserAction, UpdateType, DiscountType} from "../const.js";
 
@@ -10,25 +10,20 @@ export default class Basket {
     this._currentDiscountType = DiscountType.DEFAULT;
     this._isAvailable = true;
     this._currentFilter = null;
-
     this._goodPresenter = {};
-
     this._basketComponent = null;
-
-
     this._handleDiscountClick = this._handleDiscountClick.bind(this);
     this._handleViewAction = this._handleViewAction.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
-    // this._handleFilterTypeChange = this._handleFilterTypeChange.bind(this);
   }
 
   init() {
-    // console.log(`init`);
     this._basketComponent = new BasketView(this._basketModel.getBasket(), this._currentDiscountType, this._isAvailable);
 
     render(this._basketContainer, this._basketComponent, RenderPosition.BEFOREEND);
-    // this._goodsModel.addObserver(this._handleModelEvent);
+
     this._renderBasket();
+
     this._basketComponent.setDiscountClickHandler(this._handleDiscountClick);
     this._basketModel.addObserver(this._handleModelEvent);
   }
@@ -36,14 +31,7 @@ export default class Basket {
   destroy() {
     remove(this._basketComponent);
 
-    // Object
-    //     .values(this._goodPresenter)
-    //     .forEach((presenter) => presenter.destroy());
-    // this._goodPresenter = {};
-
     this._basketComponent = null;
-
-    // this._goodsModel.removeObserver(this._handleModelEvent);
     this._basketModel.removeObserver(this._handleModelEvent);
   }
 
@@ -69,46 +57,20 @@ export default class Basket {
 
   _handleViewAction(actionType, updateType, update) {
     switch (actionType) {
-      case UserAction.UPDATE_POINT:
-        // this._goodPresenter[update.id].setViewState(CardPresenterViewState.SAVING);
-        // console.log(updateType);
-        // console.log(update);
+      case UserAction.UPDATE_GOOD:
         this._basketModel.updateGood(updateType, update);
         break;
-      case UserAction.ADD_POINT:
-        this._pointNewPresenter.setSaving();
-        this._api.addPoint(update).then((response) => {
-          this._pointsModel.addPoint(updateType, response);
-        })
-            .catch(() => {
-              this._pointNewPresenter.setAborting();
-            });
-        break;
-      case UserAction.DELETE_POINT:
+      case UserAction.DELETE_GOOD:
         this._basketModel.deleteGood(updateType, update);
         break;
     }
   }
 
-  _handleModelEvent(updateType, update) {
+  _handleModelEvent(updateType) {
     switch (updateType) {
-      case UpdateType.MAJOR:
-        this._tripInfoPresenter.destroy();
-        // this._pointItems[pointItem.id].init(dayPoint, pointItem, this._getOffers(), this._getDestination());
-        this._renderTripInfo();
-        break;
-      case UpdateType.MINOR:
-        this.destroy();
-        // this._basketComponent.getElement().innerHTML = ``;
-        this.init();
-        // this._renderBasket();
-        break;
       case UpdateType.INIT:
-        this._isLoading = false;
-        this._newTripBtnComponent.getElement().disabled = false;
-        remove(this._loadingComponent);
-        this._renderTripInfo();
-        this._renderTrip();
+        this.destroy();
+        this.init();
         break;
     }
   }
@@ -126,6 +88,5 @@ export default class Basket {
   _renderBasket() {
     const goods = this._basketModel.getBasket();
     this._renderGoods(goods);
-    // }
   }
 }

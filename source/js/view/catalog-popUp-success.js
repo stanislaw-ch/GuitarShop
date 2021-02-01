@@ -3,17 +3,19 @@ import {MenuItem} from "../const.js";
 
 const createCatalogPopUpSuccessElement = () => {
   return `<section class="modal">
-  <div class="modal__popup">
-    <h2 class="modal__title">Товар успешно добавлен в корзину</h2>
+  <div class="overlay">
+    <div class="modal__popup">
+      <h2 class="modal__title">Товар успешно добавлен в корзину</h2>
 
-    <div class="modal__content">
-      <div class="modal__buttons-wrapper">
-        <button class="modal__button modal__button--to-basket" data-menu-type="${MenuItem.BASKET}">Перейти в корзину</button>
-        <button class="modal__button modal__button--to-shoping">Продолжить покупки</button>
+      <div class="modal__content">
+        <div class="modal__buttons-wrapper">
+          <button class="modal__button modal__button--to-basket" data-menu-type="${MenuItem.BASKET}">Перейти в корзину</button>
+          <button class="modal__button modal__button--to-shoping">Продолжить покупки</button>
+        </div>
+        <button class="modal__close" type="button">
+          <span class="visually-hidden">Закрыть</span>
+        </button>
       </div>
-      <button class="modal__close" type="button">
-        <span class="visually-hidden">Закрыть</span>
-      </button>
     </div>
   </div>
 </section>`;

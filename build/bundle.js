@@ -86,353 +86,6 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "./source/js/api/index.js":
-/*!********************************!*\
-  !*** ./source/js/api/index.js ***!
-  \********************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Api; });
-/* harmony import */ var _model_goods_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../model/goods.js */ "./source/js/model/goods.js");
-
-
-const Method = {
-  GET: `GET`,
-  PUT: `PUT`,
-  POST: `POST`,
-  DELETE: `DELETE`
-};
-
-const SuccessHTTPStatusRange = {
-  MIN: 200,
-  MAX: 299
-};
-
-class Api {
-  constructor(endPoint, authorization) {
-    this._endPoint = endPoint;
-    this._authorization = authorization;
-  }
-
-  // getOffers() {
-  //   return this._load({url: `offers`})
-  //     .then(Api.toJSON);
-  // }
-
-  getPoints() {
-    return this._load()
-        .then(Api.toJSON)
-        .then((goods) => goods.map(_model_goods_js__WEBPACK_IMPORTED_MODULE_0__["default"].adaptToClient));
-  }
-
-  // getDestinations() {
-  //   return this._load({url: `destinations`})
-  //     .then(Api.toJSON);
-  // }
-
-  updatePoint(point) {
-    return this._load({
-      url: `points/${point.id}`,
-      method: Method.PUT,
-      body: JSON.stringify(_model_goods_js__WEBPACK_IMPORTED_MODULE_0__["default"].adaptToServer(point)),
-      headers: new Headers({"Content-Type": `application/json`})
-    })
-      .then(Api.toJSON)
-      .then(_model_goods_js__WEBPACK_IMPORTED_MODULE_0__["default"].adaptToClient);
-  }
-
-  addPoint(point) {
-    return this._load({
-      url: `points`,
-      method: Method.POST,
-      body: JSON.stringify(_model_goods_js__WEBPACK_IMPORTED_MODULE_0__["default"].adaptToServer(point)),
-      headers: new Headers({"Content-Type": `application/json`})
-    })
-      .then(Api.toJSON)
-      .then(_model_goods_js__WEBPACK_IMPORTED_MODULE_0__["default"].adaptToClient);
-  }
-
-  deletePoint(point) {
-    return this._load({
-      url: `points/${point.id}`,
-      method: Method.DELETE
-    });
-  }
-
-  sync(data) {
-    return this._load({
-      url: `points/sync`,
-      method: Method.POST,
-      body: JSON.stringify(data),
-      headers: new Headers({"Content-Type": `application/json`})
-    })
-      .then(Api.toJSON);
-  }
-
-  _load({
-    method = Method.GET,
-    body = null,
-    headers = new Headers()
-  }) {
-    headers.append(`Authorization`, this._authorization);
-
-    return fetch(
-        `${this._endPoint}`,
-        {method, body, headers}
-    )
-        .then(Api.checkStatus)
-        .catch(Api.catchError);
-  }
-
-  static checkStatus(response) {
-    if (
-      response.status < SuccessHTTPStatusRange.MIN &&
-      response.status > SuccessHTTPStatusRange.MAX
-    ) {
-      throw new Error(`${response.status}: ${response.statusText}`);
-    }
-
-    return response;
-  }
-
-  static toJSON(response) {
-    return response.json();
-  }
-
-  static catchError(err) {
-    throw err;
-  }
-}
-
-
-/***/ }),
-
-/***/ "./source/js/api/provider.js":
-/*!***********************************!*\
-  !*** ./source/js/api/provider.js ***!
-  \***********************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Provider; });
-/* harmony import */ var _model_goods_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../model/goods.js */ "./source/js/model/goods.js");
-// import {nanoid} from "nanoid";
-
-
-const getSyncedPoints = (items) => {
-  return items.filter(({success}) => success)
-    .map(({payload}) => payload.point);
-};
-
-class Provider {
-  constructor(api, store) {
-    this._api = api;
-    this._store = store;
-  }
-
-  getOffers() {
-    if (Provider.isOnline()) {
-      return this._api.getOffers()
-        .then((offers) => {
-          this._store.setOffers(offers);
-          return offers;
-        });
-    }
-    const storeOffers = Object.values(this._store.getOffers());
-
-    return Promise.resolve(storeOffers);
-  }
-
-  getDestinations() {
-    if (Provider.isOnline()) {
-      return this._api.getDestinations()
-        .then((destinations) => {
-          this._store.setDestinations(destinations);
-          return destinations;
-        });
-    }
-
-    const storeDestinations = Object.values(this._store.getDestinations());
-
-    return Promise.resolve(storeDestinations);
-  }
-
-  getPoints() {
-    if (Provider.isOnline()) {
-      return this._api.getPoints()
-        .then((points) => {
-          const items = points.map(_model_goods_js__WEBPACK_IMPORTED_MODULE_0__["default"].adaptToServer);
-          this._store.setPoints(items);
-
-          return points;
-        });
-    }
-
-    const storePoints = Object.values(this._store.getPoints());
-
-    return Promise.resolve(storePoints.map(_model_goods_js__WEBPACK_IMPORTED_MODULE_0__["default"].adaptToClient));
-  }
-
-  updatePoint(point) {
-    if (Provider.isOnline()) {
-      return this._api.updatePoint(point)
-        .then((updatedPoint) => {
-          this._store.updateItem(updatedPoint.id, _model_goods_js__WEBPACK_IMPORTED_MODULE_0__["default"].adaptToServer(updatedPoint));
-          return updatedPoint;
-        });
-    }
-
-    this._store.updateItem(point.id, _model_goods_js__WEBPACK_IMPORTED_MODULE_0__["default"].adaptToServer(Object.assign({}, point)));
-
-    return Promise.resolve(point);
-  }
-
-  // addPoint(point) {
-  //   if (Provider.isOnline()) {
-  //     return this._api.addPoint(point)
-  //       .then((newPoint) => {
-  //         this._store.setItem(GoodsModel.adaptToServer(newPoint));
-  //         return newPoint;
-  //       });
-  //   }
-
-  //   const localNewPointId = nanoid();
-  //   const localNewPoint = Object.assign({}, point, {id: localNewPointId});
-
-  //   this._store.setItem(GoodsModel.adaptToServer(localNewPoint));
-
-  //   return Promise.resolve(localNewPoint);
-  // }
-
-  deletePoint(point) {
-    if (Provider.isOnline()) {
-      return this._api.deletePoint(point)
-        .then(() => this._store.leftPoints(point.id));
-    }
-
-    this._store.leftPoints(point.id);
-
-    return Promise.resolve();
-  }
-
-  sync() {
-    if (Provider.isOnline()) {
-      const storePoints = this._store.getPoints();
-
-      return this._api.sync(storePoints)
-        .then((response) => {
-          const createdPoints = response.created;
-          const updatedPoints = getSyncedPoints(response.updated);
-          const items = [...createdPoints, ...updatedPoints];
-
-          this._store.setPoints(items);
-        });
-    }
-
-    return Promise.reject(new Error(`Sync data failed`));
-  }
-
-  static isOnline() {
-    return window.navigator.onLine;
-  }
-}
-
-
-/***/ }),
-
-/***/ "./source/js/api/store.js":
-/*!********************************!*\
-  !*** ./source/js/api/store.js ***!
-  \********************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Store; });
-class Store {
-  constructor(key, storage) {
-    this._storage = storage;
-    this._storeKey = key;
-  }
-
-  getData() {
-    try {
-      return JSON.parse(this._storage.getItem(this._storeKey)) || {};
-    } catch (err) {
-      return {};
-    }
-  }
-
-  setData(data) {
-    this._storage.setItem(this._storeKey, JSON.stringify(data));
-  }
-
-  setOffers(offers) {
-    const data = this.getData();
-    data.offers = offers;
-
-    this.setData(data);
-  }
-
-  setDestinations(destinations) {
-    const data = this.getData();
-    data.destinations = destinations;
-
-    this.setData(data);
-  }
-
-  setPoints(points) {
-    const data = this.getData();
-    data.points = points;
-
-    this.setData(data);
-  }
-
-  getOffers() {
-    return this.getData().offers;
-  }
-
-  getDestinations() {
-    return this.getData().destinations;
-  }
-
-  getPoints() {
-    return this.getData().points;
-  }
-
-  setItem(value) {
-    const store = this.getData();
-    store.points.push(value);
-
-    this.setData(store);
-  }
-
-  updateItem(key, value) {
-    const storedPoints = this.getPoints();
-
-    const index = storedPoints.findIndex((point) => point.id === key);
-    storedPoints[index] = value;
-
-    this.setPoints(storedPoints);
-  }
-
-  leftPoints(key) {
-    const store = this.getData();
-    const removePoints = store.points.filter((point) => point.id !== key);
-
-    this.setPoints(removePoints);
-  }
-}
-
-
-/***/ }),
-
 /***/ "./source/js/const.js":
 /*!****************************!*\
   !*** ./source/js/const.js ***!
@@ -466,22 +119,22 @@ const SortByPriorityType = {
 };
 
 const FilterType = {
-  ELECTRO: `электрогитара`,
+  ELECTRIC: `электрогитара`,
   ACOUSTIC: `акустическая гитара`,
   UKULELE: `укулеле`
 };
 
 const FilterStringAmount = {
-  FOUR: `4`,
-  SIX: `6`,
-  SEVEN: `7`,
-  TWELVE: `12`,
+  FOUR: 4,
+  SIX: 6,
+  SEVEN: 7,
+  TWELVE: 12,
 };
 
 const StringsAmountByType = {
-  ELECTRO: [`4`, `6`, `7`],
-  ACOUSTIC: [`6`, `7`, `12`],
-  UKULELE: [`4`]
+  ELECTRIC: [4, 6, 7],
+  ACOUSTIC: [6, 7, 12],
+  UKULELE: [4]
 };
 
 const MenuItem = {
@@ -500,14 +153,11 @@ const BreadcrumbsTitle = {
 };
 
 const UserAction = {
-  UPDATE_POINT: `UPDATE_POINT`,
-  ADD_POINT: `ADD_POINT`,
-  DELETE_POINT: `DELETE_POINT`
+  UPDATE_GOOD: `UPDATE_GOOD`,
+  DELETE_GOOD: `DELETE_GOOD`
 };
 
 const UpdateType = {
-  MINOR: `MINOR`,
-  MAJOR: `MAJOR`,
   INIT: `INIT`
 };
 
@@ -539,12 +189,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _model_filter_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./model/filter.js */ "./source/js/model/filter.js");
 /* harmony import */ var _model_site_menu_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./model/site-menu.js */ "./source/js/model/site-menu.js");
 /* harmony import */ var _model_basket_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./model/basket.js */ "./source/js/model/basket.js");
-/* harmony import */ var _api_index_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./api/index.js */ "./source/js/api/index.js");
-/* harmony import */ var _api_store_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./api/store.js */ "./source/js/api/store.js");
-/* harmony import */ var _api_provider_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./api/provider.js */ "./source/js/api/provider.js");
-/* harmony import */ var _mock_goods_json__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./mock/goods.json */ "./source/js/mock/goods.json");
-var _mock_goods_json__WEBPACK_IMPORTED_MODULE_12___namespace = /*#__PURE__*/__webpack_require__.t(/*! ./mock/goods.json */ "./source/js/mock/goods.json", 1);
-/* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./utils/render.js */ "./source/js/utils/render.js");
+/* harmony import */ var _mock_goods_json__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./mock/goods.json */ "./source/js/mock/goods.json");
+var _mock_goods_json__WEBPACK_IMPORTED_MODULE_9___namespace = /*#__PURE__*/__webpack_require__.t(/*! ./mock/goods.json */ "./source/js/mock/goods.json", 1);
+/* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./utils/render.js */ "./source/js/utils/render.js");
 
 
 
@@ -557,22 +204,9 @@ var _mock_goods_json__WEBPACK_IMPORTED_MODULE_12___namespace = /*#__PURE__*/__we
 
 
 
-
-
-
-
-const AUTHORIZATION = `Basic oovigizsskoktddjjhg`;
-const END_POINT = `./mock/goods.json`;
-const STORE_PREFIX = `guitarShop-localStorage`;
-const STORE_VER = `v01`;
-const STORE_NAME = `${STORE_PREFIX}-${STORE_VER}`;
-
-const api = new _api_index_js__WEBPACK_IMPORTED_MODULE_9__["default"](END_POINT, AUTHORIZATION);
-const store = new _api_store_js__WEBPACK_IMPORTED_MODULE_10__["default"](STORE_NAME, window.localStorage);
-const apiWithProvider = new _api_provider_js__WEBPACK_IMPORTED_MODULE_11__["default"](api, store);
 
 const goodsModel = new _model_goods_js__WEBPACK_IMPORTED_MODULE_5__["default"]();
-goodsModel.setGoods(_mock_goods_json__WEBPACK_IMPORTED_MODULE_12__);
+goodsModel.setGoods(_mock_goods_json__WEBPACK_IMPORTED_MODULE_9__);
 
 const filterModel = new _model_filter_js__WEBPACK_IMPORTED_MODULE_6__["default"]();
 const siteMenuModel = new _model_site_menu_js__WEBPACK_IMPORTED_MODULE_7__["default"]();
@@ -584,8 +218,8 @@ const siteHeaderElement = document.querySelector(`.page-header`);
 const siteMainElement = document.querySelector(`.page-main`);
 const siteMainContainerElement = siteMainElement.querySelector(`.container`);
 
-Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_13__["render"])(siteMainContainerElement, siteCatalogSectionComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_13__["RenderPosition"].BEFOREEND);
-Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_13__["render"])(siteCatalogSectionComponent, siteCatalogSectionWrapperComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_13__["RenderPosition"].BEFOREEND);
+Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_10__["render"])(siteMainContainerElement, siteCatalogSectionComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_10__["RenderPosition"].BEFOREEND);
+Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_10__["render"])(siteCatalogSectionComponent, siteCatalogSectionWrapperComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_10__["RenderPosition"].BEFOREEND);
 
 const siteMenuPresenter = new _presenter_site_menu_js__WEBPACK_IMPORTED_MODULE_2__["default"](siteHeaderElement, siteMenuModel, basketModel);
 const breadcrumbsPresenter = new _presenter_breadcrumbs_js__WEBPACK_IMPORTED_MODULE_4__["default"](siteMainContainerElement, siteMenuModel);
@@ -595,27 +229,6 @@ siteMenuPresenter.init();
 breadcrumbsPresenter.init();
 catalogPresenter.init();
 
-// apiWithProvider.getPoints()
-//     .then((goods) => {
-//       goodsModel.setGoods(goods);
-//     })
-//     .catch(() => {
-//       goodsModel.setGoods([]);
-//     });
-
-// window.addEventListener(`load`, () => {
-//   navigator.serviceWorker.register(`/sw.js`);
-// });
-
-// window.addEventListener(`online`, () => {
-//   document.title = document.title.replace(` [offline]`, ``);
-//   apiWithProvider.sync();
-// });
-
-// window.addEventListener(`offline`, () => {
-//   document.title += ` [offline]`;
-// });
-
 
 /***/ }),
 
@@ -623,10 +236,10 @@ catalogPresenter.init();
 /*!***********************************!*\
   !*** ./source/js/mock/goods.json ***!
   \***********************************/
-/*! exports provided: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, default */
+/*! exports provided: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, default */
 /***/ (function(module) {
 
-module.exports = JSON.parse("[{\"id\":0,\"identiferNumber\":\"SO757575\",\"name\":\"Честер Bass\",\"type\":\"электрогитара\",\"reviewAmount\":\"15\",\"stringAmount\":\"7\",\"price\":17500,\"image\":\"img/gitar-electric_1.png\",\"starsCount\":\"3.2\"},{\"id\":1,\"identiferNumber\":\"TK129049\",\"name\":\"СURT Z300\",\"type\":\"электрогитара\",\"reviewAmount\":\"9\",\"stringAmount\":\"7\",\"price\":29500,\"image\":\"img/gitar-electric_2.png\",\"starsCount\":\"4.5\"},{\"id\":2,\"identiferNumber\":\"RO111111\",\"name\":\"Roman LX\",\"type\":\"укулеле\",\"reviewAmount\":\"21\",\"stringAmount\":\"4\",\"price\":6800,\"image\":\"img/gitar-ukulele_1.png\",\"starsCount\":\"5\"},{\"id\":3,\"identiferNumber\":\"TK436457\",\"name\":\"СURT T300\",\"type\":\"электрогитара\",\"reviewAmount\":\"15\",\"stringAmount\":\"6\",\"price\":30000,\"image\":\"img/gitar-electric_3.png\",\"starsCount\":\"3\"},{\"id\":4,\"identiferNumber\":\"DI192138\",\"name\":\"Dania Super\",\"type\":\"акустическая гитара\",\"reviewAmount\":\"5\",\"stringAmount\":\"7\",\"price\":3500,\"image\":\"img/gitar-acoustic_2.png\",\"starsCount\":\"4.5\"},{\"id\":5,\"identiferNumber\":\"SO934345\",\"name\":\"Честер WX\",\"type\":\"электрогитара\",\"reviewAmount\":\"17\",\"stringAmount\":\"6\",\"price\":15300,\"image\":\"img/gitar-electric_1.png\",\"starsCount\":\"4.15\"},{\"id\":6,\"identiferNumber\":\"DI082347\",\"name\":\"Dania VX\",\"type\":\"укулеле\",\"reviewAmount\":\"5\",\"stringAmount\":\"4\",\"price\":2200,\"image\":\"img/gitar-ukulele_1.png\",\"starsCount\":\"3.15\"},{\"id\":7,\"identiferNumber\":\"SO135646\",\"name\":\"Честер Plus\",\"type\":\"электрогитара\",\"reviewAmount\":\"27\",\"stringAmount\":\"4\",\"price\":30000,\"image\":\"img/gitar-electric_1.png\",\"starsCount\":\"2.15\"},{\"id\":8,\"identiferNumber\":\"VO154751\",\"name\":\"Виолана 300\",\"type\":\"акустическая гитара\",\"reviewAmount\":\"3\",\"stringAmount\":\"7\",\"price\":1700,\"image\":\"img/gitar-acoustic_2.png\",\"starsCount\":\"3.15\"},{\"id\":9,\"identiferNumber\":\"TK244556\",\"name\":\"СURT Clasic\",\"type\":\"электрогитара\",\"reviewAmount\":20,\"stringAmount\":4,\"price\":23000,\"image\":\"img/gitar-electric_2.png\",\"starsCount\":5},{\"id\":10,\"identiferNumber\":\"TK244556\",\"name\":\"СURT Clasic\",\"type\":\"электрогитара\",\"reviewAmount\":\"20\",\"stringAmount\":\"4\",\"price\":23000,\"image\":\"img/gitar-electric_2.png\",\"starsCount\":\"5\"}]");
+module.exports = JSON.parse("[{\"id\":1,\"identiferNumber\":\"SO757575\",\"name\":\"Честер Bass\",\"type\":\"электрогитара\",\"reviewAmount\":15,\"stringAmount\":7,\"price\":17500,\"starsCount\":3.2},{\"id\":2,\"identiferNumber\":\"TK129049\",\"name\":\"СURT Z300\",\"type\":\"электрогитара\",\"reviewAmount\":9,\"stringAmount\":7,\"price\":29500,\"starsCount\":4.5},{\"id\":3,\"identiferNumber\":\"RO111111\",\"name\":\"Roman LX\",\"type\":\"укулеле\",\"reviewAmount\":21,\"stringAmount\":4,\"price\":6800,\"starsCount\":5},{\"id\":4,\"identiferNumber\":\"TK436457\",\"name\":\"СURT T300\",\"type\":\"электрогитара\",\"reviewAmount\":15,\"stringAmount\":6,\"price\":30000,\"starsCount\":3},{\"id\":5,\"identiferNumber\":\"DI192138\",\"name\":\"Dania Super\",\"type\":\"акустическая гитара\",\"reviewAmount\":5,\"stringAmount\":7,\"price\":3500,\"starsCount\":4.5},{\"id\":6,\"identiferNumber\":\"SO934345\",\"name\":\"Честер WX \",\"type\":\"электрогитара\",\"reviewAmount\":17,\"stringAmount\":6,\"price\":15300,\"starsCount\":4.1},{\"id\":7,\"identiferNumber\":\"DI082347\",\"name\":\"Dania VX\",\"type\":\"укулеле\",\"reviewAmount\":5,\"stringAmount\":4,\"price\":2200,\"starsCount\":3.2},{\"id\":8,\"identiferNumber\":\"SO135646\",\"name\":\"Честер Plus \",\"type\":\"электрогитара\",\"reviewAmount\":27,\"stringAmount\":4,\"price\":30000,\"starsCount\":2.1},{\"id\":9,\"identiferNumber\":\"VO154751\",\"name\":\"Виолана 300\",\"type\":\"акустическая гитара\",\"reviewAmount\":3,\"stringAmount\":7,\"price\":1700,\"starsCount\":3.2},{\"id\":10,\"identiferNumber\":\"TK244556\",\"name\":\"СURT Clasic\",\"type\":\"электрогитара\",\"reviewAmount\":20,\"stringAmount\":4,\"price\":23000,\"starsCount\":4.5},{\"id\":11,\"identiferNumber\":\"TK134663\",\"name\":\"СURT Z250\",\"type\":\"электрогитара\",\"reviewAmount\":19,\"stringAmount\":4,\"price\":18700,\"starsCount\":5},{\"id\":12,\"identiferNumber\":\"SO123212\",\"name\":\"Честер 7X\",\"type\":\"электрогитара\",\"reviewAmount\":30,\"stringAmount\":7,\"price\":35000,\"starsCount\":3},{\"id\":13,\"identiferNumber\":\"SO123234\",\"name\":\"Честер 6V\",\"type\":\"электрогитара\",\"reviewAmount\":28,\"stringAmount\":6,\"price\":14900,\"starsCount\":4.5},{\"id\":14,\"identiferNumber\":\"VO519510\",\"name\":\"Виолана Mix\",\"type\":\"акустическая гитара\",\"reviewAmount\":7,\"stringAmount\":6,\"price\":7600,\"starsCount\":4.1},{\"id\":15,\"identiferNumber\":\"VO457369\",\"name\":\"Виолана 250x\",\"type\":\"акустическая гитара\",\"reviewAmount\":19,\"stringAmount\":6,\"price\":6500,\"starsCount\":3.2},{\"id\":16,\"identiferNumber\":\"FB625903\",\"name\":\"Фабио Лайт\",\"type\":\"акустическая гитара\",\"reviewAmount\":26,\"stringAmount\":7,\"price\":12000,\"starsCount\":2.1},{\"id\":17,\"identiferNumber\":\"FB576948\",\"name\":\"Фабио L100\",\"type\":\"акустическая гитара\",\"reviewAmount\":31,\"stringAmount\":7,\"price\":9900,\"starsCount\":3.2},{\"id\":18,\"identiferNumber\":\"LU012032\",\"name\":\"Liana Z200\",\"type\":\"акустическая гитара\",\"reviewAmount\":28,\"stringAmount\":12,\"price\":8900,\"starsCount\":4.5},{\"id\":19,\"identiferNumber\":\"LU546853\",\"name\":\"Liana Z100\",\"type\":\"акустическая гитара\",\"reviewAmount\":34,\"stringAmount\":12,\"price\":10500,\"starsCount\":5},{\"id\":20,\"identiferNumber\":\"LU458283\",\"name\":\"Liana Z300\",\"type\":\"акустическая гитара\",\"reviewAmount\":9,\"stringAmount\":6,\"price\":13300,\"starsCount\":3},{\"id\":21,\"identiferNumber\":\"RO324341\",\"name\":\"Roman RX\",\"type\":\"укулеле\",\"reviewAmount\":37,\"stringAmount\":4,\"price\":4800,\"starsCount\":4.5},{\"id\":22,\"identiferNumber\":\"RO214235\",\"name\":\"Roman TX\",\"type\":\"укулеле\",\"reviewAmount\":5,\"stringAmount\":4,\"price\":1900,\"starsCount\":4.1},{\"id\":23,\"identiferNumber\":\"DI132414\",\"name\":\"Dania U100\",\"type\":\"укулеле\",\"reviewAmount\":23,\"stringAmount\":4,\"price\":2500,\"starsCount\":3.2},{\"id\":24,\"identiferNumber\":\"DI934754\",\"name\":\"Dania WR\",\"type\":\"укулеле\",\"reviewAmount\":3,\"stringAmount\":4,\"price\":3800,\"starsCount\":2.1},{\"id\":25,\"identiferNumber\":\"DI034292\",\"name\":\"Dania LE\",\"type\":\"укулеле\",\"reviewAmount\":10,\"stringAmount\":4,\"price\":4100,\"starsCount\":3.2},{\"id\":26,\"identiferNumber\":\"MI193214\",\"name\":\"Mirana V10\",\"type\":\"укулеле\",\"reviewAmount\":14,\"stringAmount\":4,\"price\":2700,\"starsCount\":4.5},{\"id\":27,\"identiferNumber\":\"VO043244\",\"name\":\"Виолана Mini\",\"type\":\"укулеле\",\"reviewAmount\":29,\"stringAmount\":4,\"price\":6700,\"starsCount\":5}]");
 
 /***/ }),
 
@@ -853,12 +466,14 @@ class BasketGoodElement {
 
     this._handleQuantityIncClick = this._handleQuantityIncClick.bind(this);
     this._handleQuantityDecClick = this._handleQuantityDecClick.bind(this);
+    this._handleProductQuantityChange = this._handleProductQuantityChange.bind(this);
     this._handleDeleteClick = this._handleDeleteClick.bind(this);
 
     this._handleDeletePopUpClick = this._handleDeletePopUpClick.bind(this);
     this._handleToShoppingPopUpClick = this._handleToShoppingPopUpClick.bind(this);
     this._handleCloseClick = this._handleCloseClick.bind(this);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
+    this._overlayClickHandler = this._overlayClickHandler.bind(this);
   }
 
   init(basketCard) {
@@ -871,6 +486,7 @@ class BasketGoodElement {
 
     this._basketItemComponent.setQuantityIncHandle(this._handleQuantityIncClick);
     this._basketItemComponent.setQuantityDecHandle(this._handleQuantityDecClick);
+    this._basketItemComponent.setProductQuantityChangeHandle(this._handleProductQuantityChange);
     this._basketItemComponent.setDeleteClickHandler(this._handleDeleteClick);
   }
 
@@ -880,8 +496,8 @@ class BasketGoodElement {
 
   _handleQuantityIncClick(update) {
     this._changeData(
-        _const_js__WEBPACK_IMPORTED_MODULE_3__["UserAction"].UPDATE_POINT,
-        _const_js__WEBPACK_IMPORTED_MODULE_3__["UpdateType"].MINOR,
+        _const_js__WEBPACK_IMPORTED_MODULE_3__["UserAction"].UPDATE_GOOD,
+        _const_js__WEBPACK_IMPORTED_MODULE_3__["UpdateType"].INIT,
         Object.assign({}, this._basketCard, {count: update})
     );
   }
@@ -892,8 +508,20 @@ class BasketGoodElement {
       return;
     }
     this._changeData(
-        _const_js__WEBPACK_IMPORTED_MODULE_3__["UserAction"].UPDATE_POINT,
-        _const_js__WEBPACK_IMPORTED_MODULE_3__["UpdateType"].MINOR,
+        _const_js__WEBPACK_IMPORTED_MODULE_3__["UserAction"].UPDATE_GOOD,
+        _const_js__WEBPACK_IMPORTED_MODULE_3__["UpdateType"].INIT,
+        Object.assign({}, this._basketCard, {count: update})
+    );
+  }
+
+  _handleProductQuantityChange(update) {
+    if (update === 0) {
+      this._handleDeleteClick();
+      return;
+    }
+    this._changeData(
+        _const_js__WEBPACK_IMPORTED_MODULE_3__["UserAction"].UPDATE_GOOD,
+        _const_js__WEBPACK_IMPORTED_MODULE_3__["UpdateType"].INIT,
         Object.assign({}, this._basketCard, {count: update})
     );
   }
@@ -903,6 +531,7 @@ class BasketGoodElement {
 
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_2__["render"])(this._basketPopUpContainer, this._basketPopUpDeleteComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_2__["RenderPosition"].AFTERBEGIN);
     document.addEventListener(`keydown`, this._escKeyDownHandler);
+    document.addEventListener(`click`, this._overlayClickHandler);
 
     this._basketPopUpDeleteComponent.setCloseClickHandler(this._handleCloseClick);
     this._basketPopUpDeleteComponent.setDeleteClickHandler(this._handleDeletePopUpClick);
@@ -912,8 +541,8 @@ class BasketGoodElement {
 
   _handleDeletePopUpClick() {
     this._changeData(
-        _const_js__WEBPACK_IMPORTED_MODULE_3__["UserAction"].DELETE_POINT,
-        _const_js__WEBPACK_IMPORTED_MODULE_3__["UpdateType"].MINOR,
+        _const_js__WEBPACK_IMPORTED_MODULE_3__["UserAction"].DELETE_GOOD,
+        _const_js__WEBPACK_IMPORTED_MODULE_3__["UpdateType"].INIT,
         Object.assign({}, this._basketCard)
     );
     this._removeBasketPopUpDeleteComponent();
@@ -922,6 +551,7 @@ class BasketGoodElement {
   _removeBasketPopUpDeleteComponent() {
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_2__["remove"])(this._basketPopUpDeleteComponent);
     document.removeEventListener(`keydown`, this._escKeyDownHandler);
+    document.removeEventListener(`keydown`, this._overlayClickHandler);
   }
 
   _escKeyDownHandler(evt) {
@@ -934,9 +564,19 @@ class BasketGoodElement {
     }
   }
 
+  _overlayClickHandler(evt) {
+    if (evt.target.classList.contains(`overlay`)) {
+      evt.preventDefault();
+
+      if (this._basketPopUpDeleteComponent !== null) {
+        this._removeBasketPopUpDeleteComponent();
+      }
+    }
+  }
+
   _handleCloseClick() {
     if (this._basketPopUpDeleteComponent !== null) {
-      this._basketPopUpDeleteComponent();
+      this._removeBasketPopUpDeleteComponent();
     }
   }
 
@@ -974,25 +614,20 @@ class Basket {
     this._currentDiscountType = _const_js__WEBPACK_IMPORTED_MODULE_3__["DiscountType"].DEFAULT;
     this._isAvailable = true;
     this._currentFilter = null;
-
     this._goodPresenter = {};
-
     this._basketComponent = null;
-
-
     this._handleDiscountClick = this._handleDiscountClick.bind(this);
     this._handleViewAction = this._handleViewAction.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
-    // this._handleFilterTypeChange = this._handleFilterTypeChange.bind(this);
   }
 
   init() {
-    // console.log(`init`);
     this._basketComponent = new _view_basket_js__WEBPACK_IMPORTED_MODULE_0__["default"](this._basketModel.getBasket(), this._currentDiscountType, this._isAvailable);
 
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_2__["render"])(this._basketContainer, this._basketComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_2__["RenderPosition"].BEFOREEND);
-    // this._goodsModel.addObserver(this._handleModelEvent);
+
     this._renderBasket();
+
     this._basketComponent.setDiscountClickHandler(this._handleDiscountClick);
     this._basketModel.addObserver(this._handleModelEvent);
   }
@@ -1000,14 +635,7 @@ class Basket {
   destroy() {
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_2__["remove"])(this._basketComponent);
 
-    // Object
-    //     .values(this._goodPresenter)
-    //     .forEach((presenter) => presenter.destroy());
-    // this._goodPresenter = {};
-
     this._basketComponent = null;
-
-    // this._goodsModel.removeObserver(this._handleModelEvent);
     this._basketModel.removeObserver(this._handleModelEvent);
   }
 
@@ -1033,46 +661,20 @@ class Basket {
 
   _handleViewAction(actionType, updateType, update) {
     switch (actionType) {
-      case _const_js__WEBPACK_IMPORTED_MODULE_3__["UserAction"].UPDATE_POINT:
-        // this._goodPresenter[update.id].setViewState(CardPresenterViewState.SAVING);
-        // console.log(updateType);
-        // console.log(update);
+      case _const_js__WEBPACK_IMPORTED_MODULE_3__["UserAction"].UPDATE_GOOD:
         this._basketModel.updateGood(updateType, update);
         break;
-      case _const_js__WEBPACK_IMPORTED_MODULE_3__["UserAction"].ADD_POINT:
-        this._pointNewPresenter.setSaving();
-        this._api.addPoint(update).then((response) => {
-          this._pointsModel.addPoint(updateType, response);
-        })
-            .catch(() => {
-              this._pointNewPresenter.setAborting();
-            });
-        break;
-      case _const_js__WEBPACK_IMPORTED_MODULE_3__["UserAction"].DELETE_POINT:
+      case _const_js__WEBPACK_IMPORTED_MODULE_3__["UserAction"].DELETE_GOOD:
         this._basketModel.deleteGood(updateType, update);
         break;
     }
   }
 
-  _handleModelEvent(updateType, update) {
+  _handleModelEvent(updateType) {
     switch (updateType) {
-      case _const_js__WEBPACK_IMPORTED_MODULE_3__["UpdateType"].MAJOR:
-        this._tripInfoPresenter.destroy();
-        // this._pointItems[pointItem.id].init(dayPoint, pointItem, this._getOffers(), this._getDestination());
-        this._renderTripInfo();
-        break;
-      case _const_js__WEBPACK_IMPORTED_MODULE_3__["UpdateType"].MINOR:
-        this.destroy();
-        // this._basketComponent.getElement().innerHTML = ``;
-        this.init();
-        // this._renderBasket();
-        break;
       case _const_js__WEBPACK_IMPORTED_MODULE_3__["UpdateType"].INIT:
-        this._isLoading = false;
-        this._newTripBtnComponent.getElement().disabled = false;
-        Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_2__["remove"])(this._loadingComponent);
-        this._renderTripInfo();
-        this._renderTrip();
+        this.destroy();
+        this.init();
         break;
     }
   }
@@ -1090,7 +692,6 @@ class Basket {
   _renderBasket() {
     const goods = this._basketModel.getBasket();
     this._renderGoods(goods);
-    // }
   }
 }
 
@@ -1189,11 +790,11 @@ class CatalogGood {
     this._handleToShoppingPopUpClick = this._handleToShoppingPopUpClick.bind(this);
     this._handleCloseClick = this._handleCloseClick.bind(this);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
+    this._overlayClickHandler = this._overlayClickHandler.bind(this);
   }
 
   init(catalogListContainer, catalogCard) {
     this._catalogCard = catalogCard;
-    // this._goodBasket = {};
 
     this._catalogItemComponent = new _view_catalog_item_js__WEBPACK_IMPORTED_MODULE_0__["default"](catalogCard);
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_4__["render"])(catalogListContainer, this._catalogItemComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_4__["RenderPosition"].BEFOREEND);
@@ -1209,15 +810,30 @@ class CatalogGood {
   _removePopUpAddComponent() {
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_4__["remove"])(this._catalogPopUpAddComponent);
     document.removeEventListener(`keydown`, this._escKeyDownHandler);
+    document.removeEventListener(`keydown`, this._overlayClickHandler);
   }
 
   _removePopUpSuccessComponent() {
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_4__["remove"])(this._catalogPopUpSuccessComponent);
     document.removeEventListener(`keydown`, this._escKeyDownHandler);
+    document.removeEventListener(`keydown`, this._overlayClickHandler);
   }
 
   _escKeyDownHandler(evt) {
     if (evt.key === `Escape` || evt.key === `Esc`) {
+      evt.preventDefault();
+
+      if (this._catalogPopUpAddComponent !== null) {
+        this._removePopUpAddComponent();
+      }
+      if (this._catalogPopUpSuccessComponent !== null) {
+        this._removePopUpSuccessComponent();
+      }
+    }
+  }
+
+  _overlayClickHandler(evt) {
+    if (evt.target.classList.contains(`overlay`)) {
       evt.preventDefault();
 
       if (this._catalogPopUpAddComponent !== null) {
@@ -1246,6 +862,7 @@ class CatalogGood {
 
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_4__["render"])(this._catalogPopUpContainer, this._catalogPopUpAddComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_4__["RenderPosition"].AFTERBEGIN);
     document.addEventListener(`keydown`, this._escKeyDownHandler);
+    document.addEventListener(`click`, this._overlayClickHandler);
   }
 
   _handleAddToBasketPopUpClick(data) {
@@ -1259,6 +876,7 @@ class CatalogGood {
 
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_4__["render"])(this._catalogPopUpContainer, this._catalogPopUpSuccessComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_4__["RenderPosition"].AFTERBEGIN);
     document.addEventListener(`keydown`, this._escKeyDownHandler);
+    document.addEventListener(`click`, this._overlayClickHandler);
 
     this._goods = this._basketModel.getBasket();
 
@@ -1336,7 +954,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const GOOD_COUNT_PER_STEP = 2;
+const GOOD_COUNT_PER_STEP = 9;
 
 class Board {
   constructor(catalogContainer, goodsModel, filterModel, siteMenuModel, basketModel) {
@@ -1363,10 +981,8 @@ class Board {
     this._handleSortByPriorityChange = this._handleSortByPriorityChange.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
     this._handleMenuModel = this._handleMenuModel.bind(this);
-    this._handleViewAction = this._handleViewAction.bind(this);
     this._handlePaginationNextClick = this._handlePaginationNextClick.bind(this);
     this._handlePaginationPreviousClick = this._handlePaginationPreviousClick.bind(this);
-    // this._handleModeChange = this._handleModeChange.bind(this);
     this._siteMenuModel.addObserver(this._handleMenuModel);
   }
 
@@ -1461,37 +1077,10 @@ class Board {
     this._renderCatalog();
   }
 
-  _handleViewAction(actionType, update) {
-    switch (actionType) {
-      case _const_js__WEBPACK_IMPORTED_MODULE_9__["UserAction"].UPDATE_POINT:
-        this._basketModel.updateGood(actionType, update);
-        break;
-      case _const_js__WEBPACK_IMPORTED_MODULE_9__["UserAction"].ADD_POINT:
-        this._goodPresenter.setSaving();
-        // this._api.addPoint(update).then((response) => {
-        //   this._pointsModel.addPoint(updateType, response);
-        // })
-        // .catch(() => {
-        //   this._pointNewPresenter.setAborting();
-        // });
-        break;
-      // case UserAction.DELETE_POINT:
-      //   this._pointItems[update.id].setViewState(PointPresenterViewState.DELETING);
-      //   this._api.deletePoint(update).then(() => {
-      //     this._pointsModel.deletePoint(updateType, update);
-      //   })
-      //   .catch(() => {
-      //     this._pointItems[update.id].setViewState(PointPresenterViewState.ABORTING);
-      //   });
-      //   break;
-    }
-  }
-
   _handleModelEvent() {
     this._clearCatalog();
     this._renderCatalog();
   }
-
 
   _handleMenuModel(menuItem) {
     switch (menuItem) {
@@ -1501,11 +1090,11 @@ class Board {
         break;
       case _const_js__WEBPACK_IMPORTED_MODULE_9__["MenuItem"].BASKET:
         this.destroy();
+
         const siteMainElement = document.querySelector(`.page-main`);
         const siteMainContainerElement = siteMainElement.querySelector(`.container`);
 
         this._basketPresenter = new _presenter_basket_js__WEBPACK_IMPORTED_MODULE_5__["default"](siteMainContainerElement, this._basketModel);
-
         this._basketPresenter.init();
         break;
     }
@@ -1609,10 +1198,6 @@ class Board {
 
   _renderPagination() {
     const goodsCount = this._getGoods().length;
-    // if (this._catalogPaginationComponent !== null) {
-    //   return;
-    // }
-
 
     this._catalogPaginationComponent = new _view_catalog_pagination_js__WEBPACK_IMPORTED_MODULE_3__["default"](goodsCount, GOOD_COUNT_PER_STEP, this._currentPaginationStep);
     this._catalogPaginationComponent.setNextClickHandler(this._handlePaginationNextClick);
@@ -1634,24 +1219,15 @@ class Board {
   }
 
   _clearCatalog({resetSortByCategoryType = false} = {}) {
-    // const goodCount = this._getGoods().length;
-
     Object
         .values(this._goods)
         .forEach((presenter) => presenter.destroy());
     this._goods = {};
 
     this._filterPresenter.destroy();
+
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["remove"])(this._catalogSortComponent);
-
     Object(_utils_render_js__WEBPACK_IMPORTED_MODULE_7__["remove"])(this._catalogPaginationComponent);
-    // this._catalogPaginationComponent = null;
-
-    // if (resetRenderedGoodsCount) {
-    //   this._renderedGoodsCount = GOOD_COUNT_PER_STEP;
-    // } else {
-    //   this._renderedGoodsCount = Math.min(goodCount, this._renderedGoodsCount);
-    // }
 
     if (resetSortByCategoryType) {
       this._currentSortByCategoryType = _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByCategoryType"].DEFAULT;
@@ -1662,8 +1238,6 @@ class Board {
   _renderCatalog() {
     const goods = this._getGoods();
     const goodCount = goods.length;
-
-    // this._currentPaginationStepCount = Math.floor(goodCount / GOOD_COUNT_PER_STEP);
 
     if (this._filterPresenter !== null) {
       this._filterPresenter.init();
@@ -1742,9 +1316,9 @@ class Filter {
       return;
     }
 
-    // filterStringType = filterStringType.map((string) => Number(string));
+    filterStringType = filterStringType.map((string) => Number(string));
 
-    // console.log(filterStringType);
+    console.log(filterStringType);
 
     this._filterModel.setFilter(filterStringType, `stringAmount`);
   }
@@ -1873,15 +1447,25 @@ const filteredGoodsByPrice = (good, filters) => {
 /*!*********************************!*\
   !*** ./source/js/utils/good.js ***!
   \*********************************/
-/*! exports provided: sortPriceDown, sortPriceUp, sortPopularityDown, sortPopularityUp */
+/*! exports provided: getGuitarType, sortPriceDown, sortPriceUp, sortPopularityDown, sortPopularityUp */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getGuitarType", function() { return getGuitarType; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sortPriceDown", function() { return sortPriceDown; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sortPriceUp", function() { return sortPriceUp; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sortPopularityDown", function() { return sortPopularityDown; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sortPopularityUp", function() { return sortPopularityUp; });
+/* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../const.js */ "./source/js/const.js");
+
+
+const getGuitarType = (type) => {
+  const guitarTypeKeys = Object.keys(_const_js__WEBPACK_IMPORTED_MODULE_0__["FilterType"]);
+  const currentGuitarType = guitarTypeKeys.filter((key) => _const_js__WEBPACK_IMPORTED_MODULE_0__["FilterType"][key] === type).map((key) => key.toLocaleLowerCase());
+  return currentGuitarType;
+};
+
 const sortPriceDown = (pointA, pointB) => Number(pointA.price) > Number(pointB.price) ? -1 : 1;
 const sortPriceUp = (pointA, pointB) => Number(pointA.price) > Number(pointB.price) ? 1 : -1;
 
@@ -2067,14 +1651,16 @@ class Abstract {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return BasketItem; });
 /* harmony import */ var _smart_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./smart.js */ "./source/js/view/smart.js");
+/* harmony import */ var _utils_good_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/good.js */ "./source/js/utils/good.js");
+
 
 
 const createBasketItemElement = (data) => {
-  const {image, stringAmount, name, price, count} = data;
+  const {type, stringAmount, name, price, count} = data;
 
   return `<li class="product__item">
           <div class="product__image-container">
-            <img src="${image}" width="80" height="202" alt="Изображение товара">
+            <img src="img/guitar-${Object(_utils_good_js__WEBPACK_IMPORTED_MODULE_1__["getGuitarType"])(type)}.png" width="80" height="202" alt="Изображение товара">
           </div>
           <ul class="product__deckription-list">
             <li class="product__name">Электрогитара ${name}</li>
@@ -2084,7 +1670,7 @@ const createBasketItemElement = (data) => {
           <div class="product__price"><p>${price.toLocaleString(`ru-RU`)} ₽</p></div>
           <div class="product__quantity">
             <button class="product__quantity-button" id="dec-button" type="button">-</button>
-            <input type="text" value="${count}" name="product-quantity" disabled>
+            <input type="text" value="${count}" name="product-quantity">
             <button class="product__quantity-button" id="inc-button" type="button">+</button>
           </div>
           <div class="product__price-total">${(price * count).toLocaleString(`ru-RU`)} ₽</div>
@@ -2101,6 +1687,7 @@ class BasketItem extends _smart_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
     this._handleQuantityIncClick = this._handleQuantityIncClick.bind(this);
     this._handleQuantityDecClick = this._handleQuantityDecClick.bind(this);
+    this._handleProductQuantityChangeHandle = this._handleProductQuantityChangeHandle.bind(this);
     this._deleteClickHandler = this._deleteClickHandler.bind(this);
 
     this._currentValueCount = this._data.count;
@@ -2132,6 +1719,17 @@ class BasketItem extends _smart_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
     this._callback.quantityDecClick(this._currentValueCount);
   }
 
+  _handleProductQuantityChangeHandle(evt) {
+    evt.preventDefault();
+    if (evt.target.value <= 0 || Number.isNaN(Number(evt.target.value)) || evt.target.value === ``) {
+      this._callback.productQuantityChange(this._currentValueCount);
+    }
+
+    this._currentValueCount = Number(evt.target.value);
+
+    this._callback.productQuantityChange(this._currentValueCount);
+  }
+
   _deleteClickHandler(evt) {
     evt.preventDefault();
     this._callback.deleteClick();
@@ -2145,6 +1743,11 @@ class BasketItem extends _smart_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
   setQuantityDecHandle(callback) {
     this._callback.quantityDecClick = callback;
     this.getElement().querySelector(`#dec-button`).addEventListener(`click`, this._handleQuantityDecClick);
+  }
+
+  setProductQuantityChangeHandle(callback) {
+    this._callback.productQuantityChange = callback;
+    this.getElement().querySelector(`input[name=product-quantity]`).addEventListener(`change`, this._handleProductQuantityChangeHandle);
   }
 
   setDeleteClickHandler(callback) {
@@ -2167,33 +1770,38 @@ class BasketItem extends _smart_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CatalogPopUpDelete; });
 /* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./source/js/view/abstract.js");
+/* harmony import */ var _utils_good_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/good.js */ "./source/js/utils/good.js");
+
 
 
 const createBasketPopUpDeleteElement = (data) => {
-  const {image, name, identiferNumber, stringAmount, price} = data;
-  return `<section class="modal">
-  <div class="modal__popup">
-    <h2 class="modal__title">Удалить этот товар?</h2>
+  const {type, name, identiferNumber, stringAmount, price} = data;
 
-    <div class="modal__content">
-      <div class="modal__image-container">
-        <img src="${image}" width="80" height="202" alt="Изображение товара">
+  return `<section class="modal">
+  <div class="overlay">
+    <div class="modal__popup">
+      <h2 class="modal__title">Удалить этот товар?</h2>
+
+      <div class="modal__content">
+        <div class="modal__image-container">
+          <img src="img/guitar-${Object(_utils_good_js__WEBPACK_IMPORTED_MODULE_1__["getGuitarType"])(type)}.png" width="80" height="202" alt="Изображение товара">
+        </div>
+        <div class="modal__content-container">
+          <ul class="modal__deckription-list">
+            <li class="modal__name">Гитара ${name}</li>
+            <li class="modal__identifer-number">Артикул: ${identiferNumber}</li>
+            <li class="modal__type">Электрогитара, ${stringAmount} струнная </li>
+          </ul>
+          <div class="modal__price">Цена: ${price} ₽</div>
+        </div>
+        <div class="modal__buttons-wrapper modal__buttons-wrapper--basket">
+          <button class="modal__button">Удалить товар</button>
+          <button class="modal__button modal__button--to-shoping">Продолжить покупки</button>
+        </div>
+        <button class="modal__close" type="button">
+          <span class="visually-hidden">Закрыть</span>
+        </button>
       </div>
-      <div class="modal__content-container">
-        <ul class="modal__deckription-list">
-          <li class="modal__name">Гитара ${name}</li>
-          <li class="modal__identifer-number">Артикул: ${identiferNumber}</li>
-          <li class="modal__type">Электрогитара, ${stringAmount} струнная </li>
-        </ul>
-        <div class="modal__price">Цена: ${price} ₽</div>
-      </div>
-      <div class="modal__buttons-wrapper modal__buttons-wrapper--basket">
-        <button class="modal__button">Удалить товар</button>
-        <button class="modal__button modal__button--to-shoping">Продолжить покупки</button>
-      </div>
-      <button class="modal__close" type="button">
-        <span class="visually-hidden">Закрыть</span>
-      </button>
     </div>
   </div>
 </section>`;
@@ -2461,13 +2069,16 @@ class catalogBoard extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CatalogItem; });
 /* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./source/js/view/abstract.js");
+/* harmony import */ var _utils_good_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/good.js */ "./source/js/utils/good.js");
+
 
 
 const createCatalogItemElement = (data) => {
-  const {image, reviewAmount, name, price, starsCount} = data;
+  const {type, reviewAmount, name, price, starsCount} = data;
+
   return (
     `<li class="list__item">
-      <img src="${image}" width="80" height="202" alt="Изображение товара">
+      <img src="img/guitar-${Object(_utils_good_js__WEBPACK_IMPORTED_MODULE_1__["getGuitarType"])(type)}.png" width="80" height="202" alt="Изображение товара">
       <div class="list__rating rating">
         <div class="list__stars rating__stars">
           <span style="width: ${starsCount * 20}%;"></span>
@@ -2674,30 +2285,35 @@ class CatalogPagination extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["defau
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CatalogPopUpAdd; });
 /* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./source/js/view/abstract.js");
+/* harmony import */ var _utils_good_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/good.js */ "./source/js/utils/good.js");
+
 
 
 const createCatalogPopUpAddElement = (data) => {
-  const {image, name, identiferNumber, stringAmount, price} = data;
-  return `<section class="modal">
-    <div class="modal__popup">
-      <h2 class="modal__title">Добавить товар в корзину</h2>
+  const {name, identiferNumber, stringAmount, price, type} = data;
 
-      <div class="modal__content">
-        <div class="modal__image-container">
-          <img src="${image}" width="80" height="202" alt="Изображение товара">
+  return `<section class="modal">
+    <div class="overlay">
+      <div class="modal__popup">
+        <h2 class="modal__title">Добавить товар в корзину</h2>
+
+        <div class="modal__content">
+          <div class="modal__image-container">
+            <img src="img/guitar-${Object(_utils_good_js__WEBPACK_IMPORTED_MODULE_1__["getGuitarType"])(type)}.png" width="80" height="202" alt="Изображение товара">
+          </div>
+          <div class="modal__content-container">
+            <ul class="modal__deckription-list">
+              <li class="modal__name">Гитара ${name}</li>
+              <li class="modal__identifer-number">Артикул: ${identiferNumber}</li>
+              <li class="modal__type">Электрогитара, ${stringAmount} струнная </li>
+            </ul>
+            <div class="modal__price">Цена: ${price} ₽</div>
+          </div>
+          <button class="modal__button">Добавить в корзину</button>
+          <button class="modal__close" type="button">
+            <span class="visually-hidden">Закрыть</span>
+          </button>
         </div>
-        <div class="modal__content-container">
-          <ul class="modal__deckription-list">
-            <li class="modal__name">Гитара ${name}</li>
-            <li class="modal__identifer-number">Артикул: ${identiferNumber}</li>
-            <li class="modal__type">Электрогитара, ${stringAmount} струнная </li>
-          </ul>
-          <div class="modal__price">Цена: ${price} ₽</div>
-        </div>
-        <button class="modal__button">Добавить в корзину</button>
-        <button class="modal__close" type="button">
-          <span class="visually-hidden">Закрыть</span>
-        </button>
       </div>
     </div>
   </section>`;
@@ -2757,17 +2373,19 @@ __webpack_require__.r(__webpack_exports__);
 
 const createCatalogPopUpSuccessElement = () => {
   return `<section class="modal">
-  <div class="modal__popup">
-    <h2 class="modal__title">Товар успешно добавлен в корзину</h2>
+  <div class="overlay">
+    <div class="modal__popup">
+      <h2 class="modal__title">Товар успешно добавлен в корзину</h2>
 
-    <div class="modal__content">
-      <div class="modal__buttons-wrapper">
-        <button class="modal__button modal__button--to-basket" data-menu-type="${_const_js__WEBPACK_IMPORTED_MODULE_1__["MenuItem"].BASKET}">Перейти в корзину</button>
-        <button class="modal__button modal__button--to-shoping">Продолжить покупки</button>
+      <div class="modal__content">
+        <div class="modal__buttons-wrapper">
+          <button class="modal__button modal__button--to-basket" data-menu-type="${_const_js__WEBPACK_IMPORTED_MODULE_1__["MenuItem"].BASKET}">Перейти в корзину</button>
+          <button class="modal__button modal__button--to-shoping">Продолжить покупки</button>
+        </div>
+        <button class="modal__close" type="button">
+          <span class="visually-hidden">Закрыть</span>
+        </button>
       </div>
-      <button class="modal__close" type="button">
-        <span class="visually-hidden">Закрыть</span>
-      </button>
     </div>
   </div>
 </section>`;
@@ -3047,7 +2665,7 @@ const createFiltersElement = (currentFilter, goods) => {
   })));
 
   stringKeys.filter((key) => (currentFilter.stringAmount.forEach((type) => {
-    if (type.includes(_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterStringAmount"][key])) {
+    if (_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterStringAmount"][key] === type) {
       return typeStringsValues.push(_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterStringAmount"][key]);
     } else {
       return false;
@@ -3106,8 +2724,8 @@ const createFiltersElement = (currentFilter, goods) => {
                 type="checkbox"
                 name="filters-form-type"
                 id="filters-form-type-value-2"
-                data-filter-type-guitar="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ELECTRO}"
-                ${isStringsAvailable(typeGuitarValues, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ELECTRO) ? `checked` : ``}
+                data-filter-type-guitar="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ELECTRIC}"
+                ${isStringsAvailable(typeGuitarValues, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ELECTRIC) ? `checked` : ``}
                 >
             <label for="filters-form-type-value-2">Электрогитары</label>
           </div>
@@ -3221,14 +2839,6 @@ class Filters extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
   _filterPriceChangeHandler(evt) {
     evt.preventDefault();
 
-    // if (!evt.target.value) {
-    //   evt.target.setCustomValidity(`Enter the cost of the trip`);
-    //   return;
-    // }
-
-    // this.updateData({
-    //   price: Number(evt.target.value)
-    // }, true);
     let optionsPriceChangeArray = [];
 
     document.querySelectorAll(`input[type='text']`)

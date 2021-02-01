@@ -11,9 +11,9 @@ import {render, RenderPosition, remove} from "../utils/render.js";
 import {sortPriceUp, sortPriceDown, sortPopularityUp, sortPopularityDown} from "../utils/good.js";
 import {SortByCategoryType, SortByPriorityType} from "../const.js";
 import {filteredGoodsByType, filteredGoodsByPrice} from "../utils/filter.js";
-import {MenuItem, UserAction} from "../const.js";
+import {MenuItem} from "../const.js";
 
-const GOOD_COUNT_PER_STEP = 2;
+const GOOD_COUNT_PER_STEP = 9;
 
 export default class Board {
   constructor(catalogContainer, goodsModel, filterModel, siteMenuModel, basketModel) {
@@ -40,10 +40,8 @@ export default class Board {
     this._handleSortByPriorityChange = this._handleSortByPriorityChange.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
     this._handleMenuModel = this._handleMenuModel.bind(this);
-    this._handleViewAction = this._handleViewAction.bind(this);
     this._handlePaginationNextClick = this._handlePaginationNextClick.bind(this);
     this._handlePaginationPreviousClick = this._handlePaginationPreviousClick.bind(this);
-    // this._handleModeChange = this._handleModeChange.bind(this);
     this._siteMenuModel.addObserver(this._handleMenuModel);
   }
 
@@ -138,37 +136,10 @@ export default class Board {
     this._renderCatalog();
   }
 
-  _handleViewAction(actionType, update) {
-    switch (actionType) {
-      case UserAction.UPDATE_POINT:
-        this._basketModel.updateGood(actionType, update);
-        break;
-      case UserAction.ADD_POINT:
-        this._goodPresenter.setSaving();
-        // this._api.addPoint(update).then((response) => {
-        //   this._pointsModel.addPoint(updateType, response);
-        // })
-        // .catch(() => {
-        //   this._pointNewPresenter.setAborting();
-        // });
-        break;
-      // case UserAction.DELETE_POINT:
-      //   this._pointItems[update.id].setViewState(PointPresenterViewState.DELETING);
-      //   this._api.deletePoint(update).then(() => {
-      //     this._pointsModel.deletePoint(updateType, update);
-      //   })
-      //   .catch(() => {
-      //     this._pointItems[update.id].setViewState(PointPresenterViewState.ABORTING);
-      //   });
-      //   break;
-    }
-  }
-
   _handleModelEvent() {
     this._clearCatalog();
     this._renderCatalog();
   }
-
 
   _handleMenuModel(menuItem) {
     switch (menuItem) {
@@ -178,11 +149,11 @@ export default class Board {
         break;
       case MenuItem.BASKET:
         this.destroy();
+
         const siteMainElement = document.querySelector(`.page-main`);
         const siteMainContainerElement = siteMainElement.querySelector(`.container`);
 
         this._basketPresenter = new BasketPresenter(siteMainContainerElement, this._basketModel);
-
         this._basketPresenter.init();
         break;
     }
@@ -286,10 +257,6 @@ export default class Board {
 
   _renderPagination() {
     const goodsCount = this._getGoods().length;
-    // if (this._catalogPaginationComponent !== null) {
-    //   return;
-    // }
-
 
     this._catalogPaginationComponent = new CatalogPaginationView(goodsCount, GOOD_COUNT_PER_STEP, this._currentPaginationStep);
     this._catalogPaginationComponent.setNextClickHandler(this._handlePaginationNextClick);
@@ -311,24 +278,15 @@ export default class Board {
   }
 
   _clearCatalog({resetSortByCategoryType = false} = {}) {
-    // const goodCount = this._getGoods().length;
-
     Object
         .values(this._goods)
         .forEach((presenter) => presenter.destroy());
     this._goods = {};
 
     this._filterPresenter.destroy();
+
     remove(this._catalogSortComponent);
-
     remove(this._catalogPaginationComponent);
-    // this._catalogPaginationComponent = null;
-
-    // if (resetRenderedGoodsCount) {
-    //   this._renderedGoodsCount = GOOD_COUNT_PER_STEP;
-    // } else {
-    //   this._renderedGoodsCount = Math.min(goodCount, this._renderedGoodsCount);
-    // }
 
     if (resetSortByCategoryType) {
       this._currentSortByCategoryType = SortByCategoryType.DEFAULT;
@@ -339,8 +297,6 @@ export default class Board {
   _renderCatalog() {
     const goods = this._getGoods();
     const goodCount = goods.length;
-
-    // this._currentPaginationStepCount = Math.floor(goodCount / GOOD_COUNT_PER_STEP);
 
     if (this._filterPresenter !== null) {
       this._filterPresenter.init();

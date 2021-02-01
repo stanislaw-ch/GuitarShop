@@ -1,11 +1,12 @@
 import SmartView from "./smart.js";
+import {getGuitarType} from "../utils/good.js";
 
 const createBasketItemElement = (data) => {
-  const {image, stringAmount, name, price, count} = data;
+  const {type, stringAmount, name, price, count} = data;
 
   return `<li class="product__item">
           <div class="product__image-container">
-            <img src="${image}" width="80" height="202" alt="Изображение товара">
+            <img src="img/guitar-${getGuitarType(type)}.png" width="80" height="202" alt="Изображение товара">
           </div>
           <ul class="product__deckription-list">
             <li class="product__name">Электрогитара ${name}</li>
@@ -15,7 +16,7 @@ const createBasketItemElement = (data) => {
           <div class="product__price"><p>${price.toLocaleString(`ru-RU`)} ₽</p></div>
           <div class="product__quantity">
             <button class="product__quantity-button" id="dec-button" type="button">-</button>
-            <input type="text" value="${count}" name="product-quantity" disabled>
+            <input type="text" value="${count}" name="product-quantity">
             <button class="product__quantity-button" id="inc-button" type="button">+</button>
           </div>
           <div class="product__price-total">${(price * count).toLocaleString(`ru-RU`)} ₽</div>
@@ -32,6 +33,7 @@ export default class BasketItem extends SmartView {
 
     this._handleQuantityIncClick = this._handleQuantityIncClick.bind(this);
     this._handleQuantityDecClick = this._handleQuantityDecClick.bind(this);
+    this._handleProductQuantityChangeHandle = this._handleProductQuantityChangeHandle.bind(this);
     this._deleteClickHandler = this._deleteClickHandler.bind(this);
 
     this._currentValueCount = this._data.count;
@@ -63,6 +65,17 @@ export default class BasketItem extends SmartView {
     this._callback.quantityDecClick(this._currentValueCount);
   }
 
+  _handleProductQuantityChangeHandle(evt) {
+    evt.preventDefault();
+    if (evt.target.value <= 0 || Number.isNaN(Number(evt.target.value)) || evt.target.value === ``) {
+      this._callback.productQuantityChange(this._currentValueCount);
+    }
+
+    this._currentValueCount = Number(evt.target.value);
+
+    this._callback.productQuantityChange(this._currentValueCount);
+  }
+
   _deleteClickHandler(evt) {
     evt.preventDefault();
     this._callback.deleteClick();
@@ -76,6 +89,11 @@ export default class BasketItem extends SmartView {
   setQuantityDecHandle(callback) {
     this._callback.quantityDecClick = callback;
     this.getElement().querySelector(`#dec-button`).addEventListener(`click`, this._handleQuantityDecClick);
+  }
+
+  setProductQuantityChangeHandle(callback) {
+    this._callback.productQuantityChange = callback;
+    this.getElement().querySelector(`input[name=product-quantity]`).addEventListener(`change`, this._handleProductQuantityChangeHandle);
   }
 
   setDeleteClickHandler(callback) {

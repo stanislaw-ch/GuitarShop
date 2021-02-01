@@ -69,7 +69,7 @@ const createFiltersElement = (currentFilter, goods) => {
   })));
 
   stringKeys.filter((key) => (currentFilter.stringAmount.forEach((type) => {
-    if (type.includes(FilterStringAmount[key])) {
+    if (FilterStringAmount[key] === type) {
       return typeStringsValues.push(FilterStringAmount[key]);
     } else {
       return false;
@@ -128,8 +128,8 @@ const createFiltersElement = (currentFilter, goods) => {
                 type="checkbox"
                 name="filters-form-type"
                 id="filters-form-type-value-2"
-                data-filter-type-guitar="${FilterType.ELECTRO}"
-                ${isStringsAvailable(typeGuitarValues, FilterType.ELECTRO) ? `checked` : ``}
+                data-filter-type-guitar="${FilterType.ELECTRIC}"
+                ${isStringsAvailable(typeGuitarValues, FilterType.ELECTRIC) ? `checked` : ``}
                 >
             <label for="filters-form-type-value-2">Электрогитары</label>
           </div>
@@ -243,14 +243,6 @@ export default class Filters extends AbstractView {
   _filterPriceChangeHandler(evt) {
     evt.preventDefault();
 
-    // if (!evt.target.value) {
-    //   evt.target.setCustomValidity(`Enter the cost of the trip`);
-    //   return;
-    // }
-
-    // this.updateData({
-    //   price: Number(evt.target.value)
-    // }, true);
     let optionsPriceChangeArray = [];
 
     document.querySelectorAll(`input[type='text']`)

@@ -25,11 +25,11 @@ export default class CatalogGood {
     this._handleToShoppingPopUpClick = this._handleToShoppingPopUpClick.bind(this);
     this._handleCloseClick = this._handleCloseClick.bind(this);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
+    this._overlayClickHandler = this._overlayClickHandler.bind(this);
   }
 
   init(catalogListContainer, catalogCard) {
     this._catalogCard = catalogCard;
-    // this._goodBasket = {};
 
     this._catalogItemComponent = new CatalogItemView(catalogCard);
     render(catalogListContainer, this._catalogItemComponent, RenderPosition.BEFOREEND);
@@ -45,15 +45,30 @@ export default class CatalogGood {
   _removePopUpAddComponent() {
     remove(this._catalogPopUpAddComponent);
     document.removeEventListener(`keydown`, this._escKeyDownHandler);
+    document.removeEventListener(`keydown`, this._overlayClickHandler);
   }
 
   _removePopUpSuccessComponent() {
     remove(this._catalogPopUpSuccessComponent);
     document.removeEventListener(`keydown`, this._escKeyDownHandler);
+    document.removeEventListener(`keydown`, this._overlayClickHandler);
   }
 
   _escKeyDownHandler(evt) {
     if (evt.key === `Escape` || evt.key === `Esc`) {
+      evt.preventDefault();
+
+      if (this._catalogPopUpAddComponent !== null) {
+        this._removePopUpAddComponent();
+      }
+      if (this._catalogPopUpSuccessComponent !== null) {
+        this._removePopUpSuccessComponent();
+      }
+    }
+  }
+
+  _overlayClickHandler(evt) {
+    if (evt.target.classList.contains(`overlay`)) {
       evt.preventDefault();
 
       if (this._catalogPopUpAddComponent !== null) {
@@ -82,6 +97,7 @@ export default class CatalogGood {
 
     render(this._catalogPopUpContainer, this._catalogPopUpAddComponent, RenderPosition.AFTERBEGIN);
     document.addEventListener(`keydown`, this._escKeyDownHandler);
+    document.addEventListener(`click`, this._overlayClickHandler);
   }
 
   _handleAddToBasketPopUpClick(data) {
@@ -95,6 +111,7 @@ export default class CatalogGood {
 
     render(this._catalogPopUpContainer, this._catalogPopUpSuccessComponent, RenderPosition.AFTERBEGIN);
     document.addEventListener(`keydown`, this._escKeyDownHandler);
+    document.addEventListener(`click`, this._overlayClickHandler);
 
     this._goods = this._basketModel.getBasket();
 
