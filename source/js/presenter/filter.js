@@ -16,7 +16,7 @@ export default class Filter {
 
   init() {
     this._currentFilter = this._filterModel.getFilter();
-    this._goods = this._goodsModel.getGoods();
+    this._goods = this._goodsModel.getFilteredGoods();
 
     this._prevFilterComponent = this._filterComponent;
 
@@ -48,8 +48,6 @@ export default class Filter {
     }
 
     filterStringType = filterStringType.map((string) => Number(string));
-
-    console.log(filterStringType);
 
     this._filterModel.setFilter(filterStringType, `stringAmount`);
   }

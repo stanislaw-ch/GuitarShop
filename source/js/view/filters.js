@@ -4,8 +4,9 @@ import {filteredGoodsByType} from "../utils/filter.js";
 
 const createFiltersElement = (currentFilter, goods) => {
   let [currentFrom, currentTo] = currentFilter.price;
-  let filteredGuitarsByType = {};
+  // let filteredGuitarsByType = {};
   let stringAmountAvailableList = [];
+  let guitarAmountAvailableList = [];
   let pricesInGoods = [];
 
   const guitarKeys = Object.keys(FilterType);
@@ -46,10 +47,15 @@ const createFiltersElement = (currentFilter, goods) => {
     currentTo = maxPriceInGoods;
   }
 
-  filteredGuitarsByType = goods
-      .filter((item) => filteredGoodsByType(item.type, currentFilter.type));
+  // filteredGuitarsByType = goods
+  //     .filter((item) => filteredGoodsByType(item.type, currentFilter.type));
 
-  stringAmountAvailableList = Array.from(new Set(filteredGuitarsByType
+  //     console.log(filteredGuitarsByType);
+
+  guitarAmountAvailableList = Array.from(new Set(goods
+      .map((item) => item.type)));
+
+  stringAmountAvailableList = Array.from(new Set(goods
       .map((item) => item.stringAmount)));
 
   guitarKeys.filter((key) => (currentFilter.type.forEach((type) => {
@@ -76,12 +82,19 @@ const createFiltersElement = (currentFilter, goods) => {
     }
   })));
 
+  // guitarAmountAvailableList = Array.from(new Set(guitarAmountAvailableList));
   stringAmountAvailableList = Array.from(new Set(stringAmountAvailableList));
+
+  console.log(guitarAmountAvailableList);
+  console.log(FilterType.ACOUSTIC);
+  console.log(stringAmountAvailableList);
+  console.log(FilterStringAmount.SIX);
 
   const isStringsAvailable = (availableList, stringsCount) => {
     return availableList.includes(stringsCount);
   };
 
+  console.log(isStringsAvailable(guitarAmountAvailableList, FilterType.UKULELE));
   return (`<div class="catalog__filters-column">
   <h2>Фильтр</h2>
   <form class="catalog__filters-form" action="#" method="GET">
@@ -112,37 +125,46 @@ const createFiltersElement = (currentFilter, goods) => {
         <h3>Тип гитар</h3>
         <div class="catalog__filters-type-wrapper">
           <div class="catalog__filters-type-content-wrapper">
-            <input
-                class="visually-hidden"
-                type="checkbox"
-                name="filters-form-type"
-                id="filters-form-type-value-1"
-                data-filter-type-guitar="${FilterType.ACOUSTIC}"
-                ${isStringsAvailable(typeGuitarValues, FilterType.ACOUSTIC) ? `checked` : ``}
-                >
-            <label for="filters-form-type-value-1">Акустические гитары</label>
+           <label>
+              <input
+                  class="visually-hidden"
+                  type="checkbox"
+                  name="filters-form-type"
+                  id="filters-form-type-value-1"
+                  data-filter-type-guitar="${FilterType.ACOUSTIC}"
+                  ${isStringsAvailable(typeGuitarValues, FilterType.ACOUSTIC) ? `checked` : ``}
+                  ${isStringsAvailable(guitarAmountAvailableList, FilterType.ACOUSTIC) ? `` : `disabled`}
+                  >
+              <span>Акустические гитары</span>
+           </label>
           </div>
           <div class="catalog__filters-type-content-wrapper">
-            <input
-                class="visually-hidden"
-                type="checkbox"
-                name="filters-form-type"
-                id="filters-form-type-value-2"
-                data-filter-type-guitar="${FilterType.ELECTRIC}"
-                ${isStringsAvailable(typeGuitarValues, FilterType.ELECTRIC) ? `checked` : ``}
-                >
-            <label for="filters-form-type-value-2">Электрогитары</label>
+            <label>
+              <input
+                  class="visually-hidden"
+                  type="checkbox"
+                  name="filters-form-type"
+                  id="filters-form-type-value-2"
+                  data-filter-type-guitar="${FilterType.ELECTRIC}"
+                  ${isStringsAvailable(typeGuitarValues, FilterType.ELECTRIC) ? `checked` : ``}
+                  ${isStringsAvailable(guitarAmountAvailableList, FilterType.ELECTRIC) ? `` : `disabled`}
+                  >
+              <span>Электрогитары</span>
+            </label>
           </div>
           <div class="catalog__filters-type-content-wrapper">
-            <input
-                class="visually-hidden"
-                type="checkbox"
-                name="filters-form-type"
-                id="filters-form-type-value-3"
-                data-filter-type-guitar="${FilterType.UKULELE}"
-                ${isStringsAvailable(typeGuitarValues, FilterType.UKULELE) ? `checked` : ``}
-                >
-            <label for="filters-form-type-value-3">Укулеле</label>
+            <label>
+              <input
+                  class="visually-hidden"
+                  type="checkbox"
+                  name="filters-form-type"
+                  id="filters-form-type-value-3"
+                  data-filter-type-guitar="${FilterType.UKULELE}"
+                  ${isStringsAvailable(typeGuitarValues, FilterType.UKULELE) ? `checked` : ``}
+                  ${isStringsAvailable(guitarAmountAvailableList, FilterType.UKULELE) ? `` : `disabled`}
+                  >
+              <span>Укулеле</span>
+            </label>
           </div>
         </div>
       </fieldset>

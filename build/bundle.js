@@ -371,6 +371,7 @@ class Goods extends _utils_observer_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
   constructor() {
     super();
     this._goods = [];
+    this._filteredGoods = [];
   }
 
   setGoods(goods) {
@@ -381,22 +382,12 @@ class Goods extends _utils_observer_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
     return this._goods;
   }
 
-  static adaptToClient(point) {
-    const adaptedPoint = Object.assign(
-        {},
-        point
-    );
-
-    return adaptedPoint;
+  setFilteredGoods(filteredGoods) {
+    this._filteredGoods = filteredGoods.slice();
   }
 
-  static adaptToServer(point) {
-    const adaptedPoint = Object.assign(
-        {},
-        point
-    );
-
-    return adaptedPoint;
+  getFilteredGoods() {
+    return this._filteredGoods;
   }
 }
 
@@ -1052,6 +1043,7 @@ class Board {
         break;
     }
 
+    this._goodsModel.setFilteredGoods(filteredGoods);
     return filteredGoods;
   }
 
@@ -1285,7 +1277,7 @@ class Filter {
 
   init() {
     this._currentFilter = this._filterModel.getFilter();
-    this._goods = this._goodsModel.getGoods();
+    this._goods = this._goodsModel.getFilteredGoods();
 
     this._prevFilterComponent = this._filterComponent;
 
@@ -1317,8 +1309,6 @@ class Filter {
     }
 
     filterStringType = filterStringType.map((string) => Number(string));
-
-    console.log(filterStringType);
 
     this._filterModel.setFilter(filterStringType, `stringAmount`);
   }
@@ -2600,8 +2590,9 @@ __webpack_require__.r(__webpack_exports__);
 
 const createFiltersElement = (currentFilter, goods) => {
   let [currentFrom, currentTo] = currentFilter.price;
-  let filteredGuitarsByType = {};
+  // let filteredGuitarsByType = {};
   let stringAmountAvailableList = [];
+  let guitarAmountAvailableList = [];
   let pricesInGoods = [];
 
   const guitarKeys = Object.keys(_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"]);
@@ -2642,10 +2633,15 @@ const createFiltersElement = (currentFilter, goods) => {
     currentTo = maxPriceInGoods;
   }
 
-  filteredGuitarsByType = goods
-      .filter((item) => Object(_utils_filter_js__WEBPACK_IMPORTED_MODULE_2__["filteredGoodsByType"])(item.type, currentFilter.type));
+  // filteredGuitarsByType = goods
+  //     .filter((item) => filteredGoodsByType(item.type, currentFilter.type));
 
-  stringAmountAvailableList = Array.from(new Set(filteredGuitarsByType
+  //     console.log(filteredGuitarsByType);
+
+  guitarAmountAvailableList = Array.from(new Set(goods
+      .map((item) => item.type)));
+
+  stringAmountAvailableList = Array.from(new Set(goods
       .map((item) => item.stringAmount)));
 
   guitarKeys.filter((key) => (currentFilter.type.forEach((type) => {
@@ -2672,12 +2668,19 @@ const createFiltersElement = (currentFilter, goods) => {
     }
   })));
 
+  // guitarAmountAvailableList = Array.from(new Set(guitarAmountAvailableList));
   stringAmountAvailableList = Array.from(new Set(stringAmountAvailableList));
+
+  console.log(guitarAmountAvailableList);
+  console.log(_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ACOUSTIC);
+  console.log(stringAmountAvailableList);
+  console.log(_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterStringAmount"].SIX);
 
   const isStringsAvailable = (availableList, stringsCount) => {
     return availableList.includes(stringsCount);
   };
 
+  console.log(isStringsAvailable(guitarAmountAvailableList, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].UKULELE));
   return (`<div class="catalog__filters-column">
   <h2>Фильтр</h2>
   <form class="catalog__filters-form" action="#" method="GET">
@@ -2708,37 +2711,46 @@ const createFiltersElement = (currentFilter, goods) => {
         <h3>Тип гитар</h3>
         <div class="catalog__filters-type-wrapper">
           <div class="catalog__filters-type-content-wrapper">
-            <input
-                class="visually-hidden"
-                type="checkbox"
-                name="filters-form-type"
-                id="filters-form-type-value-1"
-                data-filter-type-guitar="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ACOUSTIC}"
-                ${isStringsAvailable(typeGuitarValues, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ACOUSTIC) ? `checked` : ``}
-                >
-            <label for="filters-form-type-value-1">Акустические гитары</label>
+           <label>
+              <input
+                  class="visually-hidden"
+                  type="checkbox"
+                  name="filters-form-type"
+                  id="filters-form-type-value-1"
+                  data-filter-type-guitar="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ACOUSTIC}"
+                  ${isStringsAvailable(typeGuitarValues, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ACOUSTIC) ? `checked` : ``}
+                  ${isStringsAvailable(guitarAmountAvailableList, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ACOUSTIC) ? `` : `disabled`}
+                  >
+              <span>Акустические гитары</span>
+           </label>
           </div>
           <div class="catalog__filters-type-content-wrapper">
-            <input
-                class="visually-hidden"
-                type="checkbox"
-                name="filters-form-type"
-                id="filters-form-type-value-2"
-                data-filter-type-guitar="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ELECTRIC}"
-                ${isStringsAvailable(typeGuitarValues, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ELECTRIC) ? `checked` : ``}
-                >
-            <label for="filters-form-type-value-2">Электрогитары</label>
+            <label>
+              <input
+                  class="visually-hidden"
+                  type="checkbox"
+                  name="filters-form-type"
+                  id="filters-form-type-value-2"
+                  data-filter-type-guitar="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ELECTRIC}"
+                  ${isStringsAvailable(typeGuitarValues, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ELECTRIC) ? `checked` : ``}
+                  ${isStringsAvailable(guitarAmountAvailableList, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ELECTRIC) ? `` : `disabled`}
+                  >
+              <span>Электрогитары</span>
+            </label>
           </div>
           <div class="catalog__filters-type-content-wrapper">
-            <input
-                class="visually-hidden"
-                type="checkbox"
-                name="filters-form-type"
-                id="filters-form-type-value-3"
-                data-filter-type-guitar="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].UKULELE}"
-                ${isStringsAvailable(typeGuitarValues, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].UKULELE) ? `checked` : ``}
-                >
-            <label for="filters-form-type-value-3">Укулеле</label>
+            <label>
+              <input
+                  class="visually-hidden"
+                  type="checkbox"
+                  name="filters-form-type"
+                  id="filters-form-type-value-3"
+                  data-filter-type-guitar="${_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].UKULELE}"
+                  ${isStringsAvailable(typeGuitarValues, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].UKULELE) ? `checked` : ``}
+                  ${isStringsAvailable(guitarAmountAvailableList, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].UKULELE) ? `` : `disabled`}
+                  >
+              <span>Укулеле</span>
+            </label>
           </div>
         </div>
       </fieldset>

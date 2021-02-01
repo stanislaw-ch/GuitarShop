@@ -5,6 +5,7 @@ export default class Goods extends Observer {
   constructor() {
     super();
     this._goods = [];
+    this._filteredGoods = [];
   }
 
   setGoods(goods) {
@@ -15,21 +16,11 @@ export default class Goods extends Observer {
     return this._goods;
   }
 
-  static adaptToClient(point) {
-    const adaptedPoint = Object.assign(
-        {},
-        point
-    );
-
-    return adaptedPoint;
+  setFilteredGoods(filteredGoods) {
+    this._filteredGoods = filteredGoods.slice();
   }
 
-  static adaptToServer(point) {
-    const adaptedPoint = Object.assign(
-        {},
-        point
-    );
-
-    return adaptedPoint;
+  getFilteredGoods() {
+    return this._filteredGoods;
   }
 }

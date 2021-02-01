@@ -111,6 +111,7 @@ export default class Board {
         break;
     }
 
+    this._goodsModel.setFilteredGoods(filteredGoods);
     return filteredGoods;
   }
 
