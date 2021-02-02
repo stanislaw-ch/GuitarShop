@@ -1006,6 +1006,8 @@ class Board {
         .filter((good) => Object(_utils_filter_js__WEBPACK_IMPORTED_MODULE_10__["filteredGoodsByType"])(good.stringAmount, filter.stringAmount))
         .filter((good) => Object(_utils_filter_js__WEBPACK_IMPORTED_MODULE_10__["filteredGoodsByPrice"])(good.price, filter.price));
 
+    this._goodsModel.setFilteredGoods(filteredGoods);
+
     switch (this._currentSortByCategoryType) {
       case _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByCategoryType"].DEFAULT:
         if (this._currentSortByPriorityType === _const_js__WEBPACK_IMPORTED_MODULE_9__["SortByPriorityType"].UP) {
@@ -1043,7 +1045,6 @@ class Board {
         break;
     }
 
-    this._goodsModel.setFilteredGoods(filteredGoods);
     return filteredGoods;
   }
 
@@ -2583,8 +2584,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Filters; });
 /* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./source/js/view/abstract.js");
 /* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../const.js */ "./source/js/const.js");
-/* harmony import */ var _utils_filter_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/filter.js */ "./source/js/utils/filter.js");
-
 
 
 
@@ -2633,11 +2632,6 @@ const createFiltersElement = (currentFilter, goods) => {
     currentTo = maxPriceInGoods;
   }
 
-  // filteredGuitarsByType = goods
-  //     .filter((item) => filteredGoodsByType(item.type, currentFilter.type));
-
-  //     console.log(filteredGuitarsByType);
-
   guitarAmountAvailableList = Array.from(new Set(goods
       .map((item) => item.type)));
 
@@ -2668,19 +2662,12 @@ const createFiltersElement = (currentFilter, goods) => {
     }
   })));
 
-  // guitarAmountAvailableList = Array.from(new Set(guitarAmountAvailableList));
   stringAmountAvailableList = Array.from(new Set(stringAmountAvailableList));
-
-  console.log(guitarAmountAvailableList);
-  console.log(_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].ACOUSTIC);
-  console.log(stringAmountAvailableList);
-  console.log(_const_js__WEBPACK_IMPORTED_MODULE_1__["FilterStringAmount"].SIX);
 
   const isStringsAvailable = (availableList, stringsCount) => {
     return availableList.includes(stringsCount);
   };
 
-  console.log(isStringsAvailable(guitarAmountAvailableList, _const_js__WEBPACK_IMPORTED_MODULE_1__["FilterType"].UKULELE));
   return (`<div class="catalog__filters-column">
   <h2>Фильтр</h2>
   <form class="catalog__filters-form" action="#" method="GET">

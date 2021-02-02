@@ -1,6 +1,5 @@
 import AbstractView from "./abstract.js";
 import {FilterType, FilterStringAmount} from "../const.js";
-import {filteredGoodsByType} from "../utils/filter.js";
 
 const createFiltersElement = (currentFilter, goods) => {
   let [currentFrom, currentTo] = currentFilter.price;
@@ -47,11 +46,6 @@ const createFiltersElement = (currentFilter, goods) => {
     currentTo = maxPriceInGoods;
   }
 
-  // filteredGuitarsByType = goods
-  //     .filter((item) => filteredGoodsByType(item.type, currentFilter.type));
-
-  //     console.log(filteredGuitarsByType);
-
   guitarAmountAvailableList = Array.from(new Set(goods
       .map((item) => item.type)));
 
@@ -82,19 +76,12 @@ const createFiltersElement = (currentFilter, goods) => {
     }
   })));
 
-  // guitarAmountAvailableList = Array.from(new Set(guitarAmountAvailableList));
   stringAmountAvailableList = Array.from(new Set(stringAmountAvailableList));
-
-  console.log(guitarAmountAvailableList);
-  console.log(FilterType.ACOUSTIC);
-  console.log(stringAmountAvailableList);
-  console.log(FilterStringAmount.SIX);
 
   const isStringsAvailable = (availableList, stringsCount) => {
     return availableList.includes(stringsCount);
   };
 
-  console.log(isStringsAvailable(guitarAmountAvailableList, FilterType.UKULELE));
   return (`<div class="catalog__filters-column">
   <h2>Фильтр</h2>
   <form class="catalog__filters-form" action="#" method="GET">

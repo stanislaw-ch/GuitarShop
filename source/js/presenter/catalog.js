@@ -74,6 +74,8 @@ export default class Board {
         .filter((good) => filteredGoodsByType(good.stringAmount, filter.stringAmount))
         .filter((good) => filteredGoodsByPrice(good.price, filter.price));
 
+    this._goodsModel.setFilteredGoods(filteredGoods);
+
     switch (this._currentSortByCategoryType) {
       case SortByCategoryType.DEFAULT:
         if (this._currentSortByPriorityType === SortByPriorityType.UP) {
@@ -111,7 +113,6 @@ export default class Board {
         break;
     }
 
-    this._goodsModel.setFilteredGoods(filteredGoods);
     return filteredGoods;
   }
 
