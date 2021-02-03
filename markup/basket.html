@@ -66,7 +66,11 @@
     </nav>
     <div class="container">
       <div class="page-header__image-wrapper">
-        <img src="img/image_guitar_header.png" width="825" height="298" alt="фоновое изображение">
+        <picture>
+          <source type="image/webp" srcset="img/image_guitar_header@1x.webp 1x, img/image_guitar_header@2x.webp 2x">
+          <!-- 1х: 825px; 2x: 1650px -->
+          <img src="img/image_guitar_header@1x.png" srcset="img/image_guitar_header@1x.png 1x, img/image_guitar_header@2x.png 2x" width="825" height="298" alt="фоновое изображение">
+        </picture>
       </div>
     </div>
   </header>
@@ -101,7 +105,7 @@
                 <div class="product__price">17 500 ₽</div>
                 <div class="product__quantity">
                   <button class="product__quantity-button" type="button">-</button>
-                  <input id="product-quantity" type="text" value="1" name="product-quantity">
+                  <input type="text" value="1" name="product-quantity">
                   <button class="product__quantity-button" type="button">+</button>
                 </div>
                 <div class="product__price-total">17 500 ₽</div>
@@ -154,7 +158,11 @@
   <footer class="page-footer">
     <div class="container">
       <div class="page-footer__image-wrapper">
-        <img src="img/image_guitar_footer.png" width="825" height="298" alt="фоновое изображение">
+        <picture>
+          <source type="image/webp" srcset="img/image_guitar_footer@1x.webp 1x, img/image_guitar_footer@2x.webp 2x">
+          <!-- 1х: 819px; 2x: 1638px -->
+          <img src="img/image_guitar_footer@1x.png" srcset="img/image_guitar_footer@1x.png 1x, img/image_guitar_footer@2x.png 2x" width="825" height="298" alt="фоновое изображение">
+        </picture>
       </div>
     </div>
     <div class="page-footer__content-wrapper">
@@ -165,25 +173,30 @@
               <svg width="67" height="70">
                 <use xlink:href="img/sprite.svg#logo"></use>
               </svg>
-              <!-- <img src="img/logo.svg" width="67" height="70" alt="Логотип магазина Gitar shop"> -->
             </a>
             <ul class="page-footer__social social">
               <li class="social__item">
                 <a href="#">
                   <span class="visually-hidden">facebook</span>
-                  <img src="img/icon_facebook.svg" width="24" height="24" alt="facebook">
+                  <svg width="24" height="24">
+                    <use xlink:href="img/sprite.svg#icon_facebook"></use>
+                  </svg>
                 </a>
               </li>
               <li class="social__item">
                 <a href="#">
                   <span class="visually-hidden">instagram</span>
-                  <img src="img/icon_instagram.svg" width="24" height="24" alt="instagram">
+                  <svg width="24" height="24">
+                    <use xlink:href="img/sprite.svg#icon_instagram"></use>
+                  </svg>
                 </a>
               </li>
               <li class="social__item">
                 <a href="#">
-                  <span class="visually-hidden">tweeter</span>
-                  <img src="img/icon_twitter.svg" width="24" height="24" alt="tweeter">
+                  <span class="visually-hidden">twitter</span>
+                  <svg width="24" height="24">
+                    <use xlink:href="img/sprite.svg#icon_twitter"></use>
+                  </svg>
                 </a>
               </li>
             </ul>

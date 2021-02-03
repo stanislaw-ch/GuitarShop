@@ -66,7 +66,11 @@
     </nav>
     <div class="container">
       <div class="page-header__image-wrapper">
-        <img src="img/image_guitar_header.png" width="825" height="298" alt="фоновое изображение">
+        <picture>
+          <source type="image/webp" srcset="img/image_guitar_header@1x.webp 1x, img/image_guitar_header@2x.webp 2x">
+          <!-- 1х: 825px; 2x: 1650px -->
+          <img src="img/image_guitar_header@1x.png" srcset="img/image_guitar_header@1x.png 1x, img/image_guitar_header@2x.png 2x" width="825" height="298" alt="фоновое изображение">
+        </picture>
       </div>
     </div>
   </header>
@@ -102,11 +106,11 @@
                     <label for="filters-form-type-value-1">Акустические гитары</label>
                   </div>
                   <div class="catalog__filters-type-content-wrapper">
-                    <input class="visually-hidden" type="checkbox" name="filters-form-type" id="filters-form-type-value-2" checked="">
+                    <input class="visually-hidden" type="checkbox" name="filters-form-type" id="filters-form-type-value-2" checked>
                     <label for="filters-form-type-value-2">Электрогитары</label>
                   </div>
                   <div class="catalog__filters-type-content-wrapper">
-                    <input class="visually-hidden" type="checkbox" name="filters-form-type" id="filters-form-type-value-3" checked="">
+                    <input class="visually-hidden" type="checkbox" name="filters-form-type" id="filters-form-type-value-3" checked>
                     <label for="filters-form-type-value-3">Укулеле</label>
                   </div>
                 </div>
@@ -115,11 +119,11 @@
                 <h3>Количество струн</h3>
                 <div class="catalog__filters-amount-wrapper">
                   <label>
-                    <input class="visually-hidden" type="checkbox" name="filters-form-amount" id="4" checked="">
+                    <input class="visually-hidden" type="checkbox" name="filters-form-amount" id="4" checked>
                     <span>4</span>
                   </label>
                   <label>
-                    <input class="visually-hidden" type="checkbox" name="filters-form-amount" id="6" checked="">
+                    <input class="visually-hidden" type="checkbox" name="filters-form-amount" id="6" checked>
                     <span>6</span>
                   </label>
                   <label>
@@ -127,12 +131,12 @@
                     <span>7</span>
                   </label>
                   <label>
-                    <input class="visually-hidden" type="checkbox" name="filters-form-amount" id="12" disabled="">
+                    <input class="visually-hidden" type="checkbox" name="filters-form-amount" id="12" disabled>
                     <span>12</span>
                   </label>
                 </div>
               </fieldset>
-              <button type="submit" disabled="">показать</button>
+              <button type="submit" disabled>показать</button>
             </form>
           </div>
           <div class="catalog__catalog-column">
@@ -340,7 +344,11 @@
   <footer class="page-footer">
     <div class="container">
       <div class="page-footer__image-wrapper">
-        <img src="img/image_guitar_footer.png" width="825" height="298" alt="фоновое изображение">
+        <picture>
+          <source type="image/webp" srcset="img/image_guitar_footer@1x.webp 1x, img/image_guitar_footer@2x.webp 2x">
+          <!-- 1х: 819px; 2x: 1638px -->
+          <img src="img/image_guitar_footer@1x.png" srcset="img/image_guitar_footer@1x.png 1x, img/image_guitar_footer@2x.png 2x" width="825" height="298" alt="фоновое изображение">
+        </picture>
       </div>
     </div>
     <div class="page-footer__content-wrapper">
@@ -351,25 +359,30 @@
               <svg width="67" height="70">
                 <use xlink:href="img/sprite.svg#logo"></use>
               </svg>
-              <!-- <img src="img/logo.svg" width="67" height="70" alt="Логотип магазина Gitar shop"> -->
             </a>
             <ul class="page-footer__social social">
               <li class="social__item">
                 <a href="#">
                   <span class="visually-hidden">facebook</span>
-                  <img src="img/icon_facebook.svg" width="24" height="24" alt="facebook">
+                  <svg width="24" height="24">
+                    <use xlink:href="img/sprite.svg#icon_facebook"></use>
+                  </svg>
                 </a>
               </li>
               <li class="social__item">
                 <a href="#">
                   <span class="visually-hidden">instagram</span>
-                  <img src="img/icon_instagram.svg" width="24" height="24" alt="instagram">
+                  <svg width="24" height="24">
+                    <use xlink:href="img/sprite.svg#icon_instagram"></use>
+                  </svg>
                 </a>
               </li>
               <li class="social__item">
                 <a href="#">
-                  <span class="visually-hidden">tweeter</span>
-                  <img src="img/icon_twitter.svg" width="24" height="24" alt="tweeter">
+                  <span class="visually-hidden">twitter</span>
+                  <svg width="24" height="24">
+                    <use xlink:href="img/sprite.svg#icon_twitter"></use>
+                  </svg>
                 </a>
               </li>
             </ul>
