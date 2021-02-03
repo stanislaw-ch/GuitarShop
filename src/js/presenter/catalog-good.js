@@ -118,16 +118,14 @@ export default class CatalogGood {
     const index = this._goods.findIndex((good) => good.identiferNumber === data.identiferNumber);
 
     if (index === -1 || this._goods.length === 0) {
-      this._basketModel.addGood(UpdateType.MINOR, Object.assign({}, data, {count: 1}));
+      this._basketModel.addGood(UpdateType.INIT, Object.assign({}, data, {count: 1}));
       return;
     }
+
     let count = this._goods[index].count;
     count++;
 
-    this._changeData(
-        UserAction.UPDATE_POINT,
-        Object.assign({}, data, {count})
-    );
+    this._basketModel.updateGood(UserAction.UPDATE_GOOD, Object.assign({}, data, {count}));
   }
 
   _handleAddToBasketPopUpSuccessClick(menuItem) {

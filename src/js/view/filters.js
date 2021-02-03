@@ -3,7 +3,6 @@ import {FilterType, FilterStringAmount} from "../const.js";
 
 const createFiltersElement = (currentFilter, goods) => {
   let [currentFrom, currentTo] = currentFilter.price;
-  // let filteredGuitarsByType = {};
   let stringAmountAvailableList = [];
   let guitarAmountAvailableList = [];
   let pricesInGoods = [];
@@ -78,8 +77,8 @@ const createFiltersElement = (currentFilter, goods) => {
 
   stringAmountAvailableList = Array.from(new Set(stringAmountAvailableList));
 
-  const isStringsAvailable = (availableList, stringsCount) => {
-    return availableList.includes(stringsCount);
+  const isAvailable = (availableList, data) => {
+    return availableList.includes(data);
   };
 
   return (`<div class="catalog__filters-column">
@@ -119,8 +118,8 @@ const createFiltersElement = (currentFilter, goods) => {
                     name="filters-form-type"
                     id="filters-form-type-value-1"
                     data-filter-type-guitar="${FilterType.ACOUSTIC}"
-                    ${isStringsAvailable(typeGuitarValues, FilterType.ACOUSTIC) ? `checked` : ``}
-                    ${isStringsAvailable(guitarAmountAvailableList, FilterType.ACOUSTIC) ? `` : `disabled`}
+                    ${isAvailable(typeGuitarValues, FilterType.ACOUSTIC) ? `checked` : ``}
+                    ${isAvailable(guitarAmountAvailableList, FilterType.ACOUSTIC) ? `` : `disabled`}
                     >
                 <span>Акустические гитары</span>
             </label>
@@ -133,8 +132,8 @@ const createFiltersElement = (currentFilter, goods) => {
                   name="filters-form-type"
                   id="filters-form-type-value-2"
                   data-filter-type-guitar="${FilterType.ELECTRIC}"
-                  ${isStringsAvailable(typeGuitarValues, FilterType.ELECTRIC) ? `checked` : ``}
-                  ${isStringsAvailable(guitarAmountAvailableList, FilterType.ELECTRIC) ? `` : `disabled`}
+                  ${isAvailable(typeGuitarValues, FilterType.ELECTRIC) ? `checked` : ``}
+                  ${isAvailable(guitarAmountAvailableList, FilterType.ELECTRIC) ? `` : `disabled`}
                   >
               <span>Электрогитары</span>
             </label>
@@ -147,8 +146,8 @@ const createFiltersElement = (currentFilter, goods) => {
                   name="filters-form-type"
                   id="filters-form-type-value-3"
                   data-filter-type-guitar="${FilterType.UKULELE}"
-                  ${isStringsAvailable(typeGuitarValues, FilterType.UKULELE) ? `checked` : ``}
-                  ${isStringsAvailable(guitarAmountAvailableList, FilterType.UKULELE) ? `` : `disabled`}
+                  ${isAvailable(typeGuitarValues, FilterType.UKULELE) ? `checked` : ``}
+                  ${isAvailable(guitarAmountAvailableList, FilterType.UKULELE) ? `` : `disabled`}
                   >
               <span>Укулеле</span>
             </label>
@@ -165,8 +164,8 @@ const createFiltersElement = (currentFilter, goods) => {
                 name="filters-form-amount"
                 id="4"
                 data-filter-amount-strings="${FilterStringAmount.FOUR}"
-                ${isStringsAvailable(typeStringsValues, FilterStringAmount.FOUR) ? `checked` : ``}
-                ${isStringsAvailable(stringAmountAvailableList, FilterStringAmount.FOUR) ? `` : `disabled`}
+                ${isAvailable(typeStringsValues, FilterStringAmount.FOUR) ? `checked` : ``}
+                ${isAvailable(stringAmountAvailableList, FilterStringAmount.FOUR) ? `` : `disabled`}
                 >
             <span>4</span>
           </label>
@@ -177,8 +176,8 @@ const createFiltersElement = (currentFilter, goods) => {
                 name="filters-form-amount"
                 id="6"
                 data-filter-amount-strings="${FilterStringAmount.SIX}"
-                ${isStringsAvailable(typeStringsValues, FilterStringAmount.SIX) ? `checked` : ``}
-                ${isStringsAvailable(stringAmountAvailableList, FilterStringAmount.SIX) ? `` : `disabled`}
+                ${isAvailable(typeStringsValues, FilterStringAmount.SIX) ? `checked` : ``}
+                ${isAvailable(stringAmountAvailableList, FilterStringAmount.SIX) ? `` : `disabled`}
                 >
             <span>6</span>
           </label>
@@ -189,8 +188,8 @@ const createFiltersElement = (currentFilter, goods) => {
                 name="filters-form-amount"
                 id="7"
                 data-filter-amount-strings="${FilterStringAmount.SEVEN}"
-                ${isStringsAvailable(typeStringsValues, FilterStringAmount.SEVEN) ? `checked` : ``}
-                ${isStringsAvailable(stringAmountAvailableList, FilterStringAmount.SEVEN) ? `` : `disabled`}
+                ${isAvailable(typeStringsValues, FilterStringAmount.SEVEN) ? `checked` : ``}
+                ${isAvailable(stringAmountAvailableList, FilterStringAmount.SEVEN) ? `` : `disabled`}
                 >
             <span>7</span>
           </label>
@@ -201,8 +200,8 @@ const createFiltersElement = (currentFilter, goods) => {
                 name="filters-form-amount"
                 id="12"
                 data-filter-amount-strings="${FilterStringAmount.TWELVE}"
-                ${isStringsAvailable(typeStringsValues, FilterStringAmount.TWELVE) ? `checked` : ``}
-                ${isStringsAvailable(stringAmountAvailableList, FilterStringAmount.TWELVE) ? `` : `disabled`}
+                ${isAvailable(typeStringsValues, FilterStringAmount.TWELVE) ? `checked` : ``}
+                ${isAvailable(stringAmountAvailableList, FilterStringAmount.TWELVE) ? `` : `disabled`}
                 >
             <span>12</span>
           </label>

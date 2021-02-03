@@ -248,7 +248,7 @@ export default class Board {
   }
 
   _renderGood(good) {
-    const goodPresenter = new CatalogGoodPresenter(this._siteMenuModel, this._basketModel, this._handleViewAction);
+    const goodPresenter = new CatalogGoodPresenter(this._siteMenuModel, this._basketModel);
     goodPresenter.init(this._catalogListComponent, good);
     this._goods[good.id] = goodPresenter;
   }
