@@ -10,7 +10,7 @@ const createCatalogPopUpSuccessElement = () => {
       <div class="modal__content">
         <div class="modal__buttons-wrapper">
           <button class="modal__button modal__button--to-basket" data-menu-type="${MenuItem.BASKET}">Перейти в корзину</button>
-          <button class="modal__button modal__button--to-shoping">Продолжить покупки</button>
+          <button class="modal__button modal__button--to-shopping">Продолжить покупки</button>
         </div>
         <button class="modal__close" type="button">
           <span class="visually-hidden">Закрыть</span>
@@ -56,7 +56,7 @@ export default class CatalogPopUpSuccess extends AbstractView {
 
   setToShoppingClickHandler(callback) {
     this._callback.toShoppingClick = callback;
-    this.getElement().querySelector(`.modal__button--to-shoping`).addEventListener(`click`, this._toShoppingClickHandler);
+    this.getElement().querySelector(`.modal__button--to-shopping`).addEventListener(`click`, this._toShoppingClickHandler);
   }
 
   setCloseClickHandler(callback) {

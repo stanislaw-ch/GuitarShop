@@ -14,7 +14,14 @@
 .user-list__item {
   display: flex;
 
+  &--basket {
+    position: relative;
+    padding-right: 7px;
+  }
+
   &--basket span {
+    position: absolute;
+    right: 0;
     margin-top: -5px;
     margin-left: 2px;
   }

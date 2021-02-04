@@ -12,7 +12,7 @@ const createBasketItemElement = (data) => {
               <img src="img/guitar-${getGuitarType(type)}@1x.png" srcset="img/guitar-${getGuitarType(type)}@1x.png 1x, img/guitar-${getGuitarType(type)}@2x.png 2x" width="68" height="190" alt="Изображение товара">
             </picture>
           </div>
-          <ul class="product__deckription-list">
+          <ul class="product__description-list">
             <li class="product__name">Электрогитара ${name}</li>
             <li class="product__identifer-number">Артикул: ${count}</li>
             <li class="product__type">Электрогитара, ${stringAmount} струнная </li>

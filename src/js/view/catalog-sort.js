@@ -20,16 +20,22 @@ const createCatalogSortElement = (currentSortByCategoryType, currentSortByPriori
         </li>
       </ul>
       <div class="catalog__sort-buttons">
-        <button
+        <a href="#"
           class="sort-button sort-button--up ${currentSortByPriorityType === SortByPriorityType.UP ? `sort-button--active` : ``}"
-          type="button"
           data-sort-by-priority="${SortByPriorityType.UP}">
-        </button>
-        <button
+            <span class="visually-hidden">Сортировать по возрастанию</span>
+            <svg width="22" height="22">
+              <use xlink:href="img/sprite/sprite.svg#sprite-icon_arrow-up"></use>
+            </svg>
+        </a>
+        <a href="#"
           class="sort-button sort-button--down ${currentSortByPriorityType === SortByPriorityType.DOWN ? `sort-button--active` : ``}"
-          type="button"
           data-sort-by-priority="${SortByPriorityType.DOWN}">
-        </button>
+          <span class="visually-hidden">Сортировать по убыванию</span>
+          <svg width="22" height="22">
+            <use xlink:href="img/sprite/sprite.svg#sprite-icon_arrow-up"></use>
+          </svg>
+        </a>
       </div>
     </div>`
   );
@@ -49,26 +55,21 @@ export default class CatalogSort extends AbstractView {
 
   _sortByCategoryChangeHandler(evt) {
     evt.preventDefault();
-    if (evt.target.tagName === `A`) {
-      evt.preventDefault();
-      this._callback.sortByCategoryChange(evt.target.dataset.sortByCategory);
-    }
+    this._callback.sortByCategoryChange(evt.target.dataset.sortByCategory);
   }
 
   _sortByPriorityChangeHandler(evt) {
-    if (evt.target.tagName === `BUTTON`) {
-      evt.preventDefault();
-      this._callback.sortByPriorityChange(evt.target.dataset.sortByPriority);
-    }
+    evt.preventDefault();
+    this._callback.sortByPriorityChange(evt.target.parentNode.dataset.sortByPriority);
   }
 
   setSortByCategoryChangeHandler(callback) {
     this._callback.sortByCategoryChange = callback;
-    this.getElement().addEventListener(`click`, this._sortByCategoryChangeHandler);
+    this.getElement().querySelector(`.catalog__sort`).addEventListener(`click`, this._sortByCategoryChangeHandler);
   }
 
   setSortByPriorityChangeHandler(callback) {
     this._callback.sortByPriorityChange = callback;
-    this.getElement().addEventListener(`click`, this._sortByPriorityChangeHandler);
+    this.getElement().querySelector(`.catalog__sort-buttons`).addEventListener(`click`, this._sortByPriorityChangeHandler, true);
   }
 }

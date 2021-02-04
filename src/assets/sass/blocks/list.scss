@@ -10,7 +10,7 @@
   height: 304px;
   margin-right: 19px;
   margin-bottom: 30px;
-  padding: 11px 13px 14px 13px;
+  padding: 15px 12px 14px 14px;
 
   border: 1px solid #dddada;
   box-sizing: border-box;
@@ -19,8 +19,9 @@
 .list__item img {
   display: block;
   margin: 0 auto;
-  height: 202px;
+  height: 190px;
   width: auto;
+  margin-bottom: 8px;
   // min-height: 190px;
 }
 
@@ -34,7 +35,7 @@
 
 .list__rating {
   display: flex;
-  margin-bottom: 5px;
+  margin-bottom: 7px;
 }
 
 .list__stars {
@@ -56,17 +57,17 @@
   }
 }
 
-.list__descriotion-wrapper {
+.list__description-wrapper {
   display: flex;
   justify-content: space-between;
 }
 
-.list__descriotion-wrapper h3,
-.list__descriotion-wrapper p {
+.list__description-wrapper h3,
+.list__description-wrapper p {
   margin: 0 0 13px 0;
   font-size: 14px;
   font-weight: 400;
-  letter-spacing: 0.9px;
+  letter-spacing: 0.6px;
 }
 
 .list__navigation-wrapper {

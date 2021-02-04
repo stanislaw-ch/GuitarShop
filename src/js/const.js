@@ -36,7 +36,7 @@ export const MenuItem = {
 
 export const BreadcrumbsItem = {
   CATALOG: `Каталог`,
-  BASKET: `Корзина`
+  BASKET: `Оформляем`
 };
 
 export const BreadcrumbsTitle = {

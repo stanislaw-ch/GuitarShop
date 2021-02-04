@@ -18,7 +18,7 @@ const createCatalogItemElement = (data) => {
         </div>
         <span class="rating__amount">${reviewAmount}</span>
       </div>
-      <div class="list__descriotion-wrapper">
+      <div class="list__description-wrapper">
         <h3>${name}</h3>
         <p>${price.toLocaleString(`ru-RU`)} ₽</p>
       </div>

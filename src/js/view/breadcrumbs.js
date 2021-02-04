@@ -7,6 +7,18 @@ const createBreadcrumbsTemplate = (siteMenuItem) => {
     switch (siteMenuItem) {
       case MenuItem.CATALOG:
         title = element.CATALOG;
+        return `<li class="breadcrumbs__item breadcrumbs__item--current"><a class="breadcrumbs__link">${title}</a></li>`;
+      case MenuItem.BASKET:
+        title = element.BASKET;
+        return `<li class="breadcrumbs__item"><a href="#" class="breadcrumbs__link">${element.CATALOG}</a></li><li class="breadcrumbs__item breadcrumbs__item--current"><a class="breadcrumbs__link">${title}</a></li>`;
+    }
+    return title;
+  };
+  const breadcrumbsTitle = (element) => {
+    let title = ``;
+    switch (siteMenuItem) {
+      case MenuItem.CATALOG:
+        title = element.CATALOG;
         return title;
       case MenuItem.BASKET:
         title = element.BASKET;
@@ -15,14 +27,14 @@ const createBreadcrumbsTemplate = (siteMenuItem) => {
     return title;
   };
 
-  return `<div><h2 class="page-main__title">${breadcrumbsElement(BreadcrumbsTitle)}</h2>
+  return `<div><h2 class="page-main__title">${breadcrumbsTitle(BreadcrumbsTitle)}</h2>
   <ul class="breadcrumbs">
     <li class="breadcrumbs__item">
       <a href="#" class="breadcrumbs__link">Главная</a>
     </li>
-    <li class="breadcrumbs__item breadcrumbs__item--current">
-      <a href="#" class="breadcrumbs__link">${breadcrumbsElement(BreadcrumbsItem)}</a>
-    </li>
+
+      ${breadcrumbsElement(BreadcrumbsItem)}
+
   </ul></div>`;
 };
 

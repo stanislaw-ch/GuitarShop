@@ -18,7 +18,7 @@ const createCatalogPopUpAddElement = (data) => {
             </picture>
           </div>
           <div class="modal__content-container">
-            <ul class="modal__deckription-list">
+            <ul class="modal__description-list">
               <li class="modal__name">Гитара ${name}</li>
               <li class="modal__identifer-number">Артикул: ${identiferNumber}</li>
               <li class="modal__type">Электрогитара, ${stringAmount} струнная </li>

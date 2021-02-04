@@ -5,6 +5,7 @@ const CopyWebpackPlugin = require(`copy-webpack-plugin`);
 const MiniCssExtractPlugin = require(`mini-css-extract-plugin`);
 const OptimizeCssAssetsWebpackPlugin = require(`optimize-css-assets-webpack-plugin`);
 const TerserWebpackPlugin = require(`terser-webpack-plugin`);
+const SVGSpriteMapPlugin = require(`svg-spritemap-webpack-plugin`);
 
 const isDev = process.env.NODE_ENV === `development`;
 const isProd = !isDev;
@@ -102,6 +103,11 @@ module.exports = {
       ]}),
     new MiniCssExtractPlugin({
       filename: `css/${filename(`css`)}`
+    }),
+    new SVGSpriteMapPlugin(`src/assets/img/*.svg`, {
+      output: {
+        filename: `img/sprite/sprite.svg`,
+      },
     })
   ],
   module: {

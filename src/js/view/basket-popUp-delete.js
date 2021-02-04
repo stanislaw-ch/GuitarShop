@@ -18,7 +18,7 @@ const createBasketPopUpDeleteElement = (data) => {
           </picture>
         </div>
         <div class="modal__content-container">
-          <ul class="modal__deckription-list">
+          <ul class="modal__description-list">
             <li class="modal__name">Гитара ${name}</li>
             <li class="modal__identifer-number">Артикул: ${identiferNumber}</li>
             <li class="modal__type">Электрогитара, ${stringAmount} струнная </li>
@@ -27,7 +27,7 @@ const createBasketPopUpDeleteElement = (data) => {
         </div>
         <div class="modal__buttons-wrapper modal__buttons-wrapper--basket">
           <button class="modal__button">Удалить товар</button>
-          <button class="modal__button modal__button--to-shoping">Продолжить покупки</button>
+          <button class="modal__button modal__button--to-shopping">Продолжить покупки</button>
         </div>
         <button class="modal__close" type="button">
           <span class="visually-hidden">Закрыть</span>

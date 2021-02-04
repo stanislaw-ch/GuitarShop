@@ -24,11 +24,8 @@ const createBasketElement = (goods, discountType, isAvailable) => {
     return totalPrice;
   };
 
-  const getDiscountPrice = () => {
-    switch (discountType) {
-      case DiscountType.DEFAULT:
-        getTotalPrice();
-        break;
+  const getDiscountPrice = (type) => {
+    switch (type) {
       case DiscountType.GITARAHIT:
         getTotalPrice();
         if (totalPrice > 0) {
@@ -47,18 +44,21 @@ const createBasketElement = (goods, discountType, isAvailable) => {
           return (DISCOUNT.GITARA2020) <= totalPrice * DISCOUNT.GITARA2020_30_PERCENT ? totalPrice - DISCOUNT.GITARA2020 : totalPrice * DISCOUNT.GITARA2020_30_PERCENT;
         }
         break;
+      default:
+        getTotalPrice();
+        break;
     }
     return totalPrice.toLocaleString(`ru-RU`);
   };
 
-  return `<section class="shoppingbag">
-  <div class="shoppingbag__content">
-    <div class="shoppingbag__product product">
+  return `<section class="shopping-bag">
+  <div class="shopping-bag__content">
+    <div class="shopping-bag__product product">
       <ul class="product__list">
 
       </ul>
     </div>
-    <div class="shoppingbag__order order">
+    <div class="shopping-bag__order order">
       <div class="order__discount">
         <div class="order__discount-wrapper">
           <span class="order__discount-title">Промокод на скидку</span>
@@ -70,7 +70,7 @@ const createBasketElement = (goods, discountType, isAvailable) => {
         </div>
       </div>
       <div class="order__to-order">
-        <span>Всего: ${getDiscountPrice()} ₽</span>
+        <span>Всего: ${getDiscountPrice(discountType)} ₽</span>
         <button type="button">Оформить заказ</button>
       </div>
     </div>

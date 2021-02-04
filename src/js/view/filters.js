@@ -25,6 +25,14 @@ const createFiltersElement = (currentFilter, goods) => {
     currentTo = maxPriceInGoods;
   }
 
+  if (currentFrom < minPriceInGoods || Number.isNaN(currentFrom)) {
+    currentFrom = minPriceInGoods;
+  }
+
+  if (currentTo > maxPriceInGoods || Number.isNaN(currentTo)) {
+    currentTo = maxPriceInGoods;
+  }
+
   if (currentFrom > currentTo) {
     currentTo = currentFrom;
   }
@@ -35,14 +43,6 @@ const createFiltersElement = (currentFilter, goods) => {
 
   if (currentTo < currentFrom) {
     currentTo = currentFrom;
-  }
-
-  if (currentFrom < minPriceInGoods || Number.isNaN(currentFrom)) {
-    currentFrom = minPriceInGoods;
-  }
-
-  if (currentTo > maxPriceInGoods || Number.isNaN(currentTo)) {
-    currentTo = maxPriceInGoods;
   }
 
   guitarAmountAvailableList = Array.from(new Set(goods
@@ -110,8 +110,8 @@ const createFiltersElement = (currentFilter, goods) => {
       <fieldset class="catalog__filters-type-guitar">
         <h3>Тип гитар</h3>
         <div class="catalog__filters-type-wrapper">
-          <div class="catalog__filters-type-content-wrapper">
-            <label>
+          <div class="catalog__filters-type-content-wrapper" tabindex="-1">
+            <label tabindex="0">
                 <input
                     class="visually-hidden"
                     type="checkbox"
@@ -120,12 +120,12 @@ const createFiltersElement = (currentFilter, goods) => {
                     data-filter-type-guitar="${FilterType.ACOUSTIC}"
                     ${isAvailable(typeGuitarValues, FilterType.ACOUSTIC) ? `checked` : ``}
                     ${isAvailable(guitarAmountAvailableList, FilterType.ACOUSTIC) ? `` : `disabled`}
-                    >
-                <span>Акустические гитары</span>
+                    tabindex="-1">
+                <span tabindex="-1">Акустические гитары</span>
             </label>
           </div>
-          <div class="catalog__filters-type-content-wrapper">
-            <label>
+          <div class="catalog__filters-type-content-wrapper" tabindex="-1">
+            <label tabindex="0">
               <input
                   class="visually-hidden"
                   type="checkbox"
@@ -134,12 +134,12 @@ const createFiltersElement = (currentFilter, goods) => {
                   data-filter-type-guitar="${FilterType.ELECTRIC}"
                   ${isAvailable(typeGuitarValues, FilterType.ELECTRIC) ? `checked` : ``}
                   ${isAvailable(guitarAmountAvailableList, FilterType.ELECTRIC) ? `` : `disabled`}
-                  >
-              <span>Электрогитары</span>
+                  tabindex="-1">
+              <span tabindex="-1">Электрогитары</span>
             </label>
           </div>
-          <div class="catalog__filters-type-content-wrapper">
-            <label>
+          <div class="catalog__filters-type-content-wrapper" tabindex="-1">
+            <label tabindex="0">
               <input
                   class="visually-hidden"
                   type="checkbox"
@@ -148,7 +148,7 @@ const createFiltersElement = (currentFilter, goods) => {
                   data-filter-type-guitar="${FilterType.UKULELE}"
                   ${isAvailable(typeGuitarValues, FilterType.UKULELE) ? `checked` : ``}
                   ${isAvailable(guitarAmountAvailableList, FilterType.UKULELE) ? `` : `disabled`}
-                  >
+                  tabindex="-1">
               <span>Укулеле</span>
             </label>
           </div>
@@ -156,8 +156,8 @@ const createFiltersElement = (currentFilter, goods) => {
       </fieldset>
       <fieldset class="catalog__filters-string-amount">
         <h3>Количество струн</h3>
-        <div class="catalog__filters-amount-wrapper">
-          <label>
+        <div class="catalog__filters-amount-wrapper" tabindex="-1">
+          <label tabindex="0">
             <input
                 class="visually-hidden"
                 type="checkbox"
@@ -166,10 +166,10 @@ const createFiltersElement = (currentFilter, goods) => {
                 data-filter-amount-strings="${FilterStringAmount.FOUR}"
                 ${isAvailable(typeStringsValues, FilterStringAmount.FOUR) ? `checked` : ``}
                 ${isAvailable(stringAmountAvailableList, FilterStringAmount.FOUR) ? `` : `disabled`}
-                >
+                tabindex="-1">
             <span>4</span>
           </label>
-          <label>
+          <label tabindex="0">
             <input
                 class="visually-hidden"
                 type="checkbox"
@@ -178,10 +178,10 @@ const createFiltersElement = (currentFilter, goods) => {
                 data-filter-amount-strings="${FilterStringAmount.SIX}"
                 ${isAvailable(typeStringsValues, FilterStringAmount.SIX) ? `checked` : ``}
                 ${isAvailable(stringAmountAvailableList, FilterStringAmount.SIX) ? `` : `disabled`}
-                >
+                tabindex="-1">
             <span>6</span>
           </label>
-          <label>
+          <label tabindex="0">
             <input
                 class="visually-hidden"
                 type="checkbox"
@@ -190,10 +190,10 @@ const createFiltersElement = (currentFilter, goods) => {
                 data-filter-amount-strings="${FilterStringAmount.SEVEN}"
                 ${isAvailable(typeStringsValues, FilterStringAmount.SEVEN) ? `checked` : ``}
                 ${isAvailable(stringAmountAvailableList, FilterStringAmount.SEVEN) ? `` : `disabled`}
-                >
+                tabindex="-1">
             <span>7</span>
           </label>
-          <label>
+          <label tabindex="0">
             <input
                 class="visually-hidden"
                 type="checkbox"
@@ -202,7 +202,7 @@ const createFiltersElement = (currentFilter, goods) => {
                 data-filter-amount-strings="${FilterStringAmount.TWELVE}"
                 ${isAvailable(typeStringsValues, FilterStringAmount.TWELVE) ? `checked` : ``}
                 ${isAvailable(stringAmountAvailableList, FilterStringAmount.TWELVE) ? `` : `disabled`}
-                >
+                tabindex="-1">
             <span>12</span>
           </label>
         </div>
@@ -250,14 +250,17 @@ export default class Filters extends AbstractView {
 
   _filterPriceChangeHandler(evt) {
     evt.preventDefault();
+    if (evt.target.value <= 0 || Number.isNaN(Number(evt.target.value)) || evt.target.value === ``) {
+      return this._callback.filterPriceChange(this._currentFilter.price);
+    }
 
     let optionsPriceChangeArray = [];
 
-    document.querySelectorAll(`input[type='text']`)
-        .forEach((checkbox) => optionsPriceChangeArray
-            .push(checkbox.value));
+    document.querySelectorAll(`.catalog__filters-price-wrapper input[type='text']`)
+        .forEach((input) => optionsPriceChangeArray
+            .push(input.value));
 
-    this._callback.filterPriceChange(optionsPriceChangeArray);
+    return this._callback.filterPriceChange(optionsPriceChangeArray);
   }
 
   setFilterTypeChangeHandler(callback) {
