@@ -72,12 +72,12 @@ export default class BasketItem extends SmartView {
   _handleProductQuantityChangeHandle(evt) {
     evt.preventDefault();
     if (evt.target.value <= 0 || Number.isNaN(Number(evt.target.value)) || evt.target.value === ``) {
-      this._callback.productQuantityChange(this._currentValueCount);
+      return this._callback.productQuantityChange(this._currentValueCount);
     }
 
     this._currentValueCount = Number(evt.target.value);
 
-    this._callback.productQuantityChange(this._currentValueCount);
+    return this._callback.productQuantityChange(this._currentValueCount);
   }
 
   _deleteClickHandler(evt) {

@@ -34,22 +34,6 @@ const optimization = () => {
 
 const filename = (ext) => isDev ? `[name].${ext}` : `[name].[contenthash].${ext}`;
 
-// const cssLoaders = (extra) => {
-//   const loaders = [
-//     {
-//       loader: MiniCssExtractPlugin.loader,
-//       options: {
-//       },
-//     }, `css-loader`
-//   ];
-
-//   if (extra) {
-//     loaders.push(extra);
-//   }
-
-//   return loaders;
-// };
-
 const babelOptions = (preset) => {
   const options = {
     presets: [`@babel/preset-env`],
@@ -85,7 +69,7 @@ module.exports = {
   output: {
     filename: filename(`js`),
     path: path.resolve(__dirname, `public`),
-    publicPath: ``
+    publicPath: `/`
   },
   resolve: {
     extensions: [`.js`, `.json`]
@@ -126,23 +110,20 @@ module.exports = {
         test: /\.(sa|sc|c)ss$/,
         use: [
           MiniCssExtractPlugin.loader,
-          `css-loader`,
-          // `postcss-loader`,
-          `sass-loader`,
+          {
+            loader: `css-loader`,
+            options: {
+              sourceMap: true
+            }
+          },
+          {
+            loader: `sass-loader`,
+            options: {
+              sourceMap: true
+            }
+          }
         ]
       },
-      // {
-      //   test: /\.css$/,
-      //   use: cssLoaders()
-      // },
-      // {
-      //   test: /\.less$/,
-      //   use: cssLoaders(`less-loader`)
-      // },
-      // {
-      //   test: /\.s[ac]ss$/,
-      //   use: cssLoaders(`sass-loader`)
-      // },
       {
         test: /\.(png|svg|jpe?g|gif)$/,
         exclude: /fonts/,
@@ -151,7 +132,7 @@ module.exports = {
             loader: `file-loader`,
             options: {
               name: `[name].[ext]`,
-              outputPath: `/img`,
+              outputPath: `img`,
             }
           }
         ]
@@ -164,7 +145,7 @@ module.exports = {
             loader: `file-loader`,
             options: {
               name: `[name].[ext]`,
-              outputPath: `/fonts`,
+              outputPath: `fonts`,
             }
           }
         ]
@@ -173,23 +154,7 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: jsLoaders()
-      },
-      // {
-      //   test: /\.ts$/,
-      //   exclude: /node_modules/,
-      //   use: {
-      //     loader: `babel-loader`,
-      //     options: babelOptions(`@babel/preset-typescript`)
-      //   }
-      // },
-      // {
-      //   test: /\.jsx$/,
-      //   exclude: /node_modules/,
-      //   use: {
-      //     loader: `babel-loader`,
-      //     options: babelOptions(`@babel/preset-react`)
-      //   }
-      // }
+      }
     ]
   }
 };
