@@ -7,13 +7,13 @@
   font-family: "DroidSans";
   font-weight: 400;
   font-style: normal;
-  src: url(/fonts/droidsans.woff) format("woff"), url(/fonts/droidsans.woff2) format("woff2"); }
+  src: url(fonts/droidsans.woff) format("woff"), url(fonts/droidsans.woff2) format("woff2"); }
 
 @font-face {
   font-family: "DroidSans";
   font-weight: 700;
   font-style: normal;
-  src: url(/fonts/droidsansbold.woff) format("woff"), url(/fonts/droidsansbold.woff2) format("woff2"); }
+  src: url(fonts/droidsansbold.woff) format("woff"), url(fonts/droidsansbold.woff2) format("woff2"); }
 
 body {
   min-width: 1020px;
@@ -579,7 +579,7 @@ input[type="radio"].visually-hidden {
     left: 0;
     width: 10px;
     height: 10px;
-    background-image: url(/img/icon_phone.svg); }
+    background-image: url(img/icon_phone.svg); }
   .links__list--kontakt .links__item span::before {
     content: "";
     position: absolute;
@@ -587,7 +587,7 @@ input[type="radio"].visually-hidden {
     left: 0;
     width: 10px;
     height: 10px;
-    background-image: url(/img/icon_clock.svg); }
+    background-image: url(img/icon_clock.svg); }
 
 .links__item {
   position: relative; }
@@ -736,7 +736,7 @@ input[type="radio"].visually-hidden {
   left: 5px;
   width: 12px;
   height: 12px;
-  background-image: url(/img/icon_check-mark-button.svg);
+  background-image: url(img/icon_check-mark-button.svg);
   background-repeat: no-repeat;
   background-position: 0 0; }
 
@@ -812,7 +812,7 @@ input[type="radio"].visually-hidden {
       display: inline-block;
       width: 12px;
       height: 13px;
-      background-image: url(/img/icon_cart.svg);
+      background-image: url(img/icon_cart.svg);
       background-position: center;
       background-repeat: no-repeat;
       background-color: transparent; }
@@ -1014,7 +1014,7 @@ input[type="radio"].visually-hidden {
     content: "";
     display: inline-block;
     height: 100%;
-    background-image: url(/img/stars.svg);
+    background-image: url(img/stars.svg);
     background-position: center;
     background-repeat: no-repeat;
     background-color: transparent; }
@@ -1030,7 +1030,7 @@ input[type="radio"].visually-hidden {
     content: "";
     display: inline-block;
     height: 100%;
-    background-image: url(/img/stars_active.svg);
+    background-image: url(img/stars_active.svg);
     background-position: center;
     background-repeat: no-repeat;
     background-color: transparent; }
