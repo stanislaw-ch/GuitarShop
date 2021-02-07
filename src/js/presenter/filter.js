@@ -8,15 +8,26 @@ export default class Filter {
     this._goodsModel = goodsModel;
 
     this._filterComponent = null;
+    this._prevFilterComponent = null;
+
+    this._pricesInGoods = [];
+
+    this._pricesInGoods = this._goodsModel.getGoods()
+    .map((item) => item.price);
+
+    this._minPriceInGoods = Math.min(...this._pricesInGoods);
+    this._maxPriceInGoods = Math.max(...this._pricesInGoods);
 
     this._handleFilterTypeChange = this._handleFilterTypeChange.bind(this);
     this._handleFilterStringChange = this._handleFilterStringChange.bind(this);
     this._handleFilterPriceChange = this._handleFilterPriceChange.bind(this);
+
+    this._filterModel.setFilterByInit([this._minPriceInGoods, this._maxPriceInGoods], `price`);
   }
 
   init() {
     this._currentFilter = this._filterModel.getFilter();
-    this._goods = this._goodsModel.getFilteredGoods();
+    this._goods = this._goodsModel.getGoods();
 
     this._prevFilterComponent = this._filterComponent;
 
@@ -26,6 +37,7 @@ export default class Filter {
     this._filterComponent.setFilterPriceChangeHandler(this._handleFilterPriceChange);
 
     render(this._filterContainer, this._filterComponent, RenderPosition.AFTERBEGIN);
+
   }
 
   destroy() {
@@ -61,6 +73,33 @@ export default class Filter {
       return parseInt(String(filter).replace(/\s+/g, ``), 10);
     });
 
-    this._filterModel.setFilter(filterPriceType, `price`);
+    const [minCurrent, maxCurrent] = this._currentFilter.price;
+    let [min, max] = filterPriceType;
+
+    if (min < this._minPriceInGoods) {
+      min = this._minPriceInGoods;
+    }
+
+    if (min > this._maxPriceInGoods) {
+      min = this._maxPriceInGoods;
+    }
+
+    if (min > maxCurrent) {
+      min = maxCurrent;
+    }
+
+    if (max < this._minPriceInGoods) {
+      max = this._minPriceInGoods;
+    }
+
+    if (max > this._maxPriceInGoods) {
+      max = this._maxPriceInGoods;
+    }
+
+    if (max < minCurrent) {
+      max = minCurrent;
+    }
+
+    this._filterModel.setFilter([min, max], `price`);
   }
 }

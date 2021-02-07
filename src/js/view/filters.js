@@ -1,11 +1,23 @@
 import AbstractView from "./abstract.js";
-import {FilterType, FilterStringAmount} from "../const.js";
+import {FilterType, FilterStringAmount, StringsAmountByType} from "../const.js";
+import {filteredGoodsByPrice} from "../utils/filter.js";
 
 const createFiltersElement = (currentFilter, goods) => {
   let [currentFrom, currentTo] = currentFilter.price;
+  let filteredGuitarsByType = {};
   let stringAmountAvailableList = [];
-  let guitarAmountAvailableList = [];
-  let pricesInGoods = [];
+  // let guitarAmountAvailableList = [];
+  // let pricesInGoods = [];
+
+  if (currentFilter.type.length === 0) {
+    filteredGuitarsByType = goods
+        .filter((item) => filteredGoodsByPrice(item.type, currentFilter.type));
+
+    stringAmountAvailableList = Array.from(new Set(filteredGuitarsByType
+        .map((item) => item.stringAmount)));
+  }
+
+  filteredGuitarsByType = currentFilter.type;
 
   const guitarKeys = Object.keys(FilterType);
   const stringKeys = Object.keys(FilterStringAmount);
@@ -14,42 +26,80 @@ const createFiltersElement = (currentFilter, goods) => {
   let typeGuitarValues = [];
   let typeStringsValues = [];
 
-  pricesInGoods = goods
-      .map((item) => item.price);
+  // pricesInGoods = goods
+  //     .map((item) => item.price);
 
-  const minPriceInGoods = Math.min(...pricesInGoods);
-  const maxPriceInGoods = Math.max(...pricesInGoods);
+  // const minPriceInGoods = Math.min(...pricesInGoods);
+  // const maxPriceInGoods = Math.max(...pricesInGoods);
 
-  if (currentFilter.price.length === 0) {
-    currentFrom = minPriceInGoods;
-    currentTo = maxPriceInGoods;
-  }
+  // if (currentFilter.price.length === 0) {
+  //   currentFrom = minPriceInGoods;
+  //   currentTo = maxPriceInGoods;
+  // }
 
-  if (currentFrom < minPriceInGoods || Number.isNaN(currentFrom)) {
-    currentFrom = minPriceInGoods;
-  }
 
-  if (currentTo > maxPriceInGoods || Number.isNaN(currentTo)) {
-    currentTo = maxPriceInGoods;
-  }
+  // if (currentFrom > currentTo) {
+  //   if (currentFrom > maxPriceInGoods) {
+  //     console.log(`object`);
+  //     currentTo = maxPriceInGoods;
+  //   } else {
+  //     console.log(`object`);
+  //     currentFrom = currentTo;
+  //   }
+  // }
 
-  if (currentFrom > currentTo) {
-    currentTo = currentFrom;
-  }
+  // if (currentFrom < minPriceInGoods) {
+  //   currentFrom = minPriceInGoods;
+  // }
 
-  if (currentFrom < minPriceInGoods) {
-    currentFrom = minPriceInGoods;
-  }
+  // if (currentTo < currentFrom) {
+  //   if (currentTo < minPriceInGoods) {
+  //     currentTo = minPriceInGoods;
+  //     console.log(`object`);
+  //   } else {
+  //     currentTo = currentFrom;
+  //   }
+  // }
 
-  if (currentTo < currentFrom) {
-    currentTo = currentFrom;
-  }
+  // const getCurrentFrom = (from) => {
+  // if (currentFilter.price.length === 0) {
+  //   console.log(`1`);
+  //   from = minPriceInGoods;
+  //   return from;
+  // }
+  //   if (currentFilter.price.length === 0 || from < minPriceInGoods || Number.isNaN(from)) {
+  //     from = minPriceInGoods;
+  //     return from;
+  //   }
+  //   if (from > currentTo) {
+  //     if (from > maxPriceInGoods) {
+  //       currentTo = maxPriceInGoods;
+  //     } else {
+  //       from = currentTo;
+  //     }
+  //   }
 
-  guitarAmountAvailableList = Array.from(new Set(goods
-      .map((item) => item.type)));
+  //   return from;
+  // };
 
-  stringAmountAvailableList = Array.from(new Set(goods
-      .map((item) => item.stringAmount)));
+  // console.log(getCurrentFrom(currentFrom));
+  // console.log(currentFrom);
+  // console.log(currentTo);
+
+  // if (currentFrom < minPriceInGoods || Number.isNaN(currentFrom)) {
+  //   currentFrom = minPriceInGoods;
+  // }
+
+  // if (currentTo > maxPriceInGoods || Number.isNaN(currentTo)) {
+  //   currentTo = maxPriceInGoods;
+  // }
+
+  // guitarAmountAvailableList = Array.from(new Set(goods
+  //     .map((item) => item.type)));
+
+
+  // stringAmountAvailableList = Array.from(new Set(goods
+  //     .map((item) => item.stringAmount)));
 
   guitarKeys.filter((key) => (currentFilter.type.forEach((type) => {
     if (type.includes(FilterType[key])) {
@@ -75,11 +125,18 @@ const createFiltersElement = (currentFilter, goods) => {
     }
   })));
 
+
+  typeGuitarKeys.forEach((item) => {
+    stringAmountAvailableList.push(...StringsAmountByType[item]);
+    return stringAmountAvailableList;
+  });
+
   stringAmountAvailableList = Array.from(new Set(stringAmountAvailableList));
 
   const isAvailable = (availableList, data) => {
     return availableList.includes(data);
   };
+  // value="${currentFrom.toLocaleString(`ru-RU`)}"
 
   return (`<div class="catalog__filters-column">
   <h2>Фильтр</h2>
@@ -110,101 +167,84 @@ const createFiltersElement = (currentFilter, goods) => {
       <fieldset class="catalog__filters-type-guitar">
         <h3>Тип гитар</h3>
         <div class="catalog__filters-type-wrapper">
-          <div class="catalog__filters-type-content-wrapper" tabindex="-1">
-            <label tabindex="0">
-                <input
-                    class="visually-hidden"
-                    type="checkbox"
-                    name="filters-form-type"
-                    id="filters-form-type-value-1"
-                    data-filter-type-guitar="${FilterType.ACOUSTIC}"
-                    ${isAvailable(typeGuitarValues, FilterType.ACOUSTIC) ? `checked` : ``}
-                    ${isAvailable(guitarAmountAvailableList, FilterType.ACOUSTIC) ? `` : `disabled`}
-                    tabindex="-1">
-                <span tabindex="-1">Акустические гитары</span>
-            </label>
+          <div class="catalog__filters-type-content-wrapper">
+            <input
+                class="visually-hidden"
+                type="checkbox"
+                name="filters-form-type"
+                id="filters-form-type-value-1"
+                data-filter-type-guitar="${FilterType.ACOUSTIC}"
+                ${isAvailable(typeGuitarValues, FilterType.ACOUSTIC) ? `checked` : ``}
+                >
+            <label for="filters-form-type-value-1">Акустические гитары</label>
           </div>
-          <div class="catalog__filters-type-content-wrapper" tabindex="-1">
-            <label tabindex="0">
-              <input
-                  class="visually-hidden"
-                  type="checkbox"
-                  name="filters-form-type"
-                  id="filters-form-type-value-2"
-                  data-filter-type-guitar="${FilterType.ELECTRIC}"
-                  ${isAvailable(typeGuitarValues, FilterType.ELECTRIC) ? `checked` : ``}
-                  ${isAvailable(guitarAmountAvailableList, FilterType.ELECTRIC) ? `` : `disabled`}
-                  tabindex="-1">
-              <span tabindex="-1">Электрогитары</span>
-            </label>
+          <div class="catalog__filters-type-content-wrapper">
+            <input
+                class="visually-hidden"
+                type="checkbox"
+                name="filters-form-type"
+                id="filters-form-type-value-2"
+                data-filter-type-guitar="${FilterType.ELECTRIC}"
+                ${isAvailable(typeGuitarValues, FilterType.ELECTRIC) ? `checked` : ``}
+                >
+            <label for="filters-form-type-value-2">Электрогитары</label>
           </div>
-          <div class="catalog__filters-type-content-wrapper" tabindex="-1">
-            <label tabindex="0">
-              <input
-                  class="visually-hidden"
-                  type="checkbox"
-                  name="filters-form-type"
-                  id="filters-form-type-value-3"
-                  data-filter-type-guitar="${FilterType.UKULELE}"
-                  ${isAvailable(typeGuitarValues, FilterType.UKULELE) ? `checked` : ``}
-                  ${isAvailable(guitarAmountAvailableList, FilterType.UKULELE) ? `` : `disabled`}
-                  tabindex="-1">
-              <span>Укулеле</span>
-            </label>
+          <div class="catalog__filters-type-content-wrapper">
+            <input
+                class="visually-hidden"
+                type="checkbox"
+                name="filters-form-type"
+                id="filters-form-type-value-3"
+                data-filter-type-guitar="${FilterType.UKULELE}"
+                ${isAvailable(typeGuitarValues, FilterType.UKULELE) ? `checked` : ``}
+                >
+            <label for="filters-form-type-value-3">Укулеле</label>
           </div>
         </div>
       </fieldset>
       <fieldset class="catalog__filters-string-amount">
         <h3>Количество струн</h3>
-        <div class="catalog__filters-amount-wrapper" tabindex="-1">
-          <label tabindex="0">
-            <input
-                class="visually-hidden"
-                type="checkbox"
-                name="filters-form-amount"
-                id="4"
-                data-filter-amount-strings="${FilterStringAmount.FOUR}"
-                ${isAvailable(typeStringsValues, FilterStringAmount.FOUR) ? `checked` : ``}
-                ${isAvailable(stringAmountAvailableList, FilterStringAmount.FOUR) ? `` : `disabled`}
-                tabindex="-1">
-            <span>4</span>
-          </label>
-          <label tabindex="0">
-            <input
-                class="visually-hidden"
-                type="checkbox"
-                name="filters-form-amount"
-                id="6"
-                data-filter-amount-strings="${FilterStringAmount.SIX}"
-                ${isAvailable(typeStringsValues, FilterStringAmount.SIX) ? `checked` : ``}
-                ${isAvailable(stringAmountAvailableList, FilterStringAmount.SIX) ? `` : `disabled`}
-                tabindex="-1">
-            <span>6</span>
-          </label>
-          <label tabindex="0">
-            <input
-                class="visually-hidden"
-                type="checkbox"
-                name="filters-form-amount"
-                id="7"
-                data-filter-amount-strings="${FilterStringAmount.SEVEN}"
-                ${isAvailable(typeStringsValues, FilterStringAmount.SEVEN) ? `checked` : ``}
-                ${isAvailable(stringAmountAvailableList, FilterStringAmount.SEVEN) ? `` : `disabled`}
-                tabindex="-1">
-            <span>7</span>
-          </label>
-          <label tabindex="0">
-            <input
-                class="visually-hidden"
-                type="checkbox"
-                name="filters-form-amount"
-                id="12"
-                data-filter-amount-strings="${FilterStringAmount.TWELVE}"
-                ${isAvailable(typeStringsValues, FilterStringAmount.TWELVE) ? `checked` : ``}
-                ${isAvailable(stringAmountAvailableList, FilterStringAmount.TWELVE) ? `` : `disabled`}
-                tabindex="-1">
-            <span>12</span>
-          </label>
+        <div class="catalog__filters-amount-wrapper">
+          <input
+              class="visually-hidden"
+              type="checkbox"
+              name="filters-form-amount"
+              id="4"
+              data-filter-amount-strings="${FilterStringAmount.FOUR}"
+              ${isAvailable(typeStringsValues, FilterStringAmount.FOUR) ? `checked` : ``}
+              ${isAvailable(stringAmountAvailableList, FilterStringAmount.FOUR) ? `` : `disabled`}
+              >
+          <label for="4">4</label>
+          <input
+              class="visually-hidden"
+              type="checkbox"
+              name="filters-form-amount"
+              id="6"
+              data-filter-amount-strings="${FilterStringAmount.SIX}"
+              ${isAvailable(typeStringsValues, FilterStringAmount.SIX) ? `checked` : ``}
+              ${isAvailable(stringAmountAvailableList, FilterStringAmount.SIX) ? `` : `disabled`}
+              >
+          <label for="6">6</label>
+          <input
+              class="visually-hidden"
+              type="checkbox"
+              name="filters-form-amount"
+              id="7"
+              data-filter-amount-strings="${FilterStringAmount.SEVEN}"
+              ${isAvailable(typeStringsValues, FilterStringAmount.SEVEN) ? `checked` : ``}
+              ${isAvailable(stringAmountAvailableList, FilterStringAmount.SEVEN) ? `` : `disabled`}
+              >
+          <label for="7">7</label>
+          <input
+              class="visually-hidden"
+              type="checkbox"
+              name="filters-form-amount"
+              id="12"
+              data-filter-amount-strings="${FilterStringAmount.TWELVE}"
+              ${isAvailable(typeStringsValues, FilterStringAmount.TWELVE) ? `checked` : ``}
+              ${isAvailable(stringAmountAvailableList, FilterStringAmount.TWELVE) ? `` : `disabled`}
+              >
+          <label for="12">12</label>
         </div>
       </fieldset>
     </form></div>`);
@@ -219,7 +259,6 @@ export default class Filters extends AbstractView {
     this._filterPriceChangeHandler = this._filterPriceChangeHandler.bind(this);
     this._filterGuitarTypeChangeHandler = this._filterGuitarTypeChangeHandler.bind(this);
     this._filterStringAmountChangeHandler = this._filterStringAmountChangeHandler.bind(this);
-
   }
 
   getTemplate() {
@@ -250,7 +289,9 @@ export default class Filters extends AbstractView {
 
   _filterPriceChangeHandler(evt) {
     evt.preventDefault();
-    if (evt.target.value <= 0 || Number.isNaN(Number(evt.target.value)) || evt.target.value === ``) {
+    const value = parseInt(String(evt.target.value).replace(/\s+/g, ``), 10);
+
+    if (value <= 0 || Number.isNaN(Number(value)) || value === ``) {
       return this._callback.filterPriceChange(this._currentFilter.price);
     }
 

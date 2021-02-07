@@ -2,6 +2,8 @@ import CatalogBoardView from "../view/catalog-board.js";
 import CatalogSortView from "../view/catalog-sort.js";
 import CatalogListView from "../view/catalog-list.js";
 import CatalogPaginationView from "../view/catalog-pagination.js";
+import CatalogSectionWrapperView from "../view/catalog-section-wrapper.js";
+import CatalogSectionView from "../view/catalog-section.js";
 
 import CatalogGoodPresenter from "../presenter/catalog-good.js";
 import BasketPresenter from "../presenter/basket.js";
@@ -16,12 +18,12 @@ import {MenuItem} from "../const.js";
 const GOOD_COUNT_PER_STEP = 9;
 
 export default class Board {
-  constructor(catalogContainer, goodsModel, filterModel, siteMenuModel, basketModel) {
+  constructor(mainContainer, goodsModel, filterModel, siteMenuModel, basketModel) {
     this._goodsModel = goodsModel;
     this._filterModel = filterModel;
     this._siteMenuModel = siteMenuModel;
     this._basketModel = basketModel;
-    this._catalogContainer = catalogContainer;
+    this._mainContainer = mainContainer;
     this._renderedGoodsCount = GOOD_COUNT_PER_STEP;
     this._currentSortByCategoryType = SortByCategoryType.DEFAULT;
     this._currentSortByPriorityType = SortByPriorityType.DEFAULT;
@@ -30,10 +32,12 @@ export default class Board {
     this._currentPaginationStep = 1;
 
     this._catalogPaginationComponent = null;
+    this._siteCatalogSectionComponent = new CatalogSectionView();
+    this._siteCatalogSectionWrapperComponent = new CatalogSectionWrapperView();
     this._catalogComponent = new CatalogBoardView();
     this._catalogListComponent = new CatalogListView();
 
-    this._filterPresenter = new FilterPresenter(this._catalogContainer, this._filterModel, this._goodsModel);
+    this._filterPresenter = new FilterPresenter(this._siteCatalogSectionWrapperComponent, this._filterModel, this._goodsModel);
     this._goodPresenter = new CatalogGoodPresenter(this._siteMenuModel, this._handleViewAction);
 
     this._handleSortByCategoryChange = this._handleSortByCategoryChange.bind(this);
@@ -46,7 +50,9 @@ export default class Board {
   }
 
   init() {
-    render(this._catalogContainer, this._catalogComponent, RenderPosition.BEFOREEND);
+    render(this._mainContainer, this._siteCatalogSectionComponent, RenderPosition.BEFOREEND);
+    render(this._siteCatalogSectionComponent, this._siteCatalogSectionWrapperComponent, RenderPosition.BEFOREEND);
+    render(this._siteCatalogSectionWrapperComponent, this._catalogComponent, RenderPosition.BEFOREEND);
     render(this._catalogComponent, this._catalogListComponent, RenderPosition.BEFOREEND);
 
     this._goodsModel.addObserver(this._handleModelEvent);
@@ -60,6 +66,8 @@ export default class Board {
 
     remove(this._catalogListComponent);
     remove(this._catalogComponent);
+    remove(this._siteCatalogSectionComponent);
+    remove(this._siteCatalogSectionWrapperComponent);
 
     this._goodsModel.removeObserver(this._handleModelEvent);
     this._filterModel.removeObserver(this._handleModelEvent);

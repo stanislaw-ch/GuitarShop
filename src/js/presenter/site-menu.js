@@ -42,14 +42,6 @@ export default class SiteMenu {
       return;
     }
 
-    // this._siteMenuComponent.getElement()
-    //     .querySelector(`[data-menu-type="${this._currentMenuItem}"]`)
-    //     .parentElement.classList.remove(`site-list__item--active`);
-
-    // this._siteMenuComponent.getElement()
-    //     .querySelector(`[data-menu-type="${menuItem}"]`)
-    //     .parentElement.classList.add(`site-list__item--active`);
-
     this._siteMenuModel.setMenuItem(menuItem);
   }
 }
