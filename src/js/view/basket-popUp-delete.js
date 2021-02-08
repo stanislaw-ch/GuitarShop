@@ -79,6 +79,6 @@ export default class CatalogPopUpDelete extends AbstractView {
 
   setToShoppingClickHandler(callback) {
     this._callback.toShoppingClick = callback;
-    this.getElement().querySelector(`.modal__button--to-shoping`).addEventListener(`click`, this._toShoppingClickHandler);
+    this.getElement().querySelector(`.modal__button--to-shopping`).addEventListener(`click`, this._toShoppingClickHandler);
   }
 }

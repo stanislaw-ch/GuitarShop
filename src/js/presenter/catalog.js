@@ -298,6 +298,8 @@ export default class Board {
     remove(this._catalogSortComponent);
     remove(this._catalogPaginationComponent);
 
+    this._currentPaginationStep = 1;
+
     if (resetSortByCategoryType) {
       this._currentSortByCategoryType = SortByCategoryType.DEFAULT;
       this._currentSortByPriorityType = SortByPriorityType.DEFAULT;
