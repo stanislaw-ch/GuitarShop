@@ -1,26 +1,42 @@
-/******/ (function() { // webpackBootstrap
+/******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
+
+/***/ "./index.js":
+/*!******************!*\
+  !*** ./index.js ***!
+  \******************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _assets_sass_main_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./assets/sass/main.scss */ "./assets/sass/main.scss");
+/* harmony import */ var _js_main_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./js/main.js */ "./js/main.js");
+
+
+
+__webpack_require__(/*! ./index.html */ "./index.html");
+
+/***/ }),
 
 /***/ "./js/const.js":
 /*!*********************!*\
   !*** ./js/const.js ***!
   \*********************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "SortByCategoryType": function() { return /* binding */ SortByCategoryType; },
-/* harmony export */   "SortByPriorityType": function() { return /* binding */ SortByPriorityType; },
-/* harmony export */   "FilterType": function() { return /* binding */ FilterType; },
-/* harmony export */   "FilterStringAmount": function() { return /* binding */ FilterStringAmount; },
-/* harmony export */   "StringsAmountByType": function() { return /* binding */ StringsAmountByType; },
-/* harmony export */   "MenuItem": function() { return /* binding */ MenuItem; },
-/* harmony export */   "BreadcrumbsItem": function() { return /* binding */ BreadcrumbsItem; },
-/* harmony export */   "BreadcrumbsTitle": function() { return /* binding */ BreadcrumbsTitle; },
-/* harmony export */   "UserAction": function() { return /* binding */ UserAction; },
-/* harmony export */   "UpdateType": function() { return /* binding */ UpdateType; },
-/* harmony export */   "DiscountType": function() { return /* binding */ DiscountType; }
+/* harmony export */   "SortByCategoryType": () => (/* binding */ SortByCategoryType),
+/* harmony export */   "SortByPriorityType": () => (/* binding */ SortByPriorityType),
+/* harmony export */   "FilterType": () => (/* binding */ FilterType),
+/* harmony export */   "FilterStringAmount": () => (/* binding */ FilterStringAmount),
+/* harmony export */   "StringsAmountByType": () => (/* binding */ StringsAmountByType),
+/* harmony export */   "MenuItem": () => (/* binding */ MenuItem),
+/* harmony export */   "BreadcrumbsItem": () => (/* binding */ BreadcrumbsItem),
+/* harmony export */   "BreadcrumbsTitle": () => (/* binding */ BreadcrumbsTitle),
+/* harmony export */   "UserAction": () => (/* binding */ UserAction),
+/* harmony export */   "UpdateType": () => (/* binding */ UpdateType),
+/* harmony export */   "DiscountType": () => (/* binding */ DiscountType)
 /* harmony export */ });
 var SortByCategoryType = {
   DEFAULT: "default",
@@ -80,7 +96,7 @@ var DiscountType = {
 /*!********************!*\
   !*** ./js/main.js ***!
   \********************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _assets_sass_main_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../assets/sass/main.scss */ "./assets/sass/main.scss");
@@ -122,11 +138,11 @@ catalogPresenter.init();
 /*!****************************!*\
   !*** ./js/model/basket.js ***!
   \****************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* binding */ Basket; }
+/* harmony export */   "default": () => (/* binding */ Basket)
 /* harmony export */ });
 /* harmony import */ var _utils_observer_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/observer.js */ "./js/utils/observer.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -242,11 +258,11 @@ var Basket = /*#__PURE__*/function (_Observer) {
 /*!****************************!*\
   !*** ./js/model/filter.js ***!
   \****************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* binding */ Filter; }
+/* harmony export */   "default": () => (/* binding */ Filter)
 /* harmony export */ });
 /* harmony import */ var _utils_observer_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/observer.js */ "./js/utils/observer.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -322,11 +338,11 @@ var Filter = /*#__PURE__*/function (_Observer) {
 /*!***************************!*\
   !*** ./js/model/goods.js ***!
   \***************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* binding */ Goods; }
+/* harmony export */   "default": () => (/* binding */ Goods)
 /* harmony export */ });
 /* harmony import */ var _utils_observer_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/observer.js */ "./js/utils/observer.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -402,11 +418,11 @@ var Goods = /*#__PURE__*/function (_Observer) {
 /*!*******************************!*\
   !*** ./js/model/site-menu.js ***!
   \*******************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* binding */ SiteMenu; }
+/* harmony export */   "default": () => (/* binding */ SiteMenu)
 /* harmony export */ });
 /* harmony import */ var _utils_observer_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/observer.js */ "./js/utils/observer.js");
 /* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../const.js */ "./js/const.js");
@@ -475,11 +491,11 @@ var SiteMenu = /*#__PURE__*/function (_Observer) {
 /*!*************************************!*\
   !*** ./js/presenter/basket-good.js ***!
   \*************************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* binding */ BasketGoodElement; }
+/* harmony export */   "default": () => (/* binding */ BasketGoodElement)
 /* harmony export */ });
 /* harmony import */ var _view_basket_item_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../view/basket-item.js */ "./js/view/basket-item.js");
 /* harmony import */ var _view_basket_popUp_delete_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../view/basket-popUp-delete.js */ "./js/view/basket-popUp-delete.js");
@@ -646,11 +662,11 @@ var BasketGoodElement = /*#__PURE__*/function () {
 /*!********************************!*\
   !*** ./js/presenter/basket.js ***!
   \********************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* binding */ Basket; }
+/* harmony export */   "default": () => (/* binding */ Basket)
 /* harmony export */ });
 /* harmony import */ var _view_basket_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../view/basket.js */ "./js/view/basket.js");
 /* harmony import */ var _presenter_basket_good_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../presenter/basket-good.js */ "./js/presenter/basket-good.js");
@@ -784,11 +800,11 @@ var Basket = /*#__PURE__*/function () {
 /*!*************************************!*\
   !*** ./js/presenter/breadcrumbs.js ***!
   \*************************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* binding */ Breadcrumbs; }
+/* harmony export */   "default": () => (/* binding */ Breadcrumbs)
 /* harmony export */ });
 /* harmony import */ var _view_breadcrumbs_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../view/breadcrumbs.js */ "./js/view/breadcrumbs.js");
 /* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/render.js */ "./js/utils/render.js");
@@ -860,11 +876,11 @@ var Breadcrumbs = /*#__PURE__*/function () {
 /*!**************************************!*\
   !*** ./js/presenter/catalog-good.js ***!
   \**************************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* binding */ CatalogGood; }
+/* harmony export */   "default": () => (/* binding */ CatalogGood)
 /* harmony export */ });
 /* harmony import */ var _view_catalog_item_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../view/catalog-item.js */ "./js/view/catalog-item.js");
 /* harmony import */ var _view_catalog_popUp_add_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../view/catalog-popUp-add.js */ "./js/view/catalog-popUp-add.js");
@@ -1059,11 +1075,11 @@ var CatalogGood = /*#__PURE__*/function () {
 /*!*********************************!*\
   !*** ./js/presenter/catalog.js ***!
   \*********************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* binding */ Board; }
+/* harmony export */   "default": () => (/* binding */ Board)
 /* harmony export */ });
 /* harmony import */ var _view_catalog_board_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../view/catalog-board.js */ "./js/view/catalog-board.js");
 /* harmony import */ var _view_catalog_sort_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../view/catalog-sort.js */ "./js/view/catalog-sort.js");
@@ -1458,11 +1474,11 @@ var Board = /*#__PURE__*/function () {
 /*!********************************!*\
   !*** ./js/presenter/filter.js ***!
   \********************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* binding */ Filter; }
+/* harmony export */   "default": () => (/* binding */ Filter)
 /* harmony export */ });
 /* harmony import */ var _view_filters_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../view/filters.js */ "./js/view/filters.js");
 /* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/render.js */ "./js/utils/render.js");
@@ -1620,11 +1636,11 @@ var Filter = /*#__PURE__*/function () {
 /*!***********************************!*\
   !*** ./js/presenter/site-menu.js ***!
   \***********************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* binding */ SiteMenu; }
+/* harmony export */   "default": () => (/* binding */ SiteMenu)
 /* harmony export */ });
 /* harmony import */ var _view_site_menu_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../view/site-menu.js */ "./js/view/site-menu.js");
 /* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/render.js */ "./js/utils/render.js");
@@ -1700,12 +1716,12 @@ var SiteMenu = /*#__PURE__*/function () {
 /*!****************************!*\
   !*** ./js/utils/filter.js ***!
   \****************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "filteredGoodsByType": function() { return /* binding */ filteredGoodsByType; },
-/* harmony export */   "filteredGoodsByPrice": function() { return /* binding */ filteredGoodsByPrice; }
+/* harmony export */   "filteredGoodsByType": () => (/* binding */ filteredGoodsByType),
+/* harmony export */   "filteredGoodsByPrice": () => (/* binding */ filteredGoodsByPrice)
 /* harmony export */ });
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -1748,15 +1764,15 @@ var filteredGoodsByPrice = function filteredGoodsByPrice(good, filters) {
 /*!**************************!*\
   !*** ./js/utils/good.js ***!
   \**************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "getGuitarType": function() { return /* binding */ getGuitarType; },
-/* harmony export */   "sortPriceDown": function() { return /* binding */ sortPriceDown; },
-/* harmony export */   "sortPriceUp": function() { return /* binding */ sortPriceUp; },
-/* harmony export */   "sortPopularityDown": function() { return /* binding */ sortPopularityDown; },
-/* harmony export */   "sortPopularityUp": function() { return /* binding */ sortPopularityUp; }
+/* harmony export */   "getGuitarType": () => (/* binding */ getGuitarType),
+/* harmony export */   "sortPriceDown": () => (/* binding */ sortPriceDown),
+/* harmony export */   "sortPriceUp": () => (/* binding */ sortPriceUp),
+/* harmony export */   "sortPopularityDown": () => (/* binding */ sortPopularityDown),
+/* harmony export */   "sortPopularityUp": () => (/* binding */ sortPopularityUp)
 /* harmony export */ });
 /* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../const.js */ "./js/const.js");
 
@@ -1788,11 +1804,11 @@ var sortPopularityUp = function sortPopularityUp(pointA, pointB) {
 /*!******************************!*\
   !*** ./js/utils/observer.js ***!
   \******************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* binding */ Observer; }
+/* harmony export */   "default": () => (/* binding */ Observer)
 /* harmony export */ });
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1839,16 +1855,16 @@ var Observer = /*#__PURE__*/function () {
 /*!****************************!*\
   !*** ./js/utils/render.js ***!
   \****************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "RenderPosition": function() { return /* binding */ RenderPosition; },
-/* harmony export */   "render": function() { return /* binding */ render; },
-/* harmony export */   "renderTemplate": function() { return /* binding */ renderTemplate; },
-/* harmony export */   "createElement": function() { return /* binding */ createElement; },
-/* harmony export */   "replace": function() { return /* binding */ replace; },
-/* harmony export */   "remove": function() { return /* binding */ remove; }
+/* harmony export */   "RenderPosition": () => (/* binding */ RenderPosition),
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "renderTemplate": () => (/* binding */ renderTemplate),
+/* harmony export */   "createElement": () => (/* binding */ createElement),
+/* harmony export */   "replace": () => (/* binding */ replace),
+/* harmony export */   "remove": () => (/* binding */ remove)
 /* harmony export */ });
 /* harmony import */ var _view_abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../view/abstract.js */ "./js/view/abstract.js");
 
@@ -1924,11 +1940,11 @@ var remove = function remove(component) {
 /*!*****************************!*\
   !*** ./js/view/abstract.js ***!
   \*****************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* binding */ Abstract; }
+/* harmony export */   "default": () => (/* binding */ Abstract)
 /* harmony export */ });
 /* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/render.js */ "./js/utils/render.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1983,11 +1999,11 @@ var Abstract = /*#__PURE__*/function () {
 /*!********************************!*\
   !*** ./js/view/basket-item.js ***!
   \********************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* binding */ BasketItem; }
+/* harmony export */   "default": () => (/* binding */ BasketItem)
 /* harmony export */ });
 /* harmony import */ var _smart_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./smart.js */ "./js/view/smart.js");
 /* harmony import */ var _utils_good_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/good.js */ "./js/utils/good.js");
@@ -2132,11 +2148,11 @@ var BasketItem = /*#__PURE__*/function (_SmartView) {
 /*!****************************************!*\
   !*** ./js/view/basket-popUp-delete.js ***!
   \****************************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* binding */ CatalogPopUpDelete; }
+/* harmony export */   "default": () => (/* binding */ CatalogPopUpDelete)
 /* harmony export */ });
 /* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./js/view/abstract.js");
 /* harmony import */ var _utils_good_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/good.js */ "./js/utils/good.js");
@@ -2249,11 +2265,11 @@ var CatalogPopUpDelete = /*#__PURE__*/function (_AbstractView) {
 /*!***************************!*\
   !*** ./js/view/basket.js ***!
   \***************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* binding */ Basket; }
+/* harmony export */   "default": () => (/* binding */ Basket)
 /* harmony export */ });
 /* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./js/view/abstract.js");
 /* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../const.js */ "./js/const.js");
@@ -2395,11 +2411,11 @@ var Basket = /*#__PURE__*/function (_AbstractView) {
 /*!********************************!*\
   !*** ./js/view/breadcrumbs.js ***!
   \********************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* binding */ Breadcrumbs; }
+/* harmony export */   "default": () => (/* binding */ Breadcrumbs)
 /* harmony export */ });
 /* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./js/view/abstract.js");
 /* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../const.js */ "./js/const.js");
@@ -2439,7 +2455,7 @@ var createBreadcrumbsTemplate = function createBreadcrumbsTemplate(siteMenuItem)
 
       case _const_js__WEBPACK_IMPORTED_MODULE_1__.MenuItem.BASKET:
         title = element.BASKET;
-        return "<li class=\"breadcrumbs__item\">\n                  <a href=\"#\" class=\"breadcrumbs__link\" data-breadcrumbs-type=\"".concat(_const_js__WEBPACK_IMPORTED_MODULE_1__.MenuItem.CATALOG, "\">").concat(element.CATALOG, "</a>\n                </li>\n                <li class=\"breadcrumbs__item breadcrumbs__item--current\">\n                  <a class=\"breadcrumbs__link\">").concat(title, "</a>\n                </li>");
+        return "<li class=\"breadcrumbs__item\">\n                  <a class=\"breadcrumbs__link\" data-breadcrumbs-type=\"".concat(_const_js__WEBPACK_IMPORTED_MODULE_1__.MenuItem.CATALOG, "\">").concat(element.CATALOG, "</a>\n                </li>\n                <li class=\"breadcrumbs__item breadcrumbs__item--current\">\n                  <a class=\"breadcrumbs__link\">").concat(title, "</a>\n                </li>");
     }
 
     return title;
@@ -2461,7 +2477,7 @@ var createBreadcrumbsTemplate = function createBreadcrumbsTemplate(siteMenuItem)
     return title;
   };
 
-  return "<div><h2 class=\"page-main__title\">".concat(breadcrumbsTitle(_const_js__WEBPACK_IMPORTED_MODULE_1__.BreadcrumbsTitle), "</h2>\n  <ul class=\"breadcrumbs\">\n    <li class=\"breadcrumbs__item\">\n      <a href=\"#\" class=\"breadcrumbs__link\">\u0413\u043B\u0430\u0432\u043D\u0430\u044F</a>\n    </li>\n\n      ").concat(breadcrumbsElement(_const_js__WEBPACK_IMPORTED_MODULE_1__.BreadcrumbsItem), "\n\n  </ul></div>");
+  return "<div><h2 class=\"page-main__title\">".concat(breadcrumbsTitle(_const_js__WEBPACK_IMPORTED_MODULE_1__.BreadcrumbsTitle), "</h2>\n  <ul class=\"breadcrumbs\">\n    <li class=\"breadcrumbs__item\">\n      <a class=\"breadcrumbs__link\">\u0413\u043B\u0430\u0432\u043D\u0430\u044F</a>\n    </li>\n\n      ").concat(breadcrumbsElement(_const_js__WEBPACK_IMPORTED_MODULE_1__.BreadcrumbsItem), "\n\n  </ul></div>");
 };
 
 var Breadcrumbs = /*#__PURE__*/function (_AbstractView) {
@@ -2513,11 +2529,11 @@ var Breadcrumbs = /*#__PURE__*/function (_AbstractView) {
 /*!**********************************!*\
   !*** ./js/view/catalog-board.js ***!
   \**********************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* binding */ catalogBoard; }
+/* harmony export */   "default": () => (/* binding */ catalogBoard)
 /* harmony export */ });
 /* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./js/view/abstract.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -2577,11 +2593,11 @@ var catalogBoard = /*#__PURE__*/function (_AbstractView) {
 /*!*********************************!*\
   !*** ./js/view/catalog-item.js ***!
   \*********************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* binding */ CatalogItem; }
+/* harmony export */   "default": () => (/* binding */ CatalogItem)
 /* harmony export */ });
 /* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./js/view/abstract.js");
 /* harmony import */ var _utils_good_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/good.js */ "./js/utils/good.js");
@@ -2666,11 +2682,11 @@ var CatalogItem = /*#__PURE__*/function (_AbstractView) {
 /*!*********************************!*\
   !*** ./js/view/catalog-list.js ***!
   \*********************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* binding */ CatalogList; }
+/* harmony export */   "default": () => (/* binding */ CatalogList)
 /* harmony export */ });
 /* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./js/view/abstract.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -2730,11 +2746,11 @@ var CatalogList = /*#__PURE__*/function (_AbstractView) {
 /*!***************************************!*\
   !*** ./js/view/catalog-pagination.js ***!
   \***************************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* binding */ CatalogPagination; }
+/* harmony export */   "default": () => (/* binding */ CatalogPagination)
 /* harmony export */ });
 /* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./js/view/abstract.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -2882,11 +2898,11 @@ var CatalogPagination = /*#__PURE__*/function (_AbstractView) {
 /*!**************************************!*\
   !*** ./js/view/catalog-popUp-add.js ***!
   \**************************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* binding */ CatalogPopUpAdd; }
+/* harmony export */   "default": () => (/* binding */ CatalogPopUpAdd)
 /* harmony export */ });
 /* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./js/view/abstract.js");
 /* harmony import */ var _utils_good_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/good.js */ "./js/utils/good.js");
@@ -2985,11 +3001,11 @@ var CatalogPopUpAdd = /*#__PURE__*/function (_AbstractView) {
 /*!******************************************!*\
   !*** ./js/view/catalog-popUp-success.js ***!
   \******************************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* binding */ CatalogPopUpSuccess; }
+/* harmony export */   "default": () => (/* binding */ CatalogPopUpSuccess)
 /* harmony export */ });
 /* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./js/view/abstract.js");
 /* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../const.js */ "./js/const.js");
@@ -3096,11 +3112,11 @@ var CatalogPopUpSuccess = /*#__PURE__*/function (_AbstractView) {
 /*!********************************************!*\
   !*** ./js/view/catalog-section-wrapper.js ***!
   \********************************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* binding */ CatalogSectionWrapper; }
+/* harmony export */   "default": () => (/* binding */ CatalogSectionWrapper)
 /* harmony export */ });
 /* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./js/view/abstract.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -3160,11 +3176,11 @@ var CatalogSectionWrapper = /*#__PURE__*/function (_AbstractView) {
 /*!************************************!*\
   !*** ./js/view/catalog-section.js ***!
   \************************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* binding */ CatalogSection; }
+/* harmony export */   "default": () => (/* binding */ CatalogSection)
 /* harmony export */ });
 /* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./js/view/abstract.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -3224,11 +3240,11 @@ var CatalogSection = /*#__PURE__*/function (_AbstractView) {
 /*!*********************************!*\
   !*** ./js/view/catalog-sort.js ***!
   \*********************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* binding */ CatalogSort; }
+/* harmony export */   "default": () => (/* binding */ CatalogSort)
 /* harmony export */ });
 /* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./js/view/abstract.js");
 /* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../const.js */ "./js/const.js");
@@ -3323,11 +3339,11 @@ var CatalogSort = /*#__PURE__*/function (_AbstractView) {
 /*!****************************!*\
   !*** ./js/view/filters.js ***!
   \****************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* binding */ Filters; }
+/* harmony export */   "default": () => (/* binding */ Filters)
 /* harmony export */ });
 /* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./js/view/abstract.js");
 /* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../const.js */ "./js/const.js");
@@ -3503,7 +3519,7 @@ var createFiltersElement = function createFiltersElement(currentFilter, goods) {
   }; // value="${currentFrom.toLocaleString(`ru-RU`)}"
 
 
-  return "<div class=\"catalog__filters-column\">\n  <h2>\u0424\u0438\u043B\u044C\u0442\u0440</h2>\n  <form class=\"catalog__filters-form\" action=\"#\" method=\"GET\">\n      <fieldset class=\"catalog__filters-price-change\">\n        <h3>\u0426\u0435\u043D\u0430, \u20BD</h3>\n        <div class=\"catalog__filters-price-wrapper\">\n          <input\n              type=\"text\"\n              name=\"filters-form-price-from\"\n              id=\"filters-form-price-from\"\n              placeholder=\"".concat(currentFrom.toLocaleString("ru-RU"), "\"\n              value=\"").concat(currentFrom.toLocaleString("ru-RU"), "\"\n              min=\"0\"\n              max=\"1000000\"\n              >\n          <input\n              type=\"text\"\n              name=\"filters-form-price-to\"\n              id=\"filters-form-price-to\"\n              placeholder=\"").concat(currentTo.toLocaleString("ru-RU"), "\"\n              value=\"").concat(currentTo.toLocaleString("ru-RU"), "\"\n              min=\"0\"\n              max=\"1000000\"\n              >\n        </div>\n      </fieldset>\n      <fieldset class=\"catalog__filters-type-guitar\">\n        <h3>\u0422\u0438\u043F \u0433\u0438\u0442\u0430\u0440</h3>\n        <div class=\"catalog__filters-type-wrapper\">\n          <div class=\"catalog__filters-type-content-wrapper\">\n            <input\n                class=\"visually-hidden\"\n                type=\"checkbox\"\n                name=\"filters-form-type\"\n                id=\"filters-form-type-value-1\"\n                data-filter-type-guitar=\"").concat(_const_js__WEBPACK_IMPORTED_MODULE_1__.FilterType.ACOUSTIC, "\"\n                ").concat(isAvailable(typeGuitarValues, _const_js__WEBPACK_IMPORTED_MODULE_1__.FilterType.ACOUSTIC) ? "checked" : "", "\n                >\n            <label for=\"filters-form-type-value-1\">\u0410\u043A\u0443\u0441\u0442\u0438\u0447\u0435\u0441\u043A\u0438\u0435 \u0433\u0438\u0442\u0430\u0440\u044B</label>\n          </div>\n          <div class=\"catalog__filters-type-content-wrapper\">\n            <input\n                class=\"visually-hidden\"\n                type=\"checkbox\"\n                name=\"filters-form-type\"\n                id=\"filters-form-type-value-2\"\n                data-filter-type-guitar=\"").concat(_const_js__WEBPACK_IMPORTED_MODULE_1__.FilterType.ELECTRIC, "\"\n                ").concat(isAvailable(typeGuitarValues, _const_js__WEBPACK_IMPORTED_MODULE_1__.FilterType.ELECTRIC) ? "checked" : "", "\n                >\n            <label for=\"filters-form-type-value-2\">\u042D\u043B\u0435\u043A\u0442\u0440\u043E\u0433\u0438\u0442\u0430\u0440\u044B</label>\n          </div>\n          <div class=\"catalog__filters-type-content-wrapper\">\n            <input\n                class=\"visually-hidden\"\n                type=\"checkbox\"\n                name=\"filters-form-type\"\n                id=\"filters-form-type-value-3\"\n                data-filter-type-guitar=\"").concat(_const_js__WEBPACK_IMPORTED_MODULE_1__.FilterType.UKULELE, "\"\n                ").concat(isAvailable(typeGuitarValues, _const_js__WEBPACK_IMPORTED_MODULE_1__.FilterType.UKULELE) ? "checked" : "", "\n                >\n            <label for=\"filters-form-type-value-3\">\u0423\u043A\u0443\u043B\u0435\u043B\u0435</label>\n          </div>\n        </div>\n      </fieldset>\n      <fieldset class=\"catalog__filters-string-amount\">\n        <h3>\u041A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u0441\u0442\u0440\u0443\u043D</h3>\n        <div class=\"catalog__filters-amount-wrapper\">\n          <input\n              class=\"visually-hidden\"\n              type=\"checkbox\"\n              name=\"filters-form-amount\"\n              id=\"4\"\n              data-filter-amount-strings=\"").concat(_const_js__WEBPACK_IMPORTED_MODULE_1__.FilterStringAmount.FOUR, "\"\n              ").concat(isAvailable(typeStringsValues, _const_js__WEBPACK_IMPORTED_MODULE_1__.FilterStringAmount.FOUR) ? "checked" : "", "\n              ").concat(isAvailable(stringAmountAvailableList, _const_js__WEBPACK_IMPORTED_MODULE_1__.FilterStringAmount.FOUR) ? "" : "disabled", "\n              >\n          <label for=\"4\">4</label>\n          <input\n              class=\"visually-hidden\"\n              type=\"checkbox\"\n              name=\"filters-form-amount\"\n              id=\"6\"\n              data-filter-amount-strings=\"").concat(_const_js__WEBPACK_IMPORTED_MODULE_1__.FilterStringAmount.SIX, "\"\n              ").concat(isAvailable(typeStringsValues, _const_js__WEBPACK_IMPORTED_MODULE_1__.FilterStringAmount.SIX) ? "checked" : "", "\n              ").concat(isAvailable(stringAmountAvailableList, _const_js__WEBPACK_IMPORTED_MODULE_1__.FilterStringAmount.SIX) ? "" : "disabled", "\n              >\n          <label for=\"6\">6</label>\n          <input\n              class=\"visually-hidden\"\n              type=\"checkbox\"\n              name=\"filters-form-amount\"\n              id=\"7\"\n              data-filter-amount-strings=\"").concat(_const_js__WEBPACK_IMPORTED_MODULE_1__.FilterStringAmount.SEVEN, "\"\n              ").concat(isAvailable(typeStringsValues, _const_js__WEBPACK_IMPORTED_MODULE_1__.FilterStringAmount.SEVEN) ? "checked" : "", "\n              ").concat(isAvailable(stringAmountAvailableList, _const_js__WEBPACK_IMPORTED_MODULE_1__.FilterStringAmount.SEVEN) ? "" : "disabled", "\n              >\n          <label for=\"7\">7</label>\n          <input\n              class=\"visually-hidden\"\n              type=\"checkbox\"\n              name=\"filters-form-amount\"\n              id=\"12\"\n              data-filter-amount-strings=\"").concat(_const_js__WEBPACK_IMPORTED_MODULE_1__.FilterStringAmount.TWELVE, "\"\n              ").concat(isAvailable(typeStringsValues, _const_js__WEBPACK_IMPORTED_MODULE_1__.FilterStringAmount.TWELVE) ? "checked" : "", "\n              ").concat(isAvailable(stringAmountAvailableList, _const_js__WEBPACK_IMPORTED_MODULE_1__.FilterStringAmount.TWELVE) ? "" : "disabled", "\n              >\n          <label for=\"12\">12</label>\n        </div>\n      </fieldset>\n    </form></div>");
+  return "<div class=\"catalog__filters-column\">\n  <h2>\u0424\u0438\u043B\u044C\u0442\u0440</h2>\n  <form class=\"catalog__filters-form\" action=\"#\" method=\"GET\">\n      <fieldset class=\"catalog__filters-price-change\">\n        <h3>\u0426\u0435\u043D\u0430, \u20BD</h3>\n        <div class=\"catalog__filters-price-wrapper\">\n          <input\n              type=\"text\"\n              name=\"filters-form-price-from\"\n              id=\"filters-form-price-from\"\n              placeholder=\"".concat(currentFrom.toLocaleString("ru-RU"), "\"\n              value=\"").concat(currentFrom.toLocaleString("ru-RU"), "\"\n              min=\"0\"\n              max=\"1000000\"\n              >\n          <label for=\"filters-form-price-from\" class=\"visually-hidden\">\u0426\u0435\u043D\u0430 \u043E\u0442</label>\n          <input\n              type=\"text\"\n              name=\"filters-form-price-to\"\n              id=\"filters-form-price-to\"\n              placeholder=\"").concat(currentTo.toLocaleString("ru-RU"), "\"\n              value=\"").concat(currentTo.toLocaleString("ru-RU"), "\"\n              min=\"0\"\n              max=\"1000000\"\n              >\n          <label for=\"filters-form-price-to\" class=\"visually-hidden\">\u0426\u0435\u043D\u0430 \u0434\u043E</label>\n        </div>\n      </fieldset>\n      <fieldset class=\"catalog__filters-type-guitar\">\n        <h3>\u0422\u0438\u043F \u0433\u0438\u0442\u0430\u0440</h3>\n        <div class=\"catalog__filters-type-wrapper\">\n          <div class=\"catalog__filters-type-content-wrapper\">\n            <input\n                class=\"visually-hidden\"\n                type=\"checkbox\"\n                name=\"filters-form-type\"\n                id=\"filters-form-type-value-1\"\n                data-filter-type-guitar=\"").concat(_const_js__WEBPACK_IMPORTED_MODULE_1__.FilterType.ACOUSTIC, "\"\n                ").concat(isAvailable(typeGuitarValues, _const_js__WEBPACK_IMPORTED_MODULE_1__.FilterType.ACOUSTIC) ? "checked" : "", "\n                >\n            <label for=\"filters-form-type-value-1\">\u0410\u043A\u0443\u0441\u0442\u0438\u0447\u0435\u0441\u043A\u0438\u0435 \u0433\u0438\u0442\u0430\u0440\u044B</label>\n          </div>\n          <div class=\"catalog__filters-type-content-wrapper\">\n            <input\n                class=\"visually-hidden\"\n                type=\"checkbox\"\n                name=\"filters-form-type\"\n                id=\"filters-form-type-value-2\"\n                data-filter-type-guitar=\"").concat(_const_js__WEBPACK_IMPORTED_MODULE_1__.FilterType.ELECTRIC, "\"\n                ").concat(isAvailable(typeGuitarValues, _const_js__WEBPACK_IMPORTED_MODULE_1__.FilterType.ELECTRIC) ? "checked" : "", "\n                >\n            <label for=\"filters-form-type-value-2\">\u042D\u043B\u0435\u043A\u0442\u0440\u043E\u0433\u0438\u0442\u0430\u0440\u044B</label>\n          </div>\n          <div class=\"catalog__filters-type-content-wrapper\">\n            <input\n                class=\"visually-hidden\"\n                type=\"checkbox\"\n                name=\"filters-form-type\"\n                id=\"filters-form-type-value-3\"\n                data-filter-type-guitar=\"").concat(_const_js__WEBPACK_IMPORTED_MODULE_1__.FilterType.UKULELE, "\"\n                ").concat(isAvailable(typeGuitarValues, _const_js__WEBPACK_IMPORTED_MODULE_1__.FilterType.UKULELE) ? "checked" : "", "\n                >\n            <label for=\"filters-form-type-value-3\">\u0423\u043A\u0443\u043B\u0435\u043B\u0435</label>\n          </div>\n        </div>\n      </fieldset>\n      <fieldset class=\"catalog__filters-string-amount\">\n        <h3>\u041A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u0441\u0442\u0440\u0443\u043D</h3>\n        <div class=\"catalog__filters-amount-wrapper\">\n          <input\n              class=\"visually-hidden\"\n              type=\"checkbox\"\n              name=\"filters-form-amount\"\n              id=\"4\"\n              data-filter-amount-strings=\"").concat(_const_js__WEBPACK_IMPORTED_MODULE_1__.FilterStringAmount.FOUR, "\"\n              ").concat(isAvailable(typeStringsValues, _const_js__WEBPACK_IMPORTED_MODULE_1__.FilterStringAmount.FOUR) ? "checked" : "", "\n              ").concat(isAvailable(stringAmountAvailableList, _const_js__WEBPACK_IMPORTED_MODULE_1__.FilterStringAmount.FOUR) ? "" : "disabled", "\n              >\n          <label for=\"4\">4</label>\n          <input\n              class=\"visually-hidden\"\n              type=\"checkbox\"\n              name=\"filters-form-amount\"\n              id=\"6\"\n              data-filter-amount-strings=\"").concat(_const_js__WEBPACK_IMPORTED_MODULE_1__.FilterStringAmount.SIX, "\"\n              ").concat(isAvailable(typeStringsValues, _const_js__WEBPACK_IMPORTED_MODULE_1__.FilterStringAmount.SIX) ? "checked" : "", "\n              ").concat(isAvailable(stringAmountAvailableList, _const_js__WEBPACK_IMPORTED_MODULE_1__.FilterStringAmount.SIX) ? "" : "disabled", "\n              >\n          <label for=\"6\">6</label>\n          <input\n              class=\"visually-hidden\"\n              type=\"checkbox\"\n              name=\"filters-form-amount\"\n              id=\"7\"\n              data-filter-amount-strings=\"").concat(_const_js__WEBPACK_IMPORTED_MODULE_1__.FilterStringAmount.SEVEN, "\"\n              ").concat(isAvailable(typeStringsValues, _const_js__WEBPACK_IMPORTED_MODULE_1__.FilterStringAmount.SEVEN) ? "checked" : "", "\n              ").concat(isAvailable(stringAmountAvailableList, _const_js__WEBPACK_IMPORTED_MODULE_1__.FilterStringAmount.SEVEN) ? "" : "disabled", "\n              >\n          <label for=\"7\">7</label>\n          <input\n              class=\"visually-hidden\"\n              type=\"checkbox\"\n              name=\"filters-form-amount\"\n              id=\"12\"\n              data-filter-amount-strings=\"").concat(_const_js__WEBPACK_IMPORTED_MODULE_1__.FilterStringAmount.TWELVE, "\"\n              ").concat(isAvailable(typeStringsValues, _const_js__WEBPACK_IMPORTED_MODULE_1__.FilterStringAmount.TWELVE) ? "checked" : "", "\n              ").concat(isAvailable(stringAmountAvailableList, _const_js__WEBPACK_IMPORTED_MODULE_1__.FilterStringAmount.TWELVE) ? "" : "disabled", "\n              >\n          <label for=\"12\">12</label>\n        </div>\n      </fieldset>\n    </form></div>");
 };
 
 var Filters = /*#__PURE__*/function (_AbstractView) {
@@ -3599,11 +3615,11 @@ var Filters = /*#__PURE__*/function (_AbstractView) {
 /*!******************************!*\
   !*** ./js/view/site-menu.js ***!
   \******************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* binding */ SiteMenu; }
+/* harmony export */   "default": () => (/* binding */ SiteMenu)
 /* harmony export */ });
 /* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./js/view/abstract.js");
 /* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../const.js */ "./js/const.js");
@@ -3644,7 +3660,7 @@ var createSiteMenuTemplate = function createSiteMenuTemplate(basketModel) {
     });
   }
 
-  return "<nav class=\"main-nav\">\n    <div class=\"container\">\n      <div class=\"main-nav__wrapper\">\n        <a class=\"main-nav__logo\">\n          <svg width=\"67\" height=\"70\">\n            <use xlink:href=\"img/sprite/sprite.svg#sprite-logo\"></use>\n          </svg>\n        </a>\n        <ul class=\"main-nav__list site-list\">\n          <li class=\"site-list__item\">\n            <a href=\"#\" data-menu-type=\"".concat(_const_js__WEBPACK_IMPORTED_MODULE_1__.MenuItem.CATALOG, "\">\u041A\u0430\u0442\u0430\u043B\u043E\u0433</a>\n          </li>\n          <li class=\"site-list__item\">\n            <a href=\"#\">\u0413\u0434\u0435 \u043A\u0443\u043F\u0438\u0442\u044C?</a>\n          </li>\n          <li class=\"site-list__item\">\n            <a href=\"#\">\u041E \u043A\u043E\u043C\u043F\u0430\u043D\u0438\u0438</a>\n          </li>\n          <li class=\"site-list__item\">\n            <a href=\"#\">C\u0435\u0440\u0432\u0438\u0441-\u0446\u0435\u043D\u0442\u0440\u044B</a>\n          </li>\n        </ul>\n        <ul class=\"main-nav__list user-list\">\n          <li class=\"user-list__item user-list__item--location\">\n            <a href=\"#\">\n              <span class=\"visually-hidden\">\u041B\u043E\u043A\u0430\u0446\u0438\u044F</span>\n              <svg width=\"14\" height=\"17\">\n                <use xlink:href=\"img/sprite/sprite.svg#sprite-icon_location\"></use>\n              </svg>\n            </a>\n          </li>\n          <li class=\"user-list__item user-list__item--search\">\n            <a href=\"#\">\n              <span class=\"visually-hidden\">\u041F\u043E\u0438\u0441\u043A \u043F\u043E \u0441\u0430\u0439\u0442\u0443</span>\n              <svg width=\"14\" height=\"14\">\n                <use xlink:href=\"img/sprite/sprite.svg#sprite-icon_search\"></use>\n              </svg>\n            </a>\n          </li>\n          <li class=\"user-list__item user-list__item--basket\">\n            <a href=\"#\" data-menu-type=\"").concat(_const_js__WEBPACK_IMPORTED_MODULE_1__.MenuItem.BASKET, "\">\n              <span class=\"visually-hidden\">\u041A\u043E\u0440\u0437\u0438\u043D\u0430</span>\n              <svg width=\"16\" height=\"18\">\n                <use xlink:href=\"img/sprite/sprite.svg#sprite-icon_basket\"></use>\n              </svg>\n            </a>\n            <span class=\"\" data-title=\"").concat(goodsInBasket.length === 0 ? "" : goodsCount, "\"></span>\n          </li>\n        </ul>\n      </div>\n    </div>\n  </nav>");
+  return "<nav class=\"main-nav\">\n    <div class=\"container\">\n      <div class=\"main-nav__wrapper\">\n        <a class=\"main-nav__logo\">\n          <span class=\"visually-hidden\">\u041B\u043E\u0433\u043E\u0442\u0438\u043F \u043C\u0430\u0433\u0430\u0437\u0438\u043D\u0430 \u0433\u0438\u0442\u0430\u0440</span>\n          <svg width=\"67\" height=\"70\">\n            <use xlink:href=\"img/sprite/sprite.svg#sprite-logo\"></use>\n          </svg>\n        </a>\n        <ul class=\"main-nav__list site-list\">\n          <li class=\"site-list__item\">\n            <a href=\"#\" data-menu-type=\"".concat(_const_js__WEBPACK_IMPORTED_MODULE_1__.MenuItem.CATALOG, "\">\u041A\u0430\u0442\u0430\u043B\u043E\u0433</a>\n          </li>\n          <li class=\"site-list__item\">\n            <a href=\"#\">\u0413\u0434\u0435 \u043A\u0443\u043F\u0438\u0442\u044C?</a>\n          </li>\n          <li class=\"site-list__item\">\n            <a href=\"#\">\u041E \u043A\u043E\u043C\u043F\u0430\u043D\u0438\u0438</a>\n          </li>\n          <li class=\"site-list__item\">\n            <a href=\"#\">C\u0435\u0440\u0432\u0438\u0441-\u0446\u0435\u043D\u0442\u0440\u044B</a>\n          </li>\n        </ul>\n        <ul class=\"main-nav__list user-list\">\n          <li class=\"user-list__item user-list__item--location\">\n            <a href=\"#\">\n              <span class=\"visually-hidden\">\u041B\u043E\u043A\u0430\u0446\u0438\u044F</span>\n              <svg width=\"14\" height=\"17\">\n                <use xlink:href=\"img/sprite/sprite.svg#sprite-icon_location\"></use>\n              </svg>\n            </a>\n          </li>\n          <li class=\"user-list__item user-list__item--search\">\n            <a href=\"#\">\n              <span class=\"visually-hidden\">\u041F\u043E\u0438\u0441\u043A \u043F\u043E \u0441\u0430\u0439\u0442\u0443</span>\n              <svg width=\"14\" height=\"14\">\n                <use xlink:href=\"img/sprite/sprite.svg#sprite-icon_search\"></use>\n              </svg>\n            </a>\n          </li>\n          <li class=\"user-list__item user-list__item--basket\">\n            <a href=\"#\" data-menu-type=\"").concat(_const_js__WEBPACK_IMPORTED_MODULE_1__.MenuItem.BASKET, "\">\n              <span class=\"visually-hidden\">\u041A\u043E\u0440\u0437\u0438\u043D\u0430</span>\n              <svg width=\"16\" height=\"18\">\n                <use xlink:href=\"img/sprite/sprite.svg#sprite-icon_basket\"></use>\n              </svg>\n            </a>\n            <span class=\"\" data-title=\"").concat(goodsInBasket.length === 0 ? "" : goodsCount, "\"></span>\n          </li>\n        </ul>\n      </div>\n    </div>\n  </nav>");
 };
 
 var SiteMenu = /*#__PURE__*/function (_AbstractView) {
@@ -3698,11 +3714,11 @@ var SiteMenu = /*#__PURE__*/function (_AbstractView) {
 /*!**************************!*\
   !*** ./js/view/smart.js ***!
   \**************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* binding */ Smart; }
+/* harmony export */   "default": () => (/* binding */ Smart)
 /* harmony export */ });
 /* harmony import */ var _abstract__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract */ "./js/view/abstract.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -3787,7 +3803,7 @@ var Smart = /*#__PURE__*/function (_Abstract) {
 /*!*******************************!*\
   !*** ./assets/sass/main.scss ***!
   \*******************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
@@ -3795,11 +3811,25 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./index.html":
+/*!********************!*\
+  !*** ./index.html ***!
+  \********************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("<!DOCTYPE html>\n<html lang=\"ru\">\n<head>\n  <meta name=\"Description\" content=\"Интернет-магазин гитар Gitar Shop\">\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\">\n  <title>Магазин по продаже гитар \"Gitar Shop\"</title>\n</head>\n<body>\n  <div class=\"body-wrapper\">\n    <header class=\"page-header\">\n\n      <div class=\"container\">\n        <div class=\"page-header__image-wrapper\">\n          <picture>\n            <source type=\"image/webp\" srcset=\"img/image_guitar_header@1x.webp 1x, img/image_guitar_header@2x.webp 2x\">\n            <!-- 1х: 825px; 2x: 1650px -->\n            <img src=\"img/image_guitar_header@1x.png\" srcset=\"img/image_guitar_header@1x.png 1x, img/image_guitar_header@2x.png 2x\" width=\"825\" height=\"298\" alt=\"фоновое изображение\">\n          </picture>\n        </div>\n      </div>\n    </header>\n    <main class=\"page-main\">\n      <div class=\"container\">\n        <h1 class=\"visually-hidden\">Интернет-магазин гитар \"Gitar Shop\"</h1>\n\n        </div>\n    </main>\n    <footer class=\"page-footer\">\n      <div class=\"container\">\n        <div class=\"page-footer__image-wrapper\">\n          <picture>\n            <source type=\"image/webp\" srcset=\"img/image_guitar_footer@1x.webp 1x, img/image_guitar_footer@2x.webp 2x\">\n            <!-- 1х: 819px; 2x: 1638px -->\n            <img src=\"img/image_guitar_footer@1x.png\" srcset=\"img/image_guitar_footer@1x.png 1x, img/image_guitar_footer@2x.png 2x\" width=\"825\" height=\"298\" alt=\"фоновое изображение\">\n          </picture>\n        </div>\n      </div>\n      <div class=\"page-footer__content-wrapper\">\n        <div class=\"container\">\n          <div class=\"page-footer__wrapper\">\n            <div class=\"page-footer__column\">\n              <a class=\"page-footer__logo\">\n                <span class=\"visually-hidden\">Логотип магазина гитар</span>\n                <svg width=\"67\" height=\"70\">\n                  <use xlink:href=\"img/sprite/sprite.svg#sprite-logo\"></use>\n                </svg>\n              </a>\n              <ul class=\"page-footer__social social\">\n                <li class=\"social__item\">\n                  <a href=\"#\">\n                    <span class=\"visually-hidden\">facebook</span>\n                    <svg width=\"24\" height=\"24\">\n                      <use xlink:href=\"img/sprite/sprite.svg#sprite-icon_facebook\"></use>\n                    </svg>\n                  </a>\n                </li>\n                <li class=\"social__item\">\n                  <a href=\"#\">\n                    <span class=\"visually-hidden\">instagram</span>\n                    <svg width=\"24\" height=\"24\">\n                      <use xlink:href=\"img/sprite/sprite.svg#sprite-icon_instagram\"></use>\n                    </svg>\n                  </a>\n                </li>\n                <li class=\"social__item\">\n                  <a href=\"#\">\n                    <span class=\"visually-hidden\">twitter</span>\n                    <svg width=\"24\" height=\"24\">\n                      <use xlink:href=\"img/sprite/sprite.svg#sprite-icon_twitter\"></use>\n                    </svg>\n                  </a>\n                </li>\n              </ul>\n            </div>\n            <dl class=\"page-footer__links links\">\n              <div class=\"links__wrapper\">\n                <dt>О нас</dt>\n                <dd>\n                  <ul class=\"links__list links__list--about-us\">\n                    <li class=\"links__item\">\n                      <p>Магазин гитар, музыкальных инструментов и гитарная мастерская в Санкт-Петербурге.</p>\n                    </li>\n                    <li class=\"links__item\">\n                      <p>Все инструменты проверены, отстроены и доведены до идеала!</p>\n                    </li>\n                  </ul>\n                </dd>\n              </div>\n              <div class=\"links__wrapper\">\n                <dt>Каталог</dt>\n                <dd>\n                  <ul class=\"links__list links__list--catalog\">\n                    <li class=\"links__item\">\n                      <a href=\"#\">Акустические гитары</a>\n                    </li>\n                    <li class=\"links__item\">\n                      <a href=\"#\">Классические гитары</a>\n                    </li>\n                    <li class=\"links__item\">\n                      <a href=\"#\">Электрогитары</a>\n                    </li>\n                    <li class=\"links__item\">\n                      <a href=\"#\">Бас-гитары</a>\n                    </li>\n                    <li class=\"links__item\">\n                      <a href=\"#\">Укулеле</a>\n                    </li>\n                  </ul>\n                </dd>\n              </div>\n              <div class=\"links__wrapper\">\n                <dt>Информация</dt>\n                <dd>\n                  <ul class=\"links__list links__list--info\">\n                    <li class=\"links__item\">\n                      <a href=\"#\">Где купить?</a>\n                    </li>\n                    <li class=\"links__item\">\n                      <a href=\"#\">Блог</a>\n                    </li>\n                    <li class=\"links__item\">\n                      <a href=\"#\">Вопрос - ответ</a>\n                    </li>\n                    <li class=\"links__item\">\n                      <a href=\"#\">Возврат</a>\n                    </li>\n                    <li class=\"links__item\">\n                      <a href=\"#\">Сервис-центры</a>\n                    </li>\n                  </ul>\n                </dd>\n              </div>\n              <div class=\"links__wrapper\">\n                <dt>Контакты</dt>\n                <dd>\n                  <ul class=\"links__list links__list--kontakt\">\n                    <li class=\"links__item\">\n                      <p>г. Санкт-Петербург, м. Невский проспект, ул. Казанская 6.</p>\n                      <a href=\"tel:+88125005050\">8-812-500-50-50</a>\n                    </li>\n                    <li class=\"links__item\">\n                      <p>Режим работы:</p>\n                      <span>с 11:00 до 20:00,</span>\n                      <p>без выходных.</p>\n                    </li>\n                  </ul>\n                </dd>\n              </div>\n            </dl>\n          </div>\n        </div>\n      </div>\n    </footer>\n  </div>\n\n</body>\n</html>\n");
+
+/***/ }),
+
 /***/ "./js/mock/goods.json":
 /*!****************************!*\
   !*** ./js/mock/goods.json ***!
   \****************************/
-/***/ (function(module) {
+/***/ ((module) => {
 
 module.exports = JSON.parse("[{\"id\":1,\"identiferNumber\":\"SO757575\",\"name\":\"Честер Bass\",\"type\":\"электрогитара\",\"reviewAmount\":15,\"stringAmount\":7,\"price\":17500,\"starsCount\":3.2},{\"id\":2,\"identiferNumber\":\"TK129049\",\"name\":\"СURT Z300\",\"type\":\"электрогитара\",\"reviewAmount\":9,\"stringAmount\":7,\"price\":29500,\"starsCount\":4.5},{\"id\":3,\"identiferNumber\":\"RO111111\",\"name\":\"Roman LX\",\"type\":\"укулеле\",\"reviewAmount\":21,\"stringAmount\":4,\"price\":6800,\"starsCount\":5},{\"id\":4,\"identiferNumber\":\"TK436457\",\"name\":\"СURT T300\",\"type\":\"электрогитара\",\"reviewAmount\":15,\"stringAmount\":6,\"price\":30000,\"starsCount\":3},{\"id\":5,\"identiferNumber\":\"DI192138\",\"name\":\"Dania Super\",\"type\":\"акустическая гитара\",\"reviewAmount\":5,\"stringAmount\":7,\"price\":3500,\"starsCount\":4.5},{\"id\":6,\"identiferNumber\":\"SO934345\",\"name\":\"Честер WX \",\"type\":\"электрогитара\",\"reviewAmount\":17,\"stringAmount\":6,\"price\":15300,\"starsCount\":4.1},{\"id\":7,\"identiferNumber\":\"DI082347\",\"name\":\"Dania VX\",\"type\":\"укулеле\",\"reviewAmount\":5,\"stringAmount\":4,\"price\":2200,\"starsCount\":3.2},{\"id\":8,\"identiferNumber\":\"SO135646\",\"name\":\"Честер Plus \",\"type\":\"электрогитара\",\"reviewAmount\":27,\"stringAmount\":4,\"price\":30000,\"starsCount\":2.1},{\"id\":9,\"identiferNumber\":\"VO154751\",\"name\":\"Виолана 300\",\"type\":\"акустическая гитара\",\"reviewAmount\":3,\"stringAmount\":7,\"price\":1700,\"starsCount\":3.2},{\"id\":10,\"identiferNumber\":\"TK244556\",\"name\":\"СURT Clasic\",\"type\":\"электрогитара\",\"reviewAmount\":20,\"stringAmount\":4,\"price\":23000,\"starsCount\":4.5},{\"id\":11,\"identiferNumber\":\"TK134663\",\"name\":\"СURT Z250\",\"type\":\"электрогитара\",\"reviewAmount\":19,\"stringAmount\":4,\"price\":18700,\"starsCount\":5},{\"id\":12,\"identiferNumber\":\"SO123212\",\"name\":\"Честер 7X\",\"type\":\"электрогитара\",\"reviewAmount\":30,\"stringAmount\":7,\"price\":35000,\"starsCount\":3},{\"id\":13,\"identiferNumber\":\"SO123234\",\"name\":\"Честер 6V\",\"type\":\"электрогитара\",\"reviewAmount\":28,\"stringAmount\":6,\"price\":14900,\"starsCount\":4.5},{\"id\":14,\"identiferNumber\":\"VO519510\",\"name\":\"Виолана Mix\",\"type\":\"акустическая гитара\",\"reviewAmount\":7,\"stringAmount\":6,\"price\":7600,\"starsCount\":4.1},{\"id\":15,\"identiferNumber\":\"VO457369\",\"name\":\"Виолана 250x\",\"type\":\"акустическая гитара\",\"reviewAmount\":19,\"stringAmount\":6,\"price\":6500,\"starsCount\":3.2},{\"id\":16,\"identiferNumber\":\"FB625903\",\"name\":\"Фабио Лайт\",\"type\":\"акустическая гитара\",\"reviewAmount\":26,\"stringAmount\":7,\"price\":12000,\"starsCount\":2.1},{\"id\":17,\"identiferNumber\":\"FB576948\",\"name\":\"Фабио L100\",\"type\":\"акустическая гитара\",\"reviewAmount\":31,\"stringAmount\":7,\"price\":9900,\"starsCount\":3.2},{\"id\":18,\"identiferNumber\":\"LU012032\",\"name\":\"Liana Z200\",\"type\":\"акустическая гитара\",\"reviewAmount\":28,\"stringAmount\":12,\"price\":8900,\"starsCount\":4.5},{\"id\":19,\"identiferNumber\":\"LU546853\",\"name\":\"Liana Z100\",\"type\":\"акустическая гитара\",\"reviewAmount\":34,\"stringAmount\":12,\"price\":10500,\"starsCount\":5},{\"id\":20,\"identiferNumber\":\"LU458283\",\"name\":\"Liana Z300\",\"type\":\"акустическая гитара\",\"reviewAmount\":9,\"stringAmount\":6,\"price\":13300,\"starsCount\":3},{\"id\":21,\"identiferNumber\":\"RO324341\",\"name\":\"Roman RX\",\"type\":\"укулеле\",\"reviewAmount\":37,\"stringAmount\":4,\"price\":4800,\"starsCount\":4.5},{\"id\":22,\"identiferNumber\":\"RO214235\",\"name\":\"Roman TX\",\"type\":\"укулеле\",\"reviewAmount\":5,\"stringAmount\":4,\"price\":1900,\"starsCount\":4.1},{\"id\":23,\"identiferNumber\":\"DI132414\",\"name\":\"Dania U100\",\"type\":\"укулеле\",\"reviewAmount\":23,\"stringAmount\":4,\"price\":2500,\"starsCount\":3.2},{\"id\":24,\"identiferNumber\":\"DI934754\",\"name\":\"Dania WR\",\"type\":\"укулеле\",\"reviewAmount\":3,\"stringAmount\":4,\"price\":3800,\"starsCount\":2.1},{\"id\":25,\"identiferNumber\":\"DI034292\",\"name\":\"Dania LE\",\"type\":\"укулеле\",\"reviewAmount\":10,\"stringAmount\":4,\"price\":4100,\"starsCount\":3.2},{\"id\":26,\"identiferNumber\":\"MI193214\",\"name\":\"Mirana V10\",\"type\":\"укулеле\",\"reviewAmount\":14,\"stringAmount\":4,\"price\":2700,\"starsCount\":4.5},{\"id\":27,\"identiferNumber\":\"VO043244\",\"name\":\"Виолана Mini\",\"type\":\"укулеле\",\"reviewAmount\":29,\"stringAmount\":4,\"price\":6700,\"starsCount\":5}]");
 
@@ -3835,38 +3865,38 @@ module.exports = JSON.parse("[{\"id\":1,\"identiferNumber\":\"SO757575\",\"name\
 /******/ 	
 /******/ 	// the startup function
 /******/ 	// It's empty as some runtime module handles the default behavior
-/******/ 	__webpack_require__.x = function() {};
+/******/ 	__webpack_require__.x = x => {};
 /************************************************************************/
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
+/******/ 	(() => {
 /******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
+/******/ 		__webpack_require__.d = (exports, definition) => {
 /******/ 			for(var key in definition) {
 /******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
 /******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 				}
 /******/ 			}
 /******/ 		};
-/******/ 	}();
+/******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
-/******/ 	!function() {
+/******/ 	(() => {
 /******/ 		// define __esModule on exports
-/******/ 		__webpack_require__.r = function(exports) {
+/******/ 		__webpack_require__.r = (exports) => {
 /******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
 /******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
 /******/ 			}
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 		};
-/******/ 	}();
+/******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/jsonp chunk loading */
-/******/ 	!function() {
+/******/ 	(() => {
 /******/ 		// no baseURI
 /******/ 		
 /******/ 		// object to store loaded and loading chunks
@@ -3878,7 +3908,7 @@ module.exports = JSON.parse("[{\"id\":1,\"identiferNumber\":\"SO757575\",\"name\
 /******/ 		
 /******/ 		var deferredModules = [
 /******/ 			["../node_modules/@babel/polyfill/lib/index.js","vendors"],
-/******/ 			["./js/main.js","vendors"]
+/******/ 			["./index.js","vendors"]
 /******/ 		];
 /******/ 		// no chunk on demand loading
 /******/ 		
@@ -3890,14 +3920,11 @@ module.exports = JSON.parse("[{\"id\":1,\"identiferNumber\":\"SO757575\",\"name\
 /******/ 		
 /******/ 		// no HMR manifest
 /******/ 		
-/******/ 		var checkDeferredModules = function() {};
+/******/ 		var checkDeferredModules = x => {};
 /******/ 		
 /******/ 		// install a JSONP callback for chunk loading
-/******/ 		var webpackJsonpCallback = function(parentChunkLoadingFunction, data) {
-/******/ 			var chunkIds = data[0];
-/******/ 			var moreModules = data[1];
-/******/ 			var runtime = data[2];
-/******/ 			var executeModules = data[3];
+/******/ 		var webpackJsonpCallback = (parentChunkLoadingFunction, data) => {
+/******/ 			var [chunkIds, moreModules, runtime, executeModules] = data;
 /******/ 			// add "moreModules" to the modules object,
 /******/ 			// then flag all "chunkIds" as loaded and fire callback
 /******/ 			var moduleId, chunkId, i = 0, resolves = [];
@@ -3946,17 +3973,17 @@ module.exports = JSON.parse("[{\"id\":1,\"identiferNumber\":\"SO757575\",\"name\
 /******/ 			}
 /******/ 			if(deferredModules.length === 0) {
 /******/ 				__webpack_require__.x();
-/******/ 				__webpack_require__.x = function() {};
+/******/ 				__webpack_require__.x = x => {};
 /******/ 			}
 /******/ 			return result;
 /******/ 		}
 /******/ 		var startup = __webpack_require__.x;
-/******/ 		__webpack_require__.x = function() {
+/******/ 		__webpack_require__.x = () => {
 /******/ 			// reset startup function so it can be called again when more startup code is added
-/******/ 			__webpack_require__.x = startup || (function() {});
+/******/ 			__webpack_require__.x = startup || (x => {});
 /******/ 			return (checkDeferredModules = checkDeferredModulesImpl)();
 /******/ 		};
-/******/ 	}();
+/******/ 	})();
 /******/ 	
 /************************************************************************/
 /******/ 	// run startup

@@ -62,10 +62,11 @@ const jsLoaders = () => {
 };
 
 module.exports = {
+  target: process.env.NODE_ENV === `development` ? `web` : `browserslist`,
   context: path.resolve(__dirname, `src`),
   mode: `development`,
   entry: {
-    main: [`@babel/polyfill`, `./js/main.js`]
+    main: [`@babel/polyfill`, `./index.js`]
   },
   output: {
     filename: filename(`js`),
@@ -77,13 +78,10 @@ module.exports = {
   },
   optimization: optimization(),
   devServer: {
-    contentBase: path.join(__dirname, `public`),
+    contentBase: `public`,
     port: 8080,
-    watchContentBase: true,
-    overlay: {
-      warnings: true,
-      errors: true
-    }
+    open: true,
+    hot: true,
   },
   devtool: isDev ? `source-map` : false,
   plugins: [
@@ -165,6 +163,10 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: jsLoaders()
+      },
+      {
+        test: /\.html$/,
+        loader: `raw-loader`
       }
     ]
   }

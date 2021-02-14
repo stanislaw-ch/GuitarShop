@@ -153,6 +153,7 @@ const createFiltersElement = (currentFilter, goods) => {
               min="0"
               max="1000000"
               >
+          <label for="filters-form-price-from" class="visually-hidden">Цена от</label>
           <input
               type="text"
               name="filters-form-price-to"
@@ -162,6 +163,7 @@ const createFiltersElement = (currentFilter, goods) => {
               min="0"
               max="1000000"
               >
+          <label for="filters-form-price-to" class="visually-hidden">Цена до</label>
         </div>
       </fieldset>
       <fieldset class="catalog__filters-type-guitar">

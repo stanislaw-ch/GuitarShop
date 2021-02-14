@@ -51,7 +51,7 @@
 
   &--about-us .links__item:first-child,
   &--kontakt .links__item:first-child {
-    margin-bottom: 16px;
+    margin-bottom: 11px;
   }
 
   &--catalog {
@@ -118,4 +118,10 @@
   display: block;
   padding-left: 14px;
   margin-top: -1px;
+}
+
+.links__item a {
+  &:hover {
+    color: #adadad;
+  }
 }
