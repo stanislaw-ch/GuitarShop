@@ -447,7 +447,8 @@ input[type="radio"].visually-hidden {
   stroke-width: 0.4px; }
 
 .main-nav__list {
-  margin-left: 115px; }
+  margin-left: 115px;
+  width: 510px; }
 
 .container {
   box-sizing: border-box;
@@ -501,9 +502,10 @@ input[type="radio"].visually-hidden {
 
 .site-list {
   display: flex;
-  box-sizing: border-box;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  box-sizing: border-box;
   padding: 0;
   list-style-type: none; }
 
