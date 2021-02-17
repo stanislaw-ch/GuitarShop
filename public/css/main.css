@@ -526,6 +526,11 @@ input[type="radio"].visually-hidden {
     color: #474747;
     opacity: 0.5; }
 
+.social__item a svg {
+  fill: #ffffff; }
+  .social__item a svg:hover {
+    fill: #adadad; }
+
 .links__wrapper {
   box-sizing: border-box;
   margin-right: 14px; }
@@ -1146,6 +1151,9 @@ input[type="radio"].visually-hidden {
   border-radius: 0;
   background-color: transparent;
   cursor: pointer; }
+  .product__quantity-button:hover {
+    color: #ffffff;
+    background-color: #c1c1c1; }
 
 .product__price-total {
   display: flex;

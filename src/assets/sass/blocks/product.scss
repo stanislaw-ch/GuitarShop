@@ -116,6 +116,11 @@
   border-radius: 0;
   background-color: transparent;
   cursor: pointer;
+
+  &:hover {
+    color: #ffffff;
+    background-color: #c1c1c1;
+  }
 }
 
 .product__price-total {

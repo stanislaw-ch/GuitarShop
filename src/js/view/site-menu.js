@@ -12,7 +12,7 @@ const createSiteMenuTemplate = (basketModel) => {
   return `<nav class="main-nav">
     <div class="container">
       <div class="main-nav__wrapper">
-        <a class="main-nav__logo">
+        <a href="#" class="main-nav__logo">
           <span class="visually-hidden">Логотип магазина гитар</span>
           <svg width="67" height="70">
             <use xlink:href="img/sprite/sprite.svg#sprite-logo"></use>

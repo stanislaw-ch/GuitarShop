@@ -1,3 +1,13 @@
-// .social {
+.social {
+  &__item {
+    & a {
+      & svg {
+        fill: #ffffff;
 
-// }
+        &:hover {
+          fill: #adadad;
+        }
+      }
+    }
+  }
+}
